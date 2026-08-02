@@ -451,8 +451,265 @@
         }
       ]
     },
-    { id: 'types', title: 'Types: numbers, text & mixing them', sub: 'coming soon', locked: true },
-    { id: 'conditionals', title: 'Making decisions with if', sub: 'coming soon', locked: true }
+    {
+      id: 'types',
+      title: 'Types: numbers, text & mixing them',
+      sub: '8 steps · ~6 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 02 · Step 1',
+          title: 'Every value has a type',
+          body: [
+            'Python quietly tags every value with a <code>type</code> — whole numbers are <code>int</code>, decimals are <code>float</code>, and text is <code>str</code>.'
+          ],
+          code: 'age = 34        # int\nprice = 4.99    # float\nname = "Ada"    # str'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 02 · Step 2',
+          title: 'Predict the output',
+          code: 'price = 4.99\nprint(type(price))',
+          options: ["<class 'float'>", "<class 'int'>", "<class 'str'>", 'Error'],
+          answer: 0,
+          explanation: '<code>type()</code> reports a value\'s type. <code>4.99</code> has a decimal point, so Python stores it as a <b>float</b>.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 02 · Step 3',
+          title: 'Strings add up with +',
+          body: [
+            'Use <code>+</code> to join ("concatenate") strings together. It glues them exactly as written — no automatic spaces.'
+          ],
+          code: 'greeting = "Hi" + "there"\nprint(greeting)\n\n# output:\nHithere'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 02 · Step 4',
+          title: 'Predict the output',
+          code: 'first = "Justin"\nlast = "Tew"\nprint(first + " " + last)',
+          options: ['JustinTew', 'Justin Tew', 'Justin+Tew', 'Error'],
+          answer: 1,
+          explanation: 'The middle <code>" "</code> is its own string — a single space — so it gets glued in between the other two.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 02 · Step 5',
+          title: 'Mixing types trips Python up',
+          body: [
+            '<code>+</code> means something different for numbers (add) than for strings (join) — so Python won\'t let you mix a number and a string in the same <code>+</code>. You have to convert first.'
+          ],
+          code: 'score = 10\nprint("Score: " + score)\n\n# raises:\nTypeError: can only concatenate str\n(not "int") to str'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 02 · Step 6',
+          title: 'Predict the output',
+          code: 'items = 3\nprint("Items: " + items)',
+          options: ['Items: 3', 'Items: items', '3', 'Error — TypeError'],
+          answer: 3,
+          explanation: '<code>items</code> is an <code>int</code>, and Python refuses to <code>+</code> it straight onto a string — the same error from the last step.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 02 · Step 7',
+          title: 'Fix it with str()',
+          body: [
+            'Wrap the number in <code>str()</code> to turn it into text first, so <code>+</code> has two strings to glue.'
+          ],
+          codeBefore: 'score = 10\nprint("Score: " + ',
+          codeAfter: '(score))',
+          answer: ['str'],
+          hint: 'The function that converts a value into a string — three letters.',
+          explanation: '<code>str(score)</code> turns <code>10</code> into <code>"10"</code>, so both sides of <code>+</code> are strings and it prints <code>Score: 10</code>.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 02 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            'Every value has a type: <code>int</code>, <code>float</code>, and <code>str</code> are the basics.',
+            '<code>type()</code> tells you what type a value is.',
+            '<code>+</code> joins strings together, with no automatic spacing.',
+            'You can\'t <code>+</code> a string and a number directly — convert with <code>str()</code> first.'
+          ],
+          next: 'Next up: teaching Python to make decisions — if, else, and comparing values.'
+        }
+      ]
+    },
+    {
+      id: 'conditionals',
+      title: 'Making decisions with if',
+      sub: '8 steps · ~6 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 03 · Step 1',
+          title: 'Comparisons give you True or False',
+          body: [
+            'Comparing two values with <code>==</code>, <code>&gt;</code>, <code>&lt;</code> and friends doesn\'t print a number — it produces a <code>bool</code>: <code>True</code> or <code>False</code>.'
+          ],
+          code: 'print(5 > 3)\n\n# output:\nTrue'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 03 · Step 2',
+          title: 'Predict the output',
+          code: 'age = 16\nprint(age >= 18)',
+          options: ['True', 'False', '16', 'Error'],
+          answer: 1,
+          explanation: '16 is not greater than or equal to 18, so the comparison evaluates to <b>False</b>.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 03 · Step 3',
+          title: 'if runs code only when it\'s True',
+          body: [
+            'An <code>if</code> statement runs its indented block only when the condition is <code>True</code>. Indentation isn\'t just style in Python — it\'s how the block is defined.'
+          ],
+          code: 'age = 20\nif age >= 18:\n    print("You can vote")'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 03 · Step 4',
+          title: 'Predict the output',
+          code: 'temp = 15\nif temp > 20:\n    print("Warm")\nelse:\n    print("Cool")',
+          options: ['Warm', 'Cool', 'Warm then Cool', 'Nothing prints'],
+          answer: 1,
+          explanation: '15 is not greater than 20, so the <code>if</code> is False and Python runs the <code>else</code> block instead.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 03 · Step 5',
+          title: 'elif checks more conditions in order',
+          body: [
+            'Chain extra conditions with <code>elif</code> ("else if"). Python checks them top to bottom and stops at the first one that\'s <code>True</code>.'
+          ],
+          code: 'score = 72\nif score >= 90:\n    print("A")\nelif score >= 70:\n    print("B")\nelse:\n    print("C")'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 03 · Step 6',
+          title: 'Predict the output',
+          code: 'score = 95\nif score >= 90:\n    print("A")\nelif score >= 70:\n    print("B")\nelse:\n    print("C")',
+          options: ['A', 'B', 'C', 'A then B'],
+          answer: 0,
+          explanation: '95 satisfies the very first condition (<code>&gt;= 90</code>), so Python prints <code>A</code> and skips the rest of the chain — even though 95 also satisfies <code>&gt;= 70</code>.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 03 · Step 7',
+          title: 'Complete the condition',
+          body: [
+            'Finish the <code>elif</code> so scores of 70 or above print <code>"B"</code>.'
+          ],
+          codeBefore: 'if score >= 90:\n    print("A")\nelif score >= ',
+          codeAfter: ':\n    print("B")\nelse:\n    print("C")',
+          answer: ['70'],
+          hint: 'The threshold mentioned just above — a plain number.',
+          explanation: '<code>elif score >= 70</code> catches everything from 70 up that didn\'t already qualify for an <code>A</code>.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 03 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            'Comparisons (<code>==</code>, <code>&gt;=</code>, …) evaluate to <code>True</code> or <code>False</code>.',
+            '<code>if</code> runs its block only when the condition is <code>True</code>; indentation defines the block.',
+            '<code>else</code> catches everything the <code>if</code> didn\'t.',
+            '<code>elif</code> chains run top-to-bottom and stop at the first match.'
+          ],
+          next: 'Next up: lists — storing many values in one variable, and looping over them.'
+        }
+      ]
+    },
+    {
+      id: 'lists',
+      title: 'Lists: storing many values',
+      sub: '8 steps · ~6 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 04 · Step 1',
+          title: 'A list holds many values in order',
+          body: [
+            'Square brackets create a <code>list</code> — an ordered collection you can store in a single variable.'
+          ],
+          code: 'fruits = ["apple", "banana", "cherry"]\nprint(fruits)\n\n# output:\n[\'apple\', \'banana\', \'cherry\']'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 04 · Step 2',
+          title: 'Predict the output',
+          code: 'nums = [10, 20, 30]\nprint(len(nums))',
+          options: ['3', '30', '[10, 20, 30]', 'Error'],
+          answer: 0,
+          explanation: '<code>len()</code> counts items in the list — there are 3 numbers, so it prints <b>3</b>, not the last value.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 04 · Step 3',
+          title: 'Indexing starts at 0',
+          body: [
+            'Grab one item with square brackets and its position. Python counts positions starting at <code>0</code>, not <code>1</code>.'
+          ],
+          code: 'fruits = ["apple", "banana", "cherry"]\nprint(fruits[0])\nprint(fruits[1])\n\n# output:\napple\nbanana'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 04 · Step 4',
+          title: 'Predict the output',
+          code: 'fruits = ["apple", "banana", "cherry"]\nprint(fruits[2])',
+          options: ['cherry', 'banana', 'Error — no index 2', '["cherry"]'],
+          answer: 0,
+          explanation: 'Index 0 is apple, 1 is banana, 2 is <b>cherry</b> — the third item, since counting starts at 0.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 04 · Step 5',
+          title: 'for loops visit every item',
+          body: [
+            'A <code>for</code> loop runs its block once per item in the list, automatically — no index-counting required.'
+          ],
+          code: 'fruits = ["apple", "banana", "cherry"]\nfor fruit in fruits:\n    print(fruit)\n\n# output:\napple\nbanana\ncherry'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 04 · Step 6',
+          title: 'Predict the output',
+          code: 'nums = [1, 2, 3]\ntotal = 0\nfor n in nums:\n    total = total + n\nprint(total)',
+          options: ['6', '3', '123', '[1, 2, 3]'],
+          answer: 0,
+          explanation: '<code>total</code> accumulates across the loop: 0+1=1, 1+2=3, 3+3=6 — printing <b>6</b>.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 04 · Step 7',
+          title: 'Complete the loop',
+          body: [
+            'Finish the <code>for</code> loop so it visits every item in <code>scores</code>.'
+          ],
+          codeBefore: 'scores = [88, 92, 79]\nfor score in ',
+          codeAfter: ':\n    print(score)',
+          answer: ['scores'],
+          hint: 'The list you\'re looping over — just its variable name.',
+          explanation: '<code>for score in scores</code> tells Python: for each item in <code>scores</code>, call it <code>score</code> and run the block.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 04 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            '<code>[...]</code> creates a list — an ordered collection in one variable.',
+            '<code>len()</code> counts items; indexing with <code>[0]</code>, <code>[1]</code>… starts at 0.',
+            '<code>for item in list:</code> runs a block once per item, automatically.',
+            'A loop can accumulate a running result, like a total, across iterations.'
+          ],
+          next: 'That\'s the core toolkit — variables, types, decisions, and lists. Next up: functions, for packaging code you reuse.'
+        }
+      ]
+    },
+    { id: 'functions', title: 'Functions: reusable code', sub: 'coming soon', locked: true }
   ];
 
   var state = load();
