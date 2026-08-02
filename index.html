@@ -1585,11 +1585,396 @@
             'f-strings turned raw values into a clean report line, no <code>+</code> or <code>str()</code> needed.',
             '<code>try</code>/<code>except KeyError</code> kept a missing lookup from crashing the whole program.'
           ],
-          next: 'That\'s two projects and two checkpoints deep — say the word whenever you want more.'
+          next: 'Next up: list comprehensions — a shorter way to build a list from another.'
         }
       ]
     },
-    { id: 'more-soon-2', title: 'List comprehensions, classes & project 3', sub: 'coming soon', locked: true }
+    {
+      id: 'list-comprehensions',
+      title: 'List comprehensions',
+      sub: '7 steps · ~5 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 14 · Step 1',
+          title: 'A shorter way to build a list from another',
+          body: [
+            'A list comprehension builds a new list by transforming each item of another, in a single line — instead of a <code>for</code> loop with <code>.append()</code>.'
+          ],
+          code: 'nums = [1, 2, 3]\nsquares = [n * n for n in nums]\nprint(squares)\n\n# output:\n[1, 4, 9]'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 14 · Step 2',
+          title: 'Predict the output',
+          code: 'nums = [1, 2, 3, 4]\ndoubled = [n * 2 for n in nums]\nprint(doubled)',
+          options: ['[2, 4, 6, 8]', '[1, 2, 3, 4]', '8', 'Error'],
+          answer: 0,
+          explanation: 'Each <code>n</code> in <code>nums</code> gets doubled — 1→2, 2→4, 3→6, 4→8.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 14 · Step 3',
+          title: 'Add an if to filter which items go in',
+          body: [
+            'Put a condition at the end to only include items that pass it. (<code>%</code> gives a division\'s remainder — <code>n % 2 == 0</code> means <code>n</code> divides evenly by 2, i.e. it\'s even.)'
+          ],
+          code: 'nums = [1, 2, 3, 4, 5, 6]\nevens = [n for n in nums if n % 2 == 0]\nprint(evens)\n\n# output:\n[2, 4, 6]'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 14 · Step 4',
+          title: 'Predict the output',
+          code: 'nums = [10, 15, 20, 25]\nbig = [n for n in nums if n > 15]\nprint(big)',
+          options: ['[20, 25]', '[10, 15, 20, 25]', '[15, 20, 25]', 'Error'],
+          answer: 0,
+          explanation: 'Only 20 and 25 are greater than 15, so those are the only ones kept.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 14 · Step 5',
+          title: 'Equivalent to a for loop, just condensed',
+          body: [
+            'Anything a comprehension does, a regular <code>for</code> loop can too — it\'s just shorter to write and read once you\'re comfortable with it.'
+          ],
+          code: '# comprehension:\nsquares = [n * n for n in nums]\n\n# equivalent loop:\nsquares = []\nfor n in nums:\n    squares.append(n * n)'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 14 · Step 6',
+          title: 'Complete the comprehension',
+          body: [
+            'Finish this comprehension so it keeps only names longer than 2 letters.'
+          ],
+          codeBefore: 'names = ["Al", "Ada", "Sam", "Zoe"]\nlong_names = [name for name in names if len(name) > ',
+          codeAfter: ']',
+          answer: ['2'],
+          hint: 'How many letters does "Al" have? That one shouldn\'t make it through.',
+          explanation: '<code>len(name) &gt; 2</code> keeps every name longer than 2 letters — Ada, Sam, and Zoe all qualify; only Al (2 letters) is filtered out.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 14 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            '<code>[expr for item in list]</code> builds a new list by transforming each item.',
+            'Add <code>if condition</code> at the end to filter which items are included.',
+            'A comprehension is equivalent to a <code>for</code> loop with <code>.append()</code> — just more compact.',
+            '<code>%</code> (modulo) gives a division\'s remainder — handy for checks like even/odd.'
+          ],
+          next: 'Next up: classes — bundling data and behavior together into your own custom type.'
+        }
+      ]
+    },
+    {
+      id: 'classes',
+      title: 'Classes & objects',
+      sub: '8 steps · ~6 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 15 · Step 1',
+          title: 'A class is a blueprint for objects',
+          body: [
+            'A class defines what an object has (attributes) and what it can do (methods). Creating an object from a class is called instantiating it.'
+          ],
+          code: 'class Dog:\n    pass\n\nmy_dog = Dog()\nprint(my_dog)\n\n# output:\n<__main__.Dog object at 0x...>'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 15 · Step 2',
+          title: '__init__ sets up a new object',
+          body: [
+            '<code>__init__</code> runs automatically when you create an object, and <code>self</code> refers to the specific object being built. Use it to store attributes.'
+          ],
+          code: 'class Dog:\n    def __init__(self, name):\n        self.name = name\n\nmy_dog = Dog("Rex")\nprint(my_dog.name)\n\n# output:\nRex'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 15 · Step 3',
+          title: 'Predict the output',
+          code: 'class Dog:\n    def __init__(self, name):\n        self.name = name\n\na = Dog("Rex")\nb = Dog("Fido")\nprint(a.name, b.name)',
+          options: ['Rex Fido', 'Rex Rex', 'name name', 'Error'],
+          answer: 0,
+          explanation: 'Each object stores its own <code>name</code> — <code>a</code> is Rex, <code>b</code> is Fido, independent of each other.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 15 · Step 4',
+          title: 'Methods are functions that belong to the object',
+          body: [
+            'A method is defined like a function inside the class, and always takes <code>self</code> first so it can access that object\'s own attributes.'
+          ],
+          code: 'class Dog:\n    def __init__(self, name):\n        self.name = name\n\n    def bark(self):\n        print(f"{self.name} says woof!")\n\nmy_dog = Dog("Rex")\nmy_dog.bark()\n\n# output:\nRex says woof!'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 15 · Step 5',
+          title: 'Predict the output',
+          code: 'class Dog:\n    def __init__(self, name):\n        self.name = name\n\n    def bark(self):\n        print(f"{self.name} says woof!")\n\na = Dog("Fido")\na.bark()',
+          options: ['Fido says woof!', 'self says woof!', 'Rex says woof!', 'Error'],
+          answer: 0,
+          explanation: '<code>self.name</code> is Fido inside <code>a</code>, so the method prints <b>Fido says woof!</b>.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 15 · Step 6',
+          title: 'Attributes can change after creation',
+          body: [
+            'Just like a variable, an object\'s attribute can be read or reassigned any time using dot notation.'
+          ],
+          code: 'my_dog = Dog("Rex")\nmy_dog.name = "Max"\nprint(my_dog.name)\n\n# output:\nMax'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 15 · Step 7',
+          title: 'Complete the class',
+          body: [
+            'Finish <code>__init__</code> so every new Cat stores its own age.'
+          ],
+          codeBefore: 'class Cat:\n    def __init__(self, age):\n        self.age = ',
+          codeAfter: '\n\nkitty = Cat(3)\nprint(kitty.age)',
+          answer: ['age'],
+          hint: 'The parameter you just received — same name as the attribute.',
+          explanation: '<code>self.age = age</code> stores the value passed in as this specific object\'s own attribute.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 15 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            'A class is a blueprint; <code>class Name:</code> defines it, and <code>Name()</code> creates (instantiates) an object from it.',
+            '<code>__init__</code> runs automatically on creation; <code>self</code> refers to the specific object being built.',
+            'A method is a function inside a class that takes <code>self</code> first, giving it access to that object\'s attributes.',
+            'Each object keeps its own independent copies of its attributes.'
+          ],
+          next: 'Next up: a checkpoint test on lessons 10 through 15.'
+        }
+      ]
+    },
+    {
+      id: 'checkpoint-3',
+      title: 'Checkpoint: Comprehensions & Classes',
+      sub: 'Checkpoint · 10 questions',
+      isTest: true,
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Checkpoint 3 · Start',
+          title: 'Round three',
+          body: [
+            '10 questions on f-strings, error handling, list comprehensions, and classes — everything since the last checkpoint.'
+          ]
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint 3 · Question 1',
+          title: 'Predict the output',
+          code: 'x = 3.14159\nprint(f"{x:.2f}")',
+          options: ['3.14', '3.1', '3.14159', 'Error'],
+          answer: 0,
+          explanation: '<code>:.2f</code> rounds to 2 decimal places — <b>3.14</b>.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint 3 · Question 2',
+          title: 'Catch the right error',
+          body: ['Complete the except for a bad conversion.'],
+          codeBefore: 'try:\n    y = int("cat")\nexcept ',
+          codeAfter: ':\n    print("invalid")',
+          answer: ['ValueError'],
+          hint: 'Raised by int() on text it can\'t parse.',
+          explanation: '<code>int("cat")</code> raises a <code>ValueError</code> since "cat" isn\'t a valid number.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint 3 · Question 3',
+          title: 'Predict the output',
+          code: 'try:\n    print(5 / 0)\nexcept ZeroDivisionError:\n    print("nope")\nfinally:\n    print("done")',
+          options: ['nope, then done', '5/0, then done', 'nope only', 'done only'],
+          answer: 0,
+          explanation: 'The division fails, <code>except</code> prints "nope", and <code>finally</code> always runs afterward, printing "done".'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint 3 · Question 4',
+          title: 'Predict the output',
+          code: 'nums = [2, 4, 6]\nresult = [n + 1 for n in nums]\nprint(result)',
+          options: ['[3, 5, 7]', '[2, 4, 6]', '[1, 1, 1]', 'Error'],
+          answer: 0,
+          explanation: 'Each number gets +1: 2→3, 4→5, 6→7.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint 3 · Question 5',
+          title: 'Predict the output',
+          code: 'nums = [1, 2, 3, 4, 5]\nresult = [n for n in nums if n % 2 == 0]\nprint(result)',
+          options: ['[2, 4]', '[1, 3, 5]', '[1, 2, 3, 4, 5]', 'Error'],
+          answer: 0,
+          explanation: '<code>n % 2 == 0</code> keeps only even numbers — 2 and 4.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint 3 · Question 6',
+          title: 'Complete the comprehension',
+          body: ['Finish so only numbers greater than 15 are kept.'],
+          codeBefore: 'nums = [10, 20, 30]\nbig = [n for n in nums if n > ',
+          codeAfter: ']',
+          answer: ['15'],
+          hint: 'The threshold mentioned in the instructions above.',
+          explanation: '<code>n &gt; 15</code> keeps only 20 and 30.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint 3 · Question 7',
+          title: 'Predict the output',
+          code: 'class Car:\n    def __init__(self, brand):\n        self.brand = brand\n\nc = Car("Toyota")\nprint(c.brand)',
+          options: ['Toyota', 'brand', 'self.brand', 'Error'],
+          answer: 0,
+          explanation: '<code>c.brand</code> holds the value passed in when <code>c</code> was created — <b>Toyota</b>.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint 3 · Question 8',
+          title: 'Predict the output',
+          code: 'class Car:\n    def __init__(self, brand):\n        self.brand = brand\n    def honk(self):\n        print(f"{self.brand} says beep")\n\nc = Car("Honda")\nc.honk()',
+          options: ['Honda says beep', 'self.brand says beep', 'beep', 'Error'],
+          answer: 0,
+          explanation: 'The method substitutes <code>self.brand</code> — Honda — into the f-string.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint 3 · Question 9',
+          title: 'Complete the class',
+          body: ['Finish __init__ so it stores the title.'],
+          codeBefore: 'class Book:\n    def __init__(self, title):\n        self.title = ',
+          codeAfter: '\n\nb = Book("Dune")\nprint(b.title)',
+          answer: ['title'],
+          hint: 'Same name as the parameter received.',
+          explanation: '<code>self.title = title</code> stores the passed-in value on the object.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint 3 · Question 10',
+          title: 'Predict the output',
+          code: 'try:\n    price = float("9.99")\n    print(f"${price:.1f}")\nexcept ValueError:\n    print("bad price")',
+          options: ['$10.0', '$9.9', '$9.99', 'bad price'],
+          answer: 0,
+          explanation: '<code>float("9.99")</code> succeeds, so <code>try</code> continues; <code>:.1f</code> rounds 9.99 to one decimal place — <b>10.0</b>.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Checkpoint 3 · Complete',
+          title: 'Here\'s where you stand',
+          bullets: [
+            'f-strings, error handling, list comprehensions, and classes — everything since the last checkpoint.',
+            'Retake this any time — the score updates and nothing is held against you.'
+          ],
+          next: 'Next up: a third project — pulling classes, comprehensions, and error handling together.'
+        }
+      ]
+    },
+    {
+      id: 'project-inventory',
+      title: 'Project: Inventory Tracker',
+      sub: 'Project · 9 steps',
+      kind: 'project',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Project 3 · Brief',
+          title: 'The goal',
+          body: [
+            'Model a shop\'s inventory with a class, store several items in a list, use a comprehension to flag what\'s running low, and safely restock with error handling for bad input.'
+          ],
+          code: '# Target output:\nLow stock: [\'Pens\']\nRestocked Pens to 20'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Project 3 · Step 1',
+          title: 'Define the Item class',
+          body: [
+            'Each item needs a name and a quantity in stock.'
+          ],
+          code: 'class Item:\n    def __init__(self, name, qty):\n        self.name = name\n        self.qty = qty'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Project 3 · Step 2',
+          title: 'Store several items in a list',
+          body: [
+            'Create a few Item objects and collect them in a list, exactly like the lists of numbers and strings from earlier.'
+          ],
+          code: 'inventory = [\n    Item("Pens", 4),\n    Item("Notebooks", 15),\n    Item("Staplers", 8)\n]'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Project 3 · Step 3',
+          title: 'Complete the low-stock comprehension',
+          body: [
+            'Use a comprehension to collect the names of items with fewer than 5 in stock.'
+          ],
+          codeBefore: 'low_stock = [item.name for item in inventory if item.qty < ',
+          codeAfter: ']\nprint(low_stock)',
+          answer: ['5'],
+          hint: 'The threshold mentioned just above — fewer than how many?',
+          explanation: '<code>item.qty &lt; 5</code> keeps only items with fewer than 5 in stock — just Pens, with 4.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Project 3 · Step 4',
+          title: 'Predict the output',
+          code: 'inventory = [Item("Pens", 4), Item("Notebooks", 15), Item("Staplers", 8)]\nlow_stock = [item.name for item in inventory if item.qty < 5]\nprint(low_stock)',
+          options: ["['Pens']", "['Pens', 'Notebooks']", "['Notebooks', 'Staplers']", 'Error'],
+          answer: 0,
+          explanation: 'Only Pens has fewer than 5 (4) — Notebooks (15) and Staplers (8) don\'t qualify.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Project 3 · Step 5',
+          title: 'A method to safely restock',
+          body: [
+            'Add a method that adds stock, but handles a bad amount gracefully using error handling instead of crashing.'
+          ],
+          code: 'class Item:\n    def __init__(self, name, qty):\n        self.name = name\n        self.qty = qty\n\n    def restock(self, amount):\n        try:\n            amount = int(amount)\n            self.qty = self.qty + amount\n            print(f"Restocked {self.name} to {self.qty}")\n        except ValueError:\n            print(f"Invalid restock amount for {self.name}")'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Project 3 · Step 6',
+          title: 'Predict the output',
+          code: 'pens = Item("Pens", 4)\npens.restock(16)',
+          options: ['Restocked Pens to 20', 'Restocked Pens to 16', 'Invalid restock amount for Pens', 'Error'],
+          answer: 0,
+          explanation: '<code>int(16)</code> succeeds, so <code>qty</code> becomes 4 + 16 = <b>20</b>, and the success message prints.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Project 3 · Step 7',
+          title: 'Trigger the error path',
+          body: [
+            'Call <code>restock</code> with the exact text <code>"abc"</code> — something <code>int()</code> can\'t parse — to see the error path.'
+          ],
+          codeBefore: 'pens = Item("Pens", 4)\npens.restock(',
+          codeAfter: ')',
+          answer: ['"abc"', "'abc'"],
+          hint: 'Wrap abc in quotes, matching the instruction above.',
+          explanation: '<code>int("abc")</code> can\'t convert to a number, so it raises a <code>ValueError</code> — <code>restock()</code> catches it and prints the invalid-amount message instead of crashing.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Project 3 · Complete',
+          title: 'You built an inventory tracker',
+          code: 'class Item:\n    def __init__(self, name, qty):\n        self.name = name\n        self.qty = qty\n\n    def restock(self, amount):\n        try:\n            amount = int(amount)\n            self.qty = self.qty + amount\n            print(f"Restocked {self.name} to {self.qty}")\n        except ValueError:\n            print(f"Invalid restock amount for {self.name}")\n\ninventory = [\n    Item("Pens", 4),\n    Item("Notebooks", 15),\n    Item("Staplers", 8)\n]\n\nlow_stock = [item.name for item in inventory if item.qty < 5]\nprint("Low stock:", low_stock)\n\nfor item in inventory:\n    if item.name in low_stock:\n        item.restock(16)',
+          bullets: [
+            'A class (<code>Item</code>) bundled data (name, qty) and behavior (restock) together into one reusable blueprint.',
+            'A list comprehension picked out exactly the items running low, in one line.',
+            '<code>try</code>/<code>except</code> inside a method kept a bad restock amount from crashing the whole program.'
+          ],
+          next: 'That\'s three projects and three checkpoints — a solid personal Python foundation. Say the word whenever you want to keep going.'
+        }
+      ]
+    },
+    { id: 'more-soon-3', title: 'Sorting, string methods & a capstone project', sub: 'coming soon', locked: true }
   ];
 
   var state = load();
