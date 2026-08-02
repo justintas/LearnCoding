@@ -263,6 +263,18 @@
   .feedback.no { background: var(--error-soft); color: var(--error); }
   .feedback b { color: var(--ink); }
 
+  .score-box {
+    display: flex; align-items: baseline; gap: 14px;
+    padding: 16px 18px; margin-bottom: 16px;
+    background: var(--accent-soft); border: 1px solid var(--line); border-radius: 8px;
+  }
+  .score-num {
+    font-family: var(--font-mono); font-variant-numeric: tabular-nums;
+    font-size: 28px; font-weight: 700; color: var(--accent-ink); line-height: 1;
+  }
+  .score-num .score-of { font-size: 16px; font-weight: 400; color: var(--ink-soft); }
+  .score-msg { font-size: 14px; color: var(--ink-soft); }
+
   .recap-list { list-style: none; margin: 6px 0 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
   .recap-list li {
     font-size: 14.5px; line-height: 1.55;
@@ -709,18 +721,502 @@
         }
       ]
     },
-    { id: 'functions', title: 'Functions: reusable code', sub: 'coming soon', locked: true }
+    {
+      id: 'functions',
+      title: 'Functions: reusable code',
+      sub: '8 steps · ~6 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 05 · Step 1',
+          title: 'Functions package up code you can reuse',
+          body: [
+            'A function bundles a block of code under a name. Define it once with <code>def</code>, then run it any time by calling its name.'
+          ],
+          code: 'def greet():\n    print("Hello!")\n\ngreet()\n\n# output:\nHello!'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 05 · Step 2',
+          title: 'Predict the output',
+          code: 'def greet():\n    print("Hello!")\n\ngreet()\ngreet()',
+          options: ['Hello!', 'Hello! printed twice', 'Nothing — you must call greet(x)', 'Error'],
+          answer: 1,
+          explanation: 'Each call to <code>greet()</code> runs the function\'s body again, so <code>Hello!</code> prints twice — once per call.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 05 · Step 3',
+          title: 'Parameters let you pass in information',
+          body: [
+            'Put a name inside the parentheses to accept an input. Whatever you pass in becomes that name inside the function.'
+          ],
+          code: 'def greet(name):\n    print("Hello, " + name)\n\ngreet("Ada")\n\n# output:\nHello, Ada'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 05 · Step 4',
+          title: 'Predict the output',
+          code: 'def square(n):\n    print(n * n)\n\nsquare(4)',
+          options: ['4', '8', '16', 'Error'],
+          answer: 2,
+          explanation: '<code>n * n</code> with <code>n = 4</code> is <b>16</b>.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 05 · Step 5',
+          title: 'return sends a value back',
+          body: [
+            '<code>print()</code> only displays a value — it doesn\'t hand it back to your code. <code>return</code> does: it makes the function\'s result usable, like any other value.'
+          ],
+          code: 'def square(n):\n    return n * n\n\nresult = square(5)\nprint(result)\n\n# output:\n25'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 05 · Step 6',
+          title: 'Predict the output',
+          code: 'def add(a, b):\n    return a + b\n\ntotal = add(3, 4) + 1\nprint(total)',
+          options: ['7', '8', '"3 + 4 + 1"', 'Error'],
+          answer: 1,
+          explanation: '<code>add(3, 4)</code> returns <code>7</code>, then <code>+ 1</code> makes it <b>8</b>.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 05 · Step 7',
+          title: 'Complete the function',
+          body: [
+            'Finish the function so it hands back the product of two numbers, instead of just printing it.'
+          ],
+          codeBefore: 'def multiply(a, b):\n    ',
+          codeAfter: ' a * b',
+          answer: ['return'],
+          hint: 'The keyword that hands a value back to whoever called the function.',
+          explanation: '<code>return a * b</code> sends the product back so it can be stored, printed, or reused — unlike <code>print</code>, which only displays it.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 05 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            '<code>def name():</code> defines a function; calling <code>name()</code> runs its body.',
+            'Parameters (inside the parentheses) let you pass information in.',
+            '<code>return</code> sends a value back out — unlike <code>print()</code>, which only displays it.',
+            'A returned value can be stored in a variable, printed, or used in more code.'
+          ],
+          next: 'Next up: while loops — repeating code based on a condition instead of a fixed list.'
+        }
+      ]
+    },
+    {
+      id: 'while-loops',
+      title: 'While loops & range()',
+      sub: '8 steps · ~6 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 06 · Step 1',
+          title: 'while repeats as long as something\'s True',
+          body: [
+            'A <code>for</code> loop repeats over a known collection. A <code>while</code> loop repeats as long as its condition stays <code>True</code> — useful when you don\'t know the count in advance.'
+          ],
+          code: 'count = 1\nwhile count <= 3:\n    print(count)\n    count = count + 1\n\n# output:\n1\n2\n3'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 06 · Step 2',
+          title: 'Predict the output',
+          code: 'n = 5\nwhile n > 0:\n    print(n)\n    n = n - 1',
+          options: ['5 4 3 2 1', '5 4 3 2 1 0', '1 2 3 4 5', 'Runs forever'],
+          answer: 0,
+          explanation: 'It counts down and stops as soon as <code>n</code> is no longer greater than 0 — so it prints 5 down to 1, never reaching 0.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 06 · Step 3',
+          title: 'Forgetting to update the condition = infinite loop',
+          body: [
+            'If nothing inside the loop ever changes the condition, it never becomes <code>False</code> — the loop runs forever. Always make sure something moves you toward the exit.'
+          ],
+          code: '# Careful — this never stops:\ncount = 1\nwhile count <= 3:\n    print(count)\n    # forgot to change count!'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 06 · Step 4',
+          title: 'Predict the output',
+          code: 'total = 0\nn = 1\nwhile n <= 4:\n    total = total + n\n    n = n + 1\nprint(total)',
+          options: ['4', '10', '1234', 'Runs forever'],
+          answer: 1,
+          explanation: 'It adds 1+2+3+4 = <b>10</b>, then stops once <code>n</code> passes 4.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 06 · Step 5',
+          title: 'range() generates a sequence of numbers',
+          body: [
+            '<code>range(n)</code> produces the numbers 0 up to (but not including) <code>n</code> — perfect for pairing with <code>for</code> when you just need to repeat something a set number of times.'
+          ],
+          code: 'for i in range(3):\n    print(i)\n\n# output:\n0\n1\n2'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 06 · Step 6',
+          title: 'Predict the output',
+          code: 'for i in range(1, 4):\n    print(i)',
+          options: ['1 2 3', '1 2 3 4', '0 1 2', 'Error'],
+          answer: 0,
+          explanation: '<code>range(1, 4)</code> starts at 1 and stops before 4, so it produces <b>1, 2, 3</b>.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 06 · Step 7',
+          title: 'Complete the countdown',
+          body: [
+            'Finish the <code>while</code> loop so it keeps going until <code>n</code> reaches 0.'
+          ],
+          codeBefore: 'n = 3\nwhile n > ',
+          codeAfter: ':\n    print(n)\n    n = n - 1',
+          answer: ['0'],
+          hint: 'What value should stop the countdown?',
+          explanation: '<code>while n > 0</code> keeps looping while <code>n</code> is still positive, stopping right as it hits 0.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 06 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            '<code>while condition:</code> repeats as long as the condition stays True.',
+            'Forgetting to update the condition inside the loop causes an infinite loop.',
+            '<code>range(n)</code> generates 0 up to (not including) n; <code>range(a, b)</code> starts at a.',
+            '<code>for i in range(n):</code> is the standard way to repeat something a fixed number of times.'
+          ],
+          next: 'Next up: dictionaries — pairing labels with values instead of just positions.'
+        }
+      ]
+    },
+    {
+      id: 'dictionaries',
+      title: 'Dictionaries: key-value pairs',
+      sub: '8 steps · ~6 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 07 · Step 1',
+          title: 'A dictionary pairs keys with values',
+          body: [
+            'Curly braces create a <code>dict</code> — instead of positions like a list, you look things up by a meaningful key.'
+          ],
+          code: 'person = {"name": "Ada", "age": 34}\nprint(person)\n\n# output:\n{\'name\': \'Ada\', \'age\': 34}'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 07 · Step 2',
+          title: 'Predict the output',
+          code: 'person = {"name": "Ada", "age": 34}\nprint(person["name"])',
+          options: ['Ada', 'name', '34', 'Error'],
+          answer: 0,
+          explanation: '<code>person["name"]</code> looks up the value stored under the key <code>"name"</code> — <b>Ada</b>.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 07 · Step 3',
+          title: 'Add or change a value with the same syntax',
+          body: [
+            'Assign to a key — a new key creates an entry, an existing key overwrites it.'
+          ],
+          code: 'person = {"name": "Ada"}\nperson["age"] = 34\nprint(person)\n\n# output:\n{\'name\': \'Ada\', \'age\': 34}'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 07 · Step 4',
+          title: 'Predict the output',
+          code: 'stock = {"apples": 10, "pears": 4}\nstock["apples"] = 7\nprint(stock["apples"])',
+          options: ['10', '7', '17', 'Error'],
+          answer: 1,
+          explanation: 'Assigning to an existing key replaces its value — <code>apples</code> is now <b>7</b>, not added to the old 10.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 07 · Step 5',
+          title: 'Loop over a dict with .items()',
+          body: [
+            '<code>.items()</code> gives you each key and value together, so a <code>for</code> loop can use both at once.'
+          ],
+          code: 'stock = {"apples": 10, "pears": 4}\nfor item, qty in stock.items():\n    print(item, qty)\n\n# output:\napples 10\npears 4'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 07 · Step 6',
+          title: 'Predict the output',
+          code: 'prices = {"tea": 3, "coffee": 5}\ntotal = 0\nfor item, price in prices.items():\n    total = total + price\nprint(total)',
+          options: ['8', '35', '"tea coffee"', 'Error'],
+          answer: 0,
+          explanation: 'It adds each price: 3 + 5 = <b>8</b>, ignoring the item names.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 07 · Step 7',
+          title: 'Complete the lookup',
+          body: [
+            'Finish the line to print how many pears are in stock.'
+          ],
+          codeBefore: 'stock = {"apples": 10, "pears": 4}\nprint(stock[',
+          codeAfter: '])',
+          answer: ['"pears"', "'pears'"],
+          hint: 'The key you want, in quotes — matching how it appears in the dictionary above.',
+          explanation: '<code>stock["pears"]</code> looks up the value paired with the key <code>"pears"</code> — <code>4</code>.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 07 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            '<code>{key: value, ...}</code> creates a dictionary — lookups by key, not position.',
+            'Assigning to a key adds it if new, or overwrites it if it already exists.',
+            '<code>dict.items()</code> gives you both the key and value together in a loop.',
+            'Dictionaries are ideal when data naturally comes in pairs — like a name and its value.'
+          ],
+          next: 'Next up: a checkpoint test pulling together everything from lessons 1 through 7.'
+        }
+      ]
+    },
+    {
+      id: 'checkpoint-1',
+      title: 'Checkpoint: Foundations Test',
+      sub: 'Checkpoint · 10 questions',
+      isTest: true,
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Checkpoint · Start',
+          title: 'Time to check what stuck',
+          body: [
+            '10 quick questions pulling from everything so far — no new concepts, just practice recalling what you\'ve already learned. Answer as best you can; you can retake this any time.'
+          ]
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 1',
+          title: 'Predict the output',
+          code: 'x = 12\nprint(x)',
+          options: ['12', 'x', '"12"', 'Error'],
+          answer: 0,
+          explanation: '<code>print(x)</code> shows the value stored in <code>x</code> — <b>12</b>.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 2',
+          title: 'Predict the output',
+          code: 'price = 9.5\nprint(type(price))',
+          options: ["<class 'float'>", "<class 'int'>", "<class 'str'>", "<class 'price'>"],
+          answer: 0,
+          explanation: '9.5 has a decimal point, so Python stores it as a <b>float</b>.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint · Question 3',
+          title: 'Fix the TypeError',
+          body: ['<code>score</code> is a number — complete the line so it prints without an error.'],
+          codeBefore: 'score = 8\nprint("Score: " + ',
+          codeAfter: '(score))',
+          answer: ['str'],
+          hint: 'Converts a number into text.',
+          explanation: '<code>str(score)</code> turns <code>8</code> into <code>"8"</code> so <code>+</code> can join two strings.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 4',
+          title: 'Predict the output',
+          code: 'age = 15\nif age >= 18:\n    print("Adult")\nelif age >= 13:\n    print("Teen")\nelse:\n    print("Child")',
+          options: ['Adult', 'Teen', 'Child', 'Error'],
+          answer: 1,
+          explanation: '15 fails the first check but passes <code>&gt;= 13</code>, so it prints <b>Teen</b>.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 5',
+          title: 'Predict the output',
+          code: 'nums = [4, 8, 15]\nprint(nums[1])',
+          options: ['4', '8', '15', 'Error'],
+          answer: 1,
+          explanation: 'Index 1 is the second item — <b>8</b>.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint · Question 6',
+          title: 'Complete the loop',
+          body: ['Finish the loop so it visits every color.'],
+          codeBefore: 'colors = ["red", "blue"]\nfor c in ',
+          codeAfter: ':\n    print(c)',
+          answer: ['colors'],
+          hint: 'The list you\'re looping over.',
+          explanation: '<code>for c in colors</code> loops over each item in <code>colors</code>.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 7',
+          title: 'Predict the output',
+          code: 'def double(n):\n    return n * 2\n\nprint(double(6))',
+          options: ['6', '12', 'Error', 'None'],
+          answer: 1,
+          explanation: '<code>double(6)</code> returns <code>12</code>, which <code>print()</code> then displays.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 8',
+          title: 'Predict the output',
+          code: 'total = 0\nfor i in range(3):\n    total = total + i\nprint(total)',
+          options: ['3', '6', '0 1 2', 'Error'],
+          answer: 0,
+          explanation: '<code>range(3)</code> gives 0, 1, 2. <code>total</code> = 0+0+1+2 = <b>3</b>.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 9',
+          title: 'Predict the output',
+          code: 'stock = {"pens": 5}\nstock["pens"] = 2\nprint(stock["pens"])',
+          options: ['5', '2', '7', 'Error'],
+          answer: 1,
+          explanation: 'Assigning to an existing key overwrites it — <code>pens</code> is now <b>2</b>, not added to the old 5.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint · Question 10',
+          title: 'Complete the loop',
+          body: ['Finish the <code>while</code> loop so it stops once <code>n</code> reaches 5.'],
+          codeBefore: 'n = 0\nwhile n < ',
+          codeAfter: ':\n    n = n + 1',
+          answer: ['5'],
+          hint: 'The stopping value mentioned in the instructions above.',
+          explanation: '<code>while n &lt; 5</code> keeps looping while <code>n</code> is below 5, stopping once it reaches 5.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Checkpoint · Complete',
+          title: 'Here\'s where you stand',
+          bullets: [
+            'Variables, types, conditionals, lists, functions, loops, and dictionaries — that\'s the foundation.',
+            'If anything felt shaky, the matching lesson is one tap away in the menu — and you can retake this checkpoint any time.'
+          ],
+          next: 'Next up: a small project that puts several of these together.'
+        }
+      ]
+    },
+    {
+      id: 'project-receipt',
+      title: 'Project: Grocery Receipt Total',
+      sub: 'Project · 9 steps',
+      kind: 'project',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Project · Brief',
+          title: 'The goal',
+          body: [
+            'You\'ll build a program that totals up a small shop\'s receipt: an item list, a running total, a discount, and a friendly printout — combining a dictionary, a loop, a conditional, a function, and <code>str()</code>, all in one place.'
+          ],
+          code: '# Target output:\nReceipt for 3 items\nApples: $3.0\nBread: $2.5\nMilk: $4.0\nTotal: $9.5\nDiscount applied: $8.55'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Project · Step 1',
+          title: 'Store the items',
+          body: [
+            'A dictionary maps each item name to its price.'
+          ],
+          code: 'cart = {\n    "Apples": 3.00,\n    "Bread": 2.50,\n    "Milk": 4.00\n}'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Project · Step 2',
+          title: 'Count the items',
+          body: [
+            'Use the function that counts entries in a collection.'
+          ],
+          codeBefore: 'cart = {"Apples": 3.00, "Bread": 2.50, "Milk": 4.00}\nprint("Receipt for", ',
+          codeAfter: '(cart), "items")',
+          answer: ['len'],
+          hint: 'Counts items in a list or dict — three letters.',
+          explanation: '<code>len(cart)</code> counts the entries in the dictionary — <b>3</b> items.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Project · Step 3',
+          title: 'Loop and print each line',
+          body: [
+            'Loop over the cart with <code>.items()</code> so you get both the name and the price for each line of the receipt.'
+          ],
+          code: 'for item, price in cart.items():\n    print(item + ": $" + str(price))\n\n# output:\nApples: $3.0\nBread: $2.5\nMilk: $4.0'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Project · Step 4',
+          title: 'Build the running total',
+          body: [
+            'Add each price into <code>total</code> as the loop runs.'
+          ],
+          codeBefore: 'total = 0\nfor item, price in cart.items():\n    total = total + ',
+          codeAfter: '\nprint(total)',
+          answer: ['price'],
+          hint: 'The value you\'re adding up each time round the loop.',
+          explanation: '<code>total = total + price</code> accumulates every price in the cart into a running sum.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Project · Step 5',
+          title: 'Predict the output',
+          code: 'cart = {"Apples": 3.00, "Bread": 2.50, "Milk": 4.00}\ntotal = 0\nfor item, price in cart.items():\n    total = total + price\nprint(total)',
+          options: ['3.0', '9.5', '"Apples Bread Milk"', 'Error'],
+          answer: 1,
+          explanation: '3.00 + 2.50 + 4.00 = <b>9.5</b>.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Project · Step 6',
+          title: 'Apply a discount with a function',
+          body: [
+            'Package the discount logic into a function so it\'s reusable — 10% off any order of $9 or more.'
+          ],
+          code: 'def apply_discount(total):\n    if total >= 9:\n        return total * 0.9\n    else:\n        return total'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Project · Step 7',
+          title: 'Call the function',
+          body: [
+            'Finish the line to apply the discount to this order\'s total.'
+          ],
+          codeBefore: 'final = ',
+          codeAfter: '(total)\nprint(final)',
+          answer: ['apply_discount'],
+          hint: 'The function name defined just above.',
+          explanation: '<code>apply_discount(total)</code> runs the discount logic on this order\'s total — since 9.5 &gt;= 9, it returns 9.5 * 0.9 = <b>8.55</b>.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Project · Complete',
+          title: 'You built a receipt calculator',
+          code: 'cart = {"Apples": 3.00, "Bread": 2.50, "Milk": 4.00}\n\ndef apply_discount(total):\n    if total >= 9:\n        return total * 0.9\n    else:\n        return total\n\nprint("Receipt for", len(cart), "items")\ntotal = 0\nfor item, price in cart.items():\n    print(item + ": $" + str(price))\n    total = total + price\nprint("Total: $" + str(total))\n\nfinal = apply_discount(total)\nprint("Discount applied: $" + str(round(final, 2)))',
+          bullets: [
+            'Every piece you\'ve learned — dict, loop, conditional, function, <code>str()</code> — combined into one working program.',
+            'This is what real code looks like: small pieces, each doing one job, put together.'
+          ],
+          next: 'More lessons and projects are on the way — this menu will keep growing.'
+        }
+      ]
+    },
+    { id: 'more-soon', title: 'More lessons & a bigger project', sub: 'coming soon', locked: true }
   ];
 
   var state = load();
-  var view = { screen: 'menu', lessonId: null, stepIndex: 0, checked: false };
+  if (!state.testScores) state.testScores = {};
+  var view = { screen: 'menu', lessonId: null, stepIndex: 0, checked: false, firstTry: {} };
 
   function load() {
     try {
       var raw = localStorage.getItem(STORAGE_KEY);
       if (raw) return JSON.parse(raw);
     } catch (e) {}
-    return { streak: 0, lastCompleteDate: null, completedLessons: {} };
+    return { streak: 0, lastCompleteDate: null, completedLessons: {}, testScores: {} };
   }
   function save() {
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
@@ -772,7 +1268,10 @@
     html += '<div class="menu-list">';
     lessons.forEach(function(l, i) {
       var done = state.completedLessons[l.id];
-      var statusLabel = l.locked ? l.sub : (done ? 'complete' : (l.sub || 'start'));
+      var testScore = state.testScores[l.id];
+      var statusLabel = l.locked ? l.sub
+        : testScore ? (testScore.score + '/' + testScore.total)
+        : done ? 'complete' : (l.sub || 'start');
       html += '<div class="menu-item' + (l.locked ? ' locked' : '') + '" data-lesson="' + l.id + '" tabindex="' + (l.locked ? '-1' : '0') + '">';
       html += '<div class="menu-num">' + String(i+1).padStart(2,'0') + '</div>';
       html += '<div class="menu-text"><div class="menu-title">' + esc(l.title) + '</div><div class="menu-sub">' + esc(l.locked ? l.sub : (l.sub || '')) + '</div></div>';
@@ -793,6 +1292,7 @@
     view.lessonId = id;
     view.stepIndex = 0;
     view.checked = false;
+    view.firstTry = {};
     renderAll();
   }
 
@@ -853,6 +1353,13 @@
     }
 
     if (step.type === 'recap') {
+      var lesson = currentLesson();
+      var scoreResult = lesson.isTest ? computeScore(lesson) : null;
+      if (scoreResult) {
+        html += '<div class="score-box"><div class="score-num">' + scoreResult.score + '<span class="score-of">/' + scoreResult.total + '</span></div>'
+          + '<div class="score-msg">' + esc(scoreResult.message) + '</div></div>';
+      }
+      if (step.code) html += '<div class="code-block">' + esc(step.code) + '</div>';
       html += '<ul class="recap-list">';
       step.bullets.forEach(function(b){ html += '<li>' + b + '</li>'; });
       html += '</ul>';
@@ -862,11 +1369,27 @@
       panel.className = 'panel fade';
       document.getElementById('menuBtn').addEventListener('click', function() {
         state.completedLessons[view.lessonId] = true;
+        if (scoreResult) state.testScores[view.lessonId] = { score: scoreResult.score, total: scoreResult.total, date: todayStr() };
         bumpStreak();
         backToMenu();
       });
       return;
     }
+  }
+
+  function computeScore(lesson) {
+    var total = 0, score = 0;
+    lesson.steps.forEach(function(s, i) {
+      if (s.type === 'predict' || s.type === 'fill') {
+        total += 1;
+        if (view.firstTry[i]) score += 1;
+      }
+    });
+    var pct = total ? score / total : 0;
+    var message = pct >= 0.9 ? 'Nailed it — that stuck.'
+      : pct >= 0.7 ? 'Solid. A couple of spots to revisit.'
+      : 'Good practice — worth another pass on the lessons above.';
+    return { score: score, total: total, message: message };
   }
 
   function wireChoice(step) {
@@ -880,6 +1403,7 @@
         if (answered) return;
         answered = true;
         var idx = parseInt(btn.getAttribute('data-idx'), 10);
+        view.firstTry[view.stepIndex] = (idx === step.answer);
         Array.prototype.forEach.call(box.querySelectorAll('.option'), function(b, i) {
           if (i === step.answer) b.classList.add('correct');
           else if (b === btn) b.classList.add('wrong');
@@ -903,6 +1427,7 @@
       if (solved) { nextStep(); return; }
       var val = input.value.trim().toLowerCase();
       var ok = step.answer.some(function(a){ return a.toLowerCase() === val; });
+      if (!(view.stepIndex in view.firstTry)) view.firstTry[view.stepIndex] = ok;
       fb.className = 'feedback show ' + (ok ? 'ok' : 'no');
       fb.innerHTML = (ok ? '<b>Correct.</b> ' : '<b>Not quite.</b> ') + step.explanation;
       if (ok) {
