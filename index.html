@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Learn Python — Practice Terminal</title>
+<style>
+  :root {
+    --bg: #F3F7F5;
+    --bg-raised: #FFFFFF;
+    --ink: #1B222A;
+    --ink-soft: #4E5860;
+    --line: rgba(27, 34, 42, 0.12);
+    --accent: #B96A1E;
+    --accent-ink: #7A4614;
+    --accent-soft: rgba(185, 106, 30, 0.12);
+    --success: #2F7D68;
+    --success-soft: rgba(47, 125, 104, 0.12);
+    --error: #B0402E;
+    --error-soft: rgba(176, 64, 46, 0.10);
+    --shadow: 0 1px 2px rgba(27,34,42,0.04), 0 8px 24px rgba(27,34,42,0.06);
+    --radius: 12px;
+
+    --font-display: ui-serif, Georgia, "Iowan Old Style", "Palatino Linotype", serif;
+    --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-mono: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #12161C;
+      --bg-raised: #1A2029;
+      --ink: #ECE7DC;
+      --ink-soft: #9BA3AC;
+      --line: rgba(236, 231, 220, 0.12);
+      --accent: #D89654;
+      --accent-ink: #F0C48F;
+      --accent-soft: rgba(216, 150, 84, 0.16);
+      --success: #63B39C;
+      --success-soft: rgba(99, 179, 156, 0.14);
+      --error: #E08670;
+      --error-soft: rgba(224, 134, 112, 0.14);
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 12px 32px rgba(0,0,0,0.35);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #12161C;
+    --bg-raised: #1A2029;
+    --ink: #ECE7DC;
+    --ink-soft: #9BA3AC;
+    --line: rgba(236, 231, 220, 0.12);
+    --accent: #D89654;
+    --accent-ink: #F0C48F;
+    --accent-soft: rgba(216, 150, 84, 0.16);
+    --success: #63B39C;
+    --success-soft: rgba(99, 179, 156, 0.14);
+    --error: #E08670;
+    --error-soft: rgba(224, 134, 112, 0.14);
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 12px 32px rgba(0,0,0,0.35);
+  }
+  :root[data-theme="light"] {
+    --bg: #F3F7F5;
+    --bg-raised: #FFFFFF;
+    --ink: #1B222A;
+    --ink-soft: #4E5860;
+    --line: rgba(27, 34, 42, 0.12);
+    --accent: #B96A1E;
+    --accent-ink: #7A4614;
+    --accent-soft: rgba(185, 106, 30, 0.12);
+    --success: #2F7D68;
+    --success-soft: rgba(47, 125, 104, 0.12);
+    --error: #B0402E;
+    --error-soft: rgba(176, 64, 46, 0.10);
+    --shadow: 0 1px 2px rgba(27,34,42,0.04), 0 8px 24px rgba(27,34,42,0.06);
+  }
+
+  * { box-sizing: border-box; }
+  body { background: var(--bg); }
+
+  .stage {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 48px 20px 80px;
+    color: var(--ink);
+    font-family: var(--font-body);
+  }
+
+  .frame {
+    width: 100%;
+    max-width: 640px;
+    background: var(--bg-raised);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+
+  .chrome {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--line);
+    font-family: var(--font-mono);
+  }
+  .chrome-path {
+    font-size: 12.5px;
+    letter-spacing: 0.04em;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .chrome-path b { color: var(--ink); font-weight: 600; }
+  .streak {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    white-space: nowrap;
+  }
+  .streak b {
+    font-variant-numeric: tabular-nums;
+    color: var(--accent-ink);
+    font-size: 14px;
+  }
+
+  .progress-track {
+    display: flex;
+    gap: 4px;
+    padding: 10px 20px;
+    background: var(--bg);
+  }
+  .progress-seg {
+    flex: 1;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--line);
+    transition: background 0.3s ease;
+  }
+  .progress-seg.done { background: var(--accent); }
+  .progress-seg.current { background: var(--accent); opacity: 0.45; }
+
+  .panel {
+    padding: 32px 28px 28px;
+    min-height: 360px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent-ink);
+    margin: 0 0 10px;
+  }
+
+  h1.step-title {
+    font-family: var(--font-display);
+    font-size: 26px;
+    line-height: 1.25;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+    margin: 0 0 14px;
+    color: var(--ink);
+  }
+
+  .prose { font-size: 15.5px; line-height: 1.6; color: var(--ink); margin: 0 0 12px; }
+  .prose:last-child { margin-bottom: 0; }
+  .prose code { font-family: var(--font-mono); background: var(--accent-soft); padding: 0.05em 0.35em; border-radius: 4px; font-size: 0.9em; }
+
+  .code-block {
+    font-family: var(--font-mono);
+    font-size: 14.5px;
+    line-height: 1.7;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin: 14px 0;
+    white-space: pre;
+    overflow-x: auto;
+    color: var(--ink);
+  }
+  .code-block .blank {
+    display: inline-block;
+    min-width: 2.4em;
+    border-bottom: 2px solid var(--accent);
+    color: var(--accent-ink);
+    text-align: center;
+  }
+  .code-block .cmt { color: var(--ink-soft); }
+
+  .prompt-line {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-mono);
+    margin-top: 14px;
+  }
+  .prompt-line .chevron { color: var(--accent); font-weight: 700; }
+  .prompt-line input {
+    flex: 1;
+    font-family: var(--font-mono);
+    font-size: 15px;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--line);
+    color: var(--ink);
+    padding: 6px 2px;
+    outline: none;
+  }
+  .prompt-line input:focus { border-bottom-color: var(--accent); }
+  .cursor {
+    display: inline-block;
+    width: 8px;
+    height: 16px;
+    background: var(--accent);
+    margin-left: 2px;
+    animation: blink 1.1s steps(1) infinite;
+  }
+  @media (prefers-reduced-motion: reduce) { .cursor { animation: none; opacity: 1; } }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  .options { display: flex; flex-direction: column; gap: 8px; margin-top: 14px; }
+  .option {
+    font-family: var(--font-mono);
+    font-size: 14.5px;
+    text-align: left;
+    padding: 11px 14px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--bg-raised);
+    color: var(--ink);
+    cursor: pointer;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+  .option:hover { border-color: var(--accent); }
+  .option:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .option .idx { color: var(--ink-soft); margin-right: 8px; }
+  .option.correct { border-color: var(--success); background: var(--success-soft); }
+  .option.wrong { border-color: var(--error); background: var(--error-soft); }
+  .option.dim { opacity: 0.5; cursor: default; }
+
+  .feedback {
+    margin-top: 14px;
+    padding: 12px 14px;
+    border-radius: 8px;
+    font-size: 14px;
+    line-height: 1.55;
+    display: none;
+  }
+  .feedback.show { display: block; }
+  .feedback.ok { background: var(--success-soft); color: var(--success); }
+  .feedback.no { background: var(--error-soft); color: var(--error); }
+  .feedback b { color: var(--ink); }
+
+  .recap-list { list-style: none; margin: 6px 0 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+  .recap-list li {
+    font-size: 14.5px; line-height: 1.55;
+    padding-left: 18px; position: relative; color: var(--ink);
+  }
+  .recap-list li::before {
+    content: "→"; position: absolute; left: 0; color: var(--accent);
+    font-family: var(--font-mono);
+  }
+
+  .footer {
+    margin-top: auto;
+    padding-top: 22px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+  }
+  .hint-btn {
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    padding: 6px 0;
+  }
+  .hint-btn:hover { color: var(--ink); }
+  .spacer { flex: 1; }
+
+  .btn {
+    font-family: var(--font-mono);
+    font-size: 13.5px;
+    letter-spacing: 0.01em;
+    padding: 11px 20px;
+    border-radius: 8px;
+    border: 1px solid var(--accent);
+    background: var(--accent);
+    color: #FFFDF9;
+    cursor: pointer;
+    transition: transform 0.1s ease, opacity 0.15s ease;
+  }
+  .btn:hover { opacity: 0.92; }
+  .btn:active { transform: translateY(1px); }
+  .btn:disabled { opacity: 0.35; cursor: not-allowed; }
+  .btn.ghost { background: transparent; color: var(--ink-soft); border-color: var(--line); }
+  .btn.ghost:hover { color: var(--ink); border-color: var(--ink-soft); }
+
+  /* menu screen */
+  .menu-list { display: flex; flex-direction: column; gap: 10px; margin-top: 18px; }
+  .menu-item {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 16px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--bg-raised);
+    cursor: pointer;
+    text-align: left;
+  }
+  .menu-item.locked { cursor: default; opacity: 0.5; }
+  .menu-item:not(.locked):hover { border-color: var(--accent); }
+  .menu-num {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--accent-ink);
+    background: var(--accent-soft);
+    border-radius: 6px;
+    padding: 4px 7px;
+    flex-shrink: 0;
+  }
+  .menu-text { flex: 1; }
+  .menu-title { font-size: 15px; font-weight: 600; }
+  .menu-sub { font-size: 12.5px; color: var(--ink-soft); margin-top: 2px; }
+  .menu-status { font-family: var(--font-mono); font-size: 11.5px; color: var(--ink-soft); }
+
+  .intro-copy { font-size: 14.5px; line-height: 1.6; color: var(--ink-soft); margin-top: 4px; }
+
+  .fade { animation: fadeIn 0.28s ease; }
+  @media (prefers-reduced-motion: reduce) { .fade { animation: none; } }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+</style>
+</head>
+<body>
+
+<div class="stage">
+  <div class="frame">
+    <div class="chrome">
+      <div class="chrome-path" id="chromePath">~/<b>learn-python</b></div>
+      <div class="streak" id="streakBox">streak · <b id="streakNum">0</b>d</div>
+    </div>
+    <div class="progress-track" id="progressTrack"></div>
+    <div class="panel" id="panel"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var STORAGE_KEY = 'pylearn_progress_v1';
+
+  var lessons = [
+    {
+      id: 'variables-print',
+      title: 'Variables & print()',
+      sub: '7 steps · ~5 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 01 · Step 1',
+          title: 'A variable is a labeled box',
+          body: [
+            'In Python, a <code>variable</code> is just a name you attach to a value, so you can use that value again later without retyping it.',
+          ],
+          code: 'x = 5'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 01 · Step 2',
+          title: 'print() shows what\'s inside',
+          body: [
+            'To see a value on screen, hand it to <code>print()</code>. Whatever\'s between the parentheses gets written out.'
+          ],
+          code: 'x = 5\nprint(x)\n\n# output:\n5'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 01 · Step 3',
+          title: 'Predict the output',
+          code: 'x = 7\nprint(x)',
+          options: ['7', '"x"', 'x', 'Error'],
+          answer: 0,
+          explanation: '<code>print(x)</code> prints the value stored in <code>x</code> — the number <b>7</b> — not the letter x itself.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 01 · Step 4',
+          title: 'Complete the line',
+          body: ['You just made a variable called <code>mood</code>. Print it.'],
+          codeBefore: 'mood = "focused"\nprint(',
+          codeAfter: ')',
+          answer: ['mood'],
+          hint: 'Type the exact variable name you just created — no quotes.',
+          explanation: 'You print the <b>name</b> of the variable, not the word in quotes — quotes would print the letters <code>m-o-o-d</code> instead of its value.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 01 · Step 5',
+          title: 'Reassigning a variable',
+          body: [
+            'A variable\'s value can change. The name stays the same — it just points at something new now.'
+          ],
+          code: 'score = 10\nscore = score + 5\nprint(score)\n\n# output:\n15'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 01 · Step 6',
+          title: 'Predict the output',
+          code: 'count = 3\ncount = count + 1\ncount = count + 1\nprint(count)',
+          options: ['3', '4', '5', '"count+1+1"'],
+          answer: 2,
+          explanation: '<code>count</code> starts at 3, then gets +1 twice: 3 → 4 → 5.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 01 · Step 7',
+          title: 'Print the second variable',
+          body: ['<code>print()</code> can take more than one value, separated by commas. Finish this line to also print <code>year</code>.'],
+          codeBefore: 'name = "Ada"\nyear = 1815\nprint(name, ',
+          codeAfter: ')',
+          answer: ['year'],
+          hint: 'Same idea as step 4 — the bare variable name, no quotes.',
+          explanation: 'Both variables print in order: <code>Ada 1815</code>. Separate values in <code>print()</code> with commas and Python adds a space between them.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 01 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            'A variable is a name attached to a value: <code>x = 5</code>.',
+            '<code>print()</code> writes a value to the screen.',
+            'Reassigning a variable replaces its value — the name doesn\'t change.',
+            '<code>print()</code> can take several values at once, comma-separated.'
+          ],
+          next: 'Next up: types — how Python tells numbers, text, and decimals apart, and what happens when you mix them.'
+        }
+      ]
+    },
+    { id: 'types', title: 'Types: numbers, text & mixing them', sub: 'coming soon', locked: true },
+    { id: 'conditionals', title: 'Making decisions with if', sub: 'coming soon', locked: true }
+  ];
+
+  var state = load();
+  var view = { screen: 'menu', lessonId: null, stepIndex: 0, checked: false };
+
+  function load() {
+    try {
+      var raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) return JSON.parse(raw);
+    } catch (e) {}
+    return { streak: 0, lastCompleteDate: null, completedLessons: {} };
+  }
+  function save() {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
+  }
+  function todayStr() {
+    var d = new Date();
+    return d.getFullYear() + '-' + (d.getMonth()+1) + '-' + d.getDate();
+  }
+  function bumpStreak() {
+    var today = todayStr();
+    if (state.lastCompleteDate === today) return;
+    var y = new Date(); y.setDate(y.getDate() - 1);
+    var yesterday = y.getFullYear() + '-' + (y.getMonth()+1) + '-' + y.getDate();
+    state.streak = (state.lastCompleteDate === yesterday) ? state.streak + 1 : 1;
+    state.lastCompleteDate = today;
+    save();
+  }
+
+  function esc(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  function renderChrome() {
+    document.getElementById('streakNum').textContent = state.streak;
+    var path = view.screen === 'menu' ? '~/<b>learn-python</b>'
+      : '~/learn-python/<b>' + view.lessonId + '</b>';
+    document.getElementById('chromePath').innerHTML = path;
+  }
+
+  function renderProgress() {
+    var track = document.getElementById('progressTrack');
+    track.innerHTML = '';
+    if (view.screen !== 'lesson') { track.style.display = 'none'; return; }
+    track.style.display = 'flex';
+    var lesson = lessons.filter(function(l){return l.id === view.lessonId;})[0];
+    lesson.steps.forEach(function(_, i) {
+      var seg = document.createElement('div');
+      seg.className = 'progress-seg' + (i < view.stepIndex ? ' done' : i === view.stepIndex ? ' current' : '');
+      track.appendChild(seg);
+    });
+  }
+
+  function renderMenu() {
+    var panel = document.getElementById('panel');
+    var html = '';
+    html += '<p class="eyebrow">Practice terminal</p>';
+    html += '<h1 class="step-title">Learn Python, one sitting at a time</h1>';
+    html += '<p class="intro-copy">Short, self-contained lessons built for the gaps in a busy day — five minutes is enough for one.</p>';
+    html += '<div class="menu-list">';
+    lessons.forEach(function(l, i) {
+      var done = state.completedLessons[l.id];
+      var statusLabel = l.locked ? l.sub : (done ? 'complete' : (l.sub || 'start'));
+      html += '<div class="menu-item' + (l.locked ? ' locked' : '') + '" data-lesson="' + l.id + '" tabindex="' + (l.locked ? '-1' : '0') + '">';
+      html += '<div class="menu-num">' + String(i+1).padStart(2,'0') + '</div>';
+      html += '<div class="menu-text"><div class="menu-title">' + esc(l.title) + '</div><div class="menu-sub">' + esc(l.locked ? l.sub : (l.sub || '')) + '</div></div>';
+      html += '<div class="menu-status">' + esc(statusLabel) + '</div>';
+      html += '</div>';
+    });
+    html += '</div>';
+    panel.innerHTML = html;
+    panel.className = 'panel fade';
+    Array.prototype.forEach.call(panel.querySelectorAll('.menu-item:not(.locked)'), function(el) {
+      el.addEventListener('click', function() { openLesson(el.getAttribute('data-lesson')); });
+      el.addEventListener('keydown', function(e) { if (e.key === 'Enter') openLesson(el.getAttribute('data-lesson')); });
+    });
+  }
+
+  function openLesson(id) {
+    view.screen = 'lesson';
+    view.lessonId = id;
+    view.stepIndex = 0;
+    view.checked = false;
+    renderAll();
+  }
+
+  function backToMenu() {
+    view.screen = 'menu';
+    view.lessonId = null;
+    renderAll();
+  }
+
+  function currentLesson() {
+    return lessons.filter(function(l){ return l.id === view.lessonId; })[0];
+  }
+  function currentStep() {
+    return currentLesson().steps[view.stepIndex];
+  }
+
+  function renderStep() {
+    var step = currentStep();
+    var panel = document.getElementById('panel');
+    var html = '<p class="eyebrow">' + esc(step.eyebrow) + '</p>';
+    html += '<h1 class="step-title">' + esc(step.title) + '</h1>';
+
+    if (step.type === 'info') {
+      step.body.forEach(function(p){ html += '<p class="prose">' + p + '</p>'; });
+      if (step.code) html += '<div class="code-block">' + esc(step.code) + '</div>';
+      html += '<div class="footer"><div class="spacer"></div><button class="btn" id="primaryBtn">continue →</button></div>';
+      panel.innerHTML = html;
+      panel.className = 'panel fade';
+      document.getElementById('primaryBtn').addEventListener('click', nextStep);
+      return;
+    }
+
+    if (step.type === 'predict') {
+      html += '<div class="code-block">' + esc(step.code) + '</div>';
+      html += '<div class="options" id="optionsBox">';
+      step.options.forEach(function(opt, i) {
+        html += '<button class="option" data-idx="' + i + '"><span class="idx">' + (i+1) + '</span>' + esc(opt) + '</button>';
+      });
+      html += '</div>';
+      html += '<div class="feedback" id="feedbackBox"></div>';
+      html += '<div class="footer"><div class="spacer"></div><button class="btn" id="primaryBtn" disabled>continue →</button></div>';
+      panel.innerHTML = html;
+      panel.className = 'panel fade';
+      wireChoice(step);
+      return;
+    }
+
+    if (step.type === 'fill') {
+      step.body.forEach(function(p){ html += '<p class="prose">' + p + '</p>'; });
+      html += '<div class="code-block">' + esc(step.codeBefore) + '<span class="blank" id="blankPreview">___</span>' + esc(step.codeAfter) + '</div>';
+      html += '<div class="prompt-line"><span class="chevron">&gt;&gt;&gt;</span><input id="fillInput" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="type here" /><span class="cursor"></span></div>';
+      html += '<div class="feedback" id="feedbackBox"></div>';
+      html += '<div class="footer"><button class="hint-btn" id="hintBtn">need a hint?</button><div class="spacer"></div><button class="btn" id="checkBtn">check</button></div>';
+      panel.innerHTML = html;
+      panel.className = 'panel fade';
+      wireFill(step);
+      return;
+    }
+
+    if (step.type === 'recap') {
+      html += '<ul class="recap-list">';
+      step.bullets.forEach(function(b){ html += '<li>' + b + '</li>'; });
+      html += '</ul>';
+      html += '<p class="prose" style="margin-top:16px; color:var(--ink-soft);">' + esc(step.next) + '</p>';
+      html += '<div class="footer"><button class="btn ghost" id="menuBtn">back to lessons</button><div class="spacer"></div></div>';
+      panel.innerHTML = html;
+      panel.className = 'panel fade';
+      document.getElementById('menuBtn').addEventListener('click', function() {
+        state.completedLessons[view.lessonId] = true;
+        bumpStreak();
+        backToMenu();
+      });
+      return;
+    }
+  }
+
+  function wireChoice(step) {
+    var box = document.getElementById('optionsBox');
+    var fb = document.getElementById('feedbackBox');
+    var primary = document.getElementById('primaryBtn');
+    var answered = false;
+    primary.addEventListener('click', nextStep);
+    Array.prototype.forEach.call(box.querySelectorAll('.option'), function(btn) {
+      btn.addEventListener('click', function() {
+        if (answered) return;
+        answered = true;
+        var idx = parseInt(btn.getAttribute('data-idx'), 10);
+        Array.prototype.forEach.call(box.querySelectorAll('.option'), function(b, i) {
+          if (i === step.answer) b.classList.add('correct');
+          else if (b === btn) b.classList.add('wrong');
+          else b.classList.add('dim');
+        });
+        fb.className = 'feedback show ' + (idx === step.answer ? 'ok' : 'no');
+        fb.innerHTML = (idx === step.answer ? '<b>Correct.</b> ' : '<b>Not quite.</b> ') + step.explanation;
+        primary.disabled = false;
+      });
+    });
+  }
+
+  function wireFill(step) {
+    var input = document.getElementById('fillInput');
+    var fb = document.getElementById('feedbackBox');
+    var checkBtn = document.getElementById('checkBtn');
+    var hintBtn = document.getElementById('hintBtn');
+    var solved = false;
+
+    function doCheck() {
+      if (solved) { nextStep(); return; }
+      var val = input.value.trim().toLowerCase();
+      var ok = step.answer.some(function(a){ return a.toLowerCase() === val; });
+      fb.className = 'feedback show ' + (ok ? 'ok' : 'no');
+      fb.innerHTML = (ok ? '<b>Correct.</b> ' : '<b>Not quite.</b> ') + step.explanation;
+      if (ok) {
+        solved = true;
+        document.getElementById('blankPreview').textContent = step.answer[0];
+        input.disabled = true;
+        checkBtn.textContent = 'continue →';
+      }
+    }
+    checkBtn.addEventListener('click', doCheck);
+    input.addEventListener('keydown', function(e){ if (e.key === 'Enter') doCheck(); });
+    hintBtn.addEventListener('click', function() {
+      fb.className = 'feedback show ok';
+      fb.innerHTML = '<b>Hint.</b> ' + step.hint;
+    });
+  }
+
+  function nextStep() {
+    var lesson = currentLesson();
+    if (view.stepIndex < lesson.steps.length - 1) {
+      view.stepIndex += 1;
+      renderAll();
+    }
+  }
+
+  function renderAll() {
+    renderChrome();
+    renderProgress();
+    if (view.screen === 'menu') renderMenu();
+    else renderStep();
+  }
+
+  renderAll();
+})();
+</script>
+</body>
+</html>
