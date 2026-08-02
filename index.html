@@ -1200,11 +1200,396 @@
             'Every piece you\'ve learned — dict, loop, conditional, function, <code>str()</code> — combined into one working program.',
             'This is what real code looks like: small pieces, each doing one job, put together.'
           ],
-          next: 'More lessons and projects are on the way — this menu will keep growing.'
+          next: 'Next up: f-strings — a cleaner way to build text with values baked in.'
         }
       ]
     },
-    { id: 'more-soon', title: 'More lessons & a bigger project', sub: 'coming soon', locked: true }
+    {
+      id: 'fstrings',
+      title: 'f-strings & formatting',
+      sub: '8 steps · ~5 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 10 · Step 1',
+          title: 'f-strings build text with values baked in',
+          body: [
+            'Prefix a string with <code>f</code> and put any variable directly inside curly braces — no more <code>+</code> or <code>str()</code> juggling.'
+          ],
+          code: 'name = "Ada"\nage = 34\nprint(f"{name} is {age} years old")\n\n# output:\nAda is 34 years old'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 10 · Step 2',
+          title: 'Predict the output',
+          code: 'score = 87\nprint(f"Score: {score}")',
+          options: ['Score: {score}', 'Score: score', 'Score: 87', 'Error'],
+          answer: 2,
+          explanation: 'Inside an f-string, <code>{score}</code> is replaced by the value of the variable <code>score</code>.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 10 · Step 3',
+          title: 'You can do math and calls inside the braces',
+          body: [
+            'The braces aren\'t just for plain variables — any expression works, including arithmetic or a function call.'
+          ],
+          code: 'price = 4\nqty = 3\nprint(f"Total: {price * qty}")\n\n# output:\nTotal: 12'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 10 · Step 4',
+          title: 'Predict the output',
+          code: 'items = ["pen", "cup"]\nprint(f"You have {len(items)} items")',
+          options: ['You have {len(items)} items', 'You have 2 items', 'You have len(items) items', 'Error'],
+          answer: 1,
+          explanation: '<code>len(items)</code> runs inside the braces first (2), then gets inserted into the string.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 10 · Step 5',
+          title: ':.2f formats decimals cleanly',
+          body: [
+            'Add a format spec after a colon inside the braces to control how a number displays — <code>:.2f</code> rounds to 2 decimal places, handy for money.'
+          ],
+          code: 'total = 9.5\nprint(f"Total: ${total:.2f}")\n\n# output:\nTotal: $9.50'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 10 · Step 6',
+          title: 'Predict the output',
+          code: 'price = 8.6\nprint(f"${price:.2f}")',
+          options: ['$8.6', '$8.60', '$8.600', 'Error'],
+          answer: 1,
+          explanation: '<code>:.2f</code> always shows exactly two decimal places, padding with a zero if needed — 8.6 becomes <b>8.60</b>.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 10 · Step 7',
+          title: 'Rewrite with an f-string',
+          body: [
+            'Replace this <code>+</code> concatenation with an equivalent f-string.'
+          ],
+          codeBefore: 'name = "Ada"\nprint(',
+          codeAfter: '"Hello, {name}")',
+          answer: ['f'],
+          hint: 'The single-letter prefix that turns a string into an f-string.',
+          explanation: '<code>f"Hello, {name}"</code> does the same job as <code>"Hello, " + name</code>, but reads more like the sentence you actually mean.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 10 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            '<code>f"...{expr}..."</code> inserts any value or expression directly into a string.',
+            'Braces can hold more than plain variables — math, <code>len()</code>, function calls all work.',
+            '<code>:.2f</code> (and similar format specs) control how numbers display, like rounding to 2 decimals for money.',
+            'f-strings replace most <code>+</code> concatenation — they\'re the standard way to build text with values in modern Python.'
+          ],
+          next: 'Next up: handling errors gracefully with try and except.'
+        }
+      ]
+    },
+    {
+      id: 'error-handling',
+      title: 'Handling errors with try/except',
+      sub: '8 steps · ~5 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 11 · Step 1',
+          title: 'Some errors are expected, not bugs',
+          body: [
+            'Bad input, missing data, edge cases — these can happen even in correct code. <code>try</code> lets you attempt something risky and recover instead of crashing.'
+          ],
+          code: 'try:\n    number = int("abc")\nexcept ValueError:\n    print("That\'s not a number")\n\n# output:\nThat\'s not a number'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 11 · Step 2',
+          title: 'Predict the output',
+          code: 'try:\n    print(10 / 0)\nexcept ZeroDivisionError:\n    print("Can\'t divide by zero")',
+          options: ["Can't divide by zero", 'Error crashes the program', '10 / 0', 'inf'],
+          answer: 0,
+          explanation: 'Dividing by zero raises a <code>ZeroDivisionError</code> — the <code>except</code> block catches it and prints the friendly message instead of crashing.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 11 · Step 3',
+          title: 'Without except, the error crashes the program',
+          body: [
+            'If you don\'t wrap risky code in <code>try</code>/<code>except</code>, an error stops everything right there — nothing after it runs.'
+          ],
+          code: 'print("Before")\nnumber = int("abc")   # crashes here\nprint("After")   # never runs\n\n# output:\nBefore\nValueError: invalid literal for int()'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 11 · Step 4',
+          title: 'Predict the output',
+          code: 'try:\n    age = int("25")\n    print(age + 1)\nexcept ValueError:\n    print("Not a number")',
+          options: ['26', 'Not a number', 'Error', '"25" + 1'],
+          answer: 0,
+          explanation: '<code>int("25")</code> succeeds — no error is raised — so the <code>try</code> block finishes normally and prints <b>26</b>. <code>except</code> only runs if something inside <code>try</code> actually fails.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 11 · Step 5',
+          title: 'else and finally round it out',
+          body: [
+            '<code>else</code> runs only if the <code>try</code> block succeeded; <code>finally</code> always runs, success or failure — useful for cleanup.'
+          ],
+          code: 'try:\n    result = 10 / 2\nexcept ZeroDivisionError:\n    print("Can\'t divide by zero")\nelse:\n    print("Worked:", result)\nfinally:\n    print("Done")\n\n# output:\nWorked: 5.0\nDone'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 11 · Step 6',
+          title: 'Predict the output',
+          code: 'try:\n    result = 10 / 0\nexcept ZeroDivisionError:\n    print("Can\'t divide by zero")\nelse:\n    print("Worked:", result)\nfinally:\n    print("Done")',
+          options: ["Can't divide by zero, then Done", 'Worked: inf, then Done', "Can't divide by zero only, no Done", 'Done only'],
+          answer: 0,
+          explanation: 'Division by zero triggers <code>except</code> (prints the message), skips <code>else</code> since <code>try</code> failed, and <code>finally</code> always runs regardless — printing <b>Done</b> last.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 11 · Step 7',
+          title: 'Catch the right error',
+          body: [
+            'Complete the <code>except</code> so this catches specifically the error <code>int()</code> raises on bad input.'
+          ],
+          codeBefore: 'try:\n    number = int(text)\nexcept ',
+          codeAfter: ':\n    print("Enter a valid number")',
+          answer: ['ValueError'],
+          hint: 'The error int() raises when it can\'t convert the text — named earlier in this lesson.',
+          explanation: '<code>except ValueError</code> catches exactly the error <code>int()</code> raises on bad input, without silently swallowing unrelated bugs.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 11 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            '<code>try</code>/<code>except</code> lets you attempt risky code and recover instead of crashing.',
+            'Without <code>except</code>, an error stops the program immediately — nothing after it runs.',
+            '<code>else</code> runs only on success; <code>finally</code> always runs, success or failure.',
+            'Catch the specific error type (like <code>ValueError</code>) rather than everything — it keeps real bugs from hiding silently.'
+          ],
+          next: 'Next up: a checkpoint test on lessons 5 through 11.'
+        }
+      ]
+    },
+    {
+      id: 'checkpoint-2',
+      title: 'Checkpoint: Functions to Errors',
+      sub: 'Checkpoint · 10 questions',
+      isTest: true,
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Checkpoint 2 · Start',
+          title: 'Round two',
+          body: [
+            '10 more questions, this time on functions, loops, dictionaries, f-strings, and error handling. Same deal — just recall, no new concepts.'
+          ]
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint 2 · Question 1',
+          title: 'Predict the output',
+          code: 'def triple(n):\n    return n * 3\n\nprint(triple(4))',
+          options: ['4', '7', '12', 'Error'],
+          answer: 2,
+          explanation: '<code>triple(4)</code> returns <code>4 * 3</code> = <b>12</b>.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint 2 · Question 2',
+          title: 'Predict the output',
+          code: 'total = 0\nfor i in range(2, 5):\n    total = total + i\nprint(total)',
+          options: ['9', '11', '2 3 4', 'Error'],
+          answer: 0,
+          explanation: '<code>range(2, 5)</code> gives 2, 3, 4. <code>2 + 3 + 4 = </code><b>9</b>.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint 2 · Question 3',
+          title: 'Complete the loop',
+          body: ['Finish the loop so it stops once <code>n</code> drops to 0 or below.'],
+          codeBefore: 'n = 6\nwhile n > ',
+          codeAfter: ':\n    n = n - 2',
+          answer: ['0'],
+          hint: 'The value that ends the countdown.',
+          explanation: '<code>while n &gt; 0</code> stops as soon as <code>n</code> is no longer positive.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint 2 · Question 4',
+          title: 'Predict the output',
+          code: 'ages = {"Sam": 21, "Lee": 30}\nages["Sam"] = 22\nprint(ages["Sam"])',
+          options: ['21', '22', '43', 'Error'],
+          answer: 1,
+          explanation: 'Reassigning an existing key overwrites it — <code>Sam</code> is now <b>22</b>.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint 2 · Question 5',
+          title: 'Complete the loop',
+          body: ['Finish the line so the loop gives you both the key and value.'],
+          codeBefore: 'ages = {"Sam": 21, "Lee": 30}\nfor person, age in ages.',
+          codeAfter: '():\n    print(person, age)',
+          answer: ['items'],
+          hint: 'The method that gives you key and value together.',
+          explanation: '<code>.items()</code> yields each key-value pair so the loop can use both.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint 2 · Question 6',
+          title: 'Predict the output',
+          code: 'temp = 21\nprint(f"It\'s {temp}°C")',
+          options: ["It's {temp}°C", "It's 21°C", "It's temp°C", 'Error'],
+          answer: 1,
+          explanation: 'f-strings substitute <code>{temp}</code> with the variable\'s value — <b>21</b>.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint 2 · Question 7',
+          title: 'Predict the output',
+          code: 'price = 3.1\nprint(f"${price:.2f}")',
+          options: ['$3.1', '$3.10', '$3.100', 'Error'],
+          answer: 1,
+          explanation: '<code>:.2f</code> always shows two decimals, padding with a zero — 3.1 becomes <b>3.10</b>.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint 2 · Question 8',
+          title: 'Predict the output',
+          code: 'try:\n    print(int("7") + 1)\nexcept ValueError:\n    print("bad input")',
+          options: ['8', 'bad input', 'Error crashes', '7 + 1'],
+          answer: 0,
+          explanation: '<code>int("7")</code> succeeds, so <code>try</code> runs normally and prints <b>8</b> — <code>except</code> never triggers.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint 2 · Question 9',
+          title: 'Catch the right error',
+          body: ['Complete the except clause for a division-by-zero.'],
+          codeBefore: 'try:\n    x = 10 / 0\nexcept ',
+          codeAfter: ':\n    print("can\'t divide by zero")',
+          answer: ['ZeroDivisionError'],
+          hint: 'The specific error dividing by zero raises.',
+          explanation: '<code>ZeroDivisionError</code> is the exact error type raised here — catching it specifically avoids hiding unrelated bugs.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint 2 · Question 10',
+          title: 'Predict the output',
+          code: 'def describe(name, age):\n    return f"{name} is {age}"\n\nprint(describe("Mo", 40))',
+          options: ['Mo is 40', '{name} is {age}', 'name is age', 'Error'],
+          answer: 0,
+          explanation: 'The f-string inside the function substitutes the parameters\' values — <b>Mo is 40</b>.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Checkpoint 2 · Complete',
+          title: 'Here\'s where you stand',
+          bullets: [
+            'Functions, loops, dictionaries, f-strings, and error handling — round two of the foundation.',
+            'Retake this any time — the score updates and nothing is held against you.'
+          ],
+          next: 'Next up: a second project — a class grade report, tying several of these together.'
+        }
+      ]
+    },
+    {
+      id: 'project-gradebook',
+      title: 'Project: Class Grade Report',
+      sub: 'Project · 8 steps',
+      kind: 'project',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Project 2 · Brief',
+          title: 'The goal',
+          body: [
+            'A small grade-report generator: a dictionary of student scores, a function that converts a score to a letter grade, an f-string report line for each student, and a safe lookup that won\'t crash on a missing name.'
+          ],
+          code: '# Target output:\nAda: 95 (A)\nSam: 72 (B)\nLee: 58 (C)\nGrade for Mo not found'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Project 2 · Step 1',
+          title: 'Store the scores',
+          body: [
+            'A dictionary maps each student\'s name to their score.'
+          ],
+          code: 'grades = {"Ada": 95, "Sam": 72, "Lee": 58}'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Project 2 · Step 2',
+          title: 'Complete the grading function',
+          body: [
+            'Finish the function: 90+ is an A, 70+ is a B, and everything else should be a C.'
+          ],
+          codeBefore: 'def letter_grade(score):\n    if score >= 90:\n        return "A"\n    elif score >= 70:\n        return "B"\n    ',
+          codeAfter: ':\n        return "C"',
+          answer: ['else'],
+          hint: 'The keyword that catches anything not matched above.',
+          explanation: '<code>else</code> catches every score that didn\'t qualify for an A or a B.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Project 2 · Step 3',
+          title: 'Predict the output',
+          code: 'def letter_grade(score):\n    if score >= 90:\n        return "A"\n    elif score >= 70:\n        return "B"\n    else:\n        return "C"\n\nprint(letter_grade(65))',
+          options: ['A', 'B', 'C', 'Error'],
+          answer: 2,
+          explanation: '65 doesn\'t reach 70, so it falls through to <code>else</code> — <b>C</b>.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Project 2 · Step 4',
+          title: 'Loop and format the report',
+          body: [
+            'Loop over the dictionary, grade each score, and print a clean line with an f-string.'
+          ],
+          code: 'for name, score in grades.items():\n    grade = letter_grade(score)\n    print(f"{name}: {score} ({grade})")\n\n# output:\nAda: 95 (A)\nSam: 72 (B)\nLee: 58 (C)'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Project 2 · Step 5',
+          title: 'Look-ups can fail — handle it safely',
+          body: [
+            'Accessing a dictionary key that doesn\'t exist raises a <code>KeyError</code>. Wrap the lookup in <code>try</code>/<code>except</code> to handle a missing student gracefully.'
+          ],
+          code: 'name = "Mo"\ntry:\n    print(grades[name])\nexcept KeyError:\n    print(f"Grade for {name} not found")\n\n# output:\nGrade for Mo not found'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Project 2 · Step 6',
+          title: 'Complete the safe lookup',
+          body: [
+            'Finish the except so a missing student prints a friendly message instead of crashing.'
+          ],
+          codeBefore: 'name = "Mo"\ntry:\n    print(grades[name])\nexcept ',
+          codeAfter: ':\n    print(f"Grade for {name} not found")',
+          answer: ['KeyError'],
+          hint: 'The error a missing dictionary key raises.',
+          explanation: '<code>KeyError</code> is exactly what Python raises when you look up a key that isn\'t in the dictionary — catching it lets you respond gracefully instead of crashing.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Project 2 · Complete',
+          title: 'You built a grade report',
+          code: 'grades = {"Ada": 95, "Sam": 72, "Lee": 58}\n\ndef letter_grade(score):\n    if score >= 90:\n        return "A"\n    elif score >= 70:\n        return "B"\n    else:\n        return "C"\n\nfor name, score in grades.items():\n    grade = letter_grade(score)\n    print(f"{name}: {score} ({grade})")\n\nlookup = "Mo"\ntry:\n    print(grades[lookup])\nexcept KeyError:\n    print(f"Grade for {lookup} not found")',
+          bullets: [
+            'A function (<code>letter_grade</code>) reused the same if/elif/else logic from early on — functions make logic reusable across a program.',
+            'f-strings turned raw values into a clean report line, no <code>+</code> or <code>str()</code> needed.',
+            '<code>try</code>/<code>except KeyError</code> kept a missing lookup from crashing the whole program.'
+          ],
+          next: 'That\'s two projects and two checkpoints deep — say the word whenever you want more.'
+        }
+      ]
+    },
+    { id: 'more-soon-2', title: 'List comprehensions, classes & project 3', sub: 'coming soon', locked: true }
   ];
 
   var state = load();
