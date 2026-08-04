@@ -2850,7 +2850,372 @@
             'A comprehension kept the available-books list always in sync with each book\'s state.',
             'The <code>random</code> module picked a suggestion safely, checking for an empty library first.'
           ],
-          next: 'That\'s the full course — five checkpoints, five projects, matching Mimo\'s syllabus and then some. Nicely done.'
+          next: 'Next up: logical operators and APIs — a couple of extras beyond the core syllabus.'
+        }
+      ]
+    },
+    {
+      id: 'logical-operators',
+      title: 'Logical operators',
+      sub: '8 steps · ~5 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 27 · Step 1',
+          title: 'Combine conditions with and',
+          body: [
+            '<code>and</code> requires both sides to be True — a way to combine multiple comparisons into a single condition.'
+          ],
+          code: 'age = 25\nhas_id = True\nprint(age >= 18 and has_id)\n\n# output:\nTrue'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 27 · Step 2',
+          title: 'Predict the output',
+          code: 'age = 16\nhas_id = True\nprint(age >= 18 and has_id)',
+          options: ['False', 'True', '16', 'Error'],
+          answer: 0,
+          explanation: '<code>age &gt;= 18</code> is False, and <code>and</code> needs both sides True — so the whole expression is <b>False</b>.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 27 · Step 3',
+          title: 'or only needs one side to be True',
+          body: [
+            'Unlike <code>and</code>, <code>or</code> passes as long as at least one condition holds.'
+          ],
+          code: 'is_weekend = False\nis_holiday = True\nprint(is_weekend or is_holiday)\n\n# output:\nTrue'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 27 · Step 4',
+          title: 'Predict the output',
+          code: 'has_ticket = False\nis_vip = False\nprint(has_ticket or is_vip)',
+          options: ['False', 'True', 'None', 'Error'],
+          answer: 0,
+          explanation: 'Both sides are False, and <code>or</code> needs at least one True — so the result is <b>False</b>.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 27 · Step 5',
+          title: 'not flips a boolean',
+          body: [
+            '<code>not</code> reverses True to False and False to True — handy for checking the opposite of a condition.'
+          ],
+          code: 'is_closed = True\nprint(not is_closed)\n\n# output:\nFalse'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 27 · Step 6',
+          title: 'Predict the output',
+          code: 'age = 20\nprint(not age < 18)',
+          options: ['True', 'False', '20', 'Error'],
+          answer: 0,
+          explanation: '<code>age &lt; 18</code> is False; <code>not</code> flips it to <b>True</b>.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 27 · Step 7',
+          title: 'Complete the condition',
+          body: [
+            'Finish the <code>if</code> so it only lets someone in when they\'re 18 or older AND have a ticket.'
+          ],
+          codeBefore: 'age = 20\nhas_ticket = True\nif age >= 18 ',
+          codeAfter: ' has_ticket:\n    print("Welcome in")',
+          answer: ['and'],
+          hint: 'The operator that requires both sides to be True.',
+          explanation: '<code>and</code> requires both <code>age &gt;= 18</code> and <code>has_ticket</code> to be True before printing the welcome message.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 27 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            '<code>and</code> requires both sides to be True; <code>or</code> only needs one.',
+            '<code>not</code> flips a boolean — True becomes False, and vice versa.',
+            'These combine with comparisons (<code>==</code>, <code>&gt;=</code>, etc.) to build more precise conditions.',
+            'Python checks <code>and</code>/<code>or</code> left to right, stopping as soon as the overall result is decided.'
+          ],
+          next: 'Next up: working with APIs — fetching and reading data from the web.'
+        }
+      ]
+    },
+    {
+      id: 'apis',
+      title: 'Working with APIs',
+      sub: '8 steps · ~6 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 28 · Step 1',
+          title: 'An API lets your code talk to a server',
+          body: [
+            '<code>requests.get(url)</code> sends a request to a server and gets a response back — this is how apps and scripts pull data from the web.'
+          ],
+          code: 'import requests\n\nresponse = requests.get("https://api.example.com/weather")\nprint(response.status_code)\n\n# output:\n200'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 28 · Step 2',
+          title: 'Predict the output',
+          code: 'response_code = 200\nprint(response_code == 200)',
+          options: ['True', 'Always False', 'Error', '200'],
+          answer: 0,
+          explanation: '200 means "OK" — the request worked. Checking <code>status_code == 200</code> is the standard way to confirm success before using the data.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 28 · Step 3',
+          title: 'JSON looks a lot like a dictionary',
+          body: [
+            'Most APIs send data back as JSON — text that maps almost exactly onto Python dicts and lists. <code>.json()</code> converts the response straight into one.'
+          ],
+          code: 'response = requests.get("https://api.example.com/weather")\ndata = response.json()\nprint(data)\n\n# output:\n{\'city\': \'Kuala Lumpur\', \'temp_c\': 31}'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 28 · Step 4',
+          title: 'Predict the output',
+          code: 'data = {"city": "Kuala Lumpur", "temp_c": 31}\nprint(data["temp_c"])',
+          options: ['31', 'temp_c', '"31"', 'Error'],
+          answer: 0,
+          explanation: 'Once converted, the response behaves like any other dict — <code>data["temp_c"]</code> looks up <b>31</b> by its key.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 28 · Step 5',
+          title: 'Always check the status before trusting the data',
+          body: [
+            'A failed request (like a 404 or 500) won\'t have the data you expect. Check <code>status_code</code> first, just like you\'d check a value before using it.'
+          ],
+          code: 'response = requests.get(url)\nif response.status_code == 200:\n    data = response.json()\n    print(data["temp_c"])\nelse:\n    print("Request failed:", response.status_code)'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 28 · Step 6',
+          title: 'Predict the output',
+          code: 'response_code = 404\nif response_code == 200:\n    print("Success")\nelse:\n    print("Request failed:", response_code)',
+          options: ['Request failed: 404', 'Success', 'Error', '404'],
+          answer: 0,
+          explanation: '404 isn\'t 200, so the <code>else</code> branch runs — printing <b>Request failed: 404</b>.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 28 · Step 7',
+          title: 'Complete the request',
+          body: [
+            'Finish the call so this fetches data from the given url.'
+          ],
+          codeBefore: 'import requests\n\nresponse = requests.',
+          codeAfter: '(url)\nprint(response.status_code)',
+          answer: ['get'],
+          hint: 'The function that sends a request and gets a response back.',
+          explanation: '<code>requests.get(url)</code> sends a GET request — the standard way to retrieve data from an API.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 28 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            '<code>requests.get(url)</code> sends a request to a server and returns a response.',
+            '<code>response.status_code</code> tells you whether it worked — 200 means success.',
+            '<code>response.json()</code> converts the reply into a Python dict/list you can work with directly.',
+            'Always check <code>status_code</code> before trusting the data — a failed request won\'t have what you expect.'
+          ],
+          next: 'Next up: a checkpoint test on logical operators and APIs.'
+        }
+      ]
+    },
+    {
+      id: 'checkpoint-6',
+      title: 'Checkpoint: Logic & APIs',
+      sub: 'Checkpoint · 8 questions',
+      isTest: true,
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Checkpoint 6 · Start',
+          title: 'The extras round',
+          body: [
+            '8 questions: logical operators, APIs, and a couple of older concepts for good measure.'
+          ]
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint 6 · Question 1',
+          title: 'Predict the output',
+          code: 'age = 15\nprint(age >= 13 and age <= 19)',
+          options: ['True', 'False', '15', 'Error'],
+          answer: 0,
+          explanation: 'Both sides hold — 15 is between 13 and 19 — so <code>and</code> gives <b>True</b>.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint 6 · Question 2',
+          title: 'Predict the output',
+          code: 'raining = False\ncold = True\nprint(raining or cold)',
+          options: ['True', 'False', 'None', 'Error'],
+          answer: 0,
+          explanation: '<code>cold</code> is True, and <code>or</code> only needs one side — <b>True</b>.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint 6 · Question 3',
+          title: 'Complete the flip',
+          body: ['Finish the line so this prints the opposite of is_open.'],
+          codeBefore: 'is_open = False\nprint(',
+          codeAfter: 'is_open)',
+          answer: ['not'],
+          hint: 'The operator that flips a boolean.',
+          explanation: '<code>not is_open</code> flips False to True.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint 6 · Question 4',
+          title: 'Predict the output',
+          code: 'response_code = 200\nprint(response_code == 200)',
+          options: ['True', 'False', '200', 'Error'],
+          answer: 0,
+          explanation: '200 matches 200 — <b>True</b>.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint 6 · Question 5',
+          title: 'Complete the request',
+          body: ['Finish the call to fetch this URL.'],
+          codeBefore: 'import requests\n\nresponse = requests.',
+          codeAfter: '("https://api.example.com")',
+          answer: ['get'],
+          hint: 'The function that sends a request and gets a response back.',
+          explanation: '<code>requests.get(url)</code> is the standard way to retrieve data from an API.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint 6 · Question 6',
+          title: 'Predict the output',
+          code: 'data = {"name": "Ada", "score": 90}\nprint(data["score"])',
+          options: ['90', 'score', '"90"', 'Error'],
+          answer: 0,
+          explanation: '<code>data["score"]</code> looks up the value stored under "score" — <b>90</b>.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint 6 · Question 7',
+          title: 'Predict the output — review',
+          code: 'x = 5\nprint(f"{x:.2f}")',
+          options: ['5.00', '5', '5.0', 'Error'],
+          answer: 0,
+          explanation: '<code>:.2f</code> always shows two decimal places — <b>5.00</b>.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint 6 · Question 8',
+          title: 'Predict the output — review',
+          code: 'class Animal:\n    def speak(self):\n        print("...")\n\nclass Dog(Animal):\n    def speak(self):\n        print("Woof!")\n\nDog().speak()',
+          options: ['Woof!', '...', 'Error', 'None'],
+          answer: 0,
+          explanation: '<code>Dog</code> overrides <code>speak()</code>, so its own version runs — <b>Woof!</b>.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Checkpoint 6 · Complete',
+          title: 'Here\'s where you stand',
+          bullets: [
+            'Logical operators and APIs — now the course covers request/response basics too.',
+            'Retake this any time — the score updates and nothing is held against you.'
+          ],
+          next: 'Next up: a project pulling logic and API-reading together.'
+        }
+      ]
+    },
+    {
+      id: 'project-weather',
+      title: 'Project: Weather Checker',
+      sub: 'Project · 8 steps',
+      kind: 'project',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Project 6 · Brief',
+          title: 'The goal',
+          body: [
+            'Simulate handling a weather API response: check the status, read the temperature, and use logical operators to decide what to recommend wearing.'
+          ],
+          code: '# Target output:\n31°C in Kuala Lumpur\nHot and humid — wear light clothing'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Project 6 · Step 1',
+          title: 'Start with a simulated response',
+          body: [
+            'In real code this would come from <code>requests.get(url).json()</code> — here\'s what that response looks like once converted to a dict.'
+          ],
+          code: 'weather = {"city": "Kuala Lumpur", "temp_c": 31, "status_code": 200}'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Project 6 · Step 2',
+          title: 'Check the status first',
+          body: [
+            'Finish the condition so this only proceeds when the request succeeded.'
+          ],
+          codeBefore: 'if weather["status_code"] == ',
+          codeAfter: ':\n    print(f"{weather[\'temp_c\']}°C in {weather[\'city\']}")',
+          answer: ['200'],
+          hint: 'The status code that means success.',
+          explanation: '200 means the request succeeded, so it\'s safe to read the temperature and city.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Project 6 · Step 3',
+          title: 'Predict the output',
+          code: 'weather = {"city": "Kuala Lumpur", "temp_c": 31, "status_code": 200}\nif weather["status_code"] == 200:\n    print(f"{weather[\'temp_c\']}°C in {weather[\'city\']}")',
+          options: ['31°C in Kuala Lumpur', 'Kuala Lumpur°C in 31', 'Error', 'None'],
+          answer: 0,
+          explanation: 'The f-string fills in <code>temp_c</code> (31) and <code>city</code> (Kuala Lumpur) from the dict.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Project 6 · Step 4',
+          title: 'Use logical operators for the recommendation',
+          body: [
+            'Combine a comparison with <code>and</code> to check for a specific condition — hot and humid weather, for example.'
+          ],
+          code: 'temp = 31\nhumid = True\nif temp >= 30 and humid:\n    print("Hot and humid — wear light clothing")'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Project 6 · Step 5',
+          title: 'Complete the check',
+          body: [
+            'Finish the condition so this recommends a jacket when it\'s cold OR raining — either one should be enough.'
+          ],
+          codeBefore: 'temp = 18\nraining = True\nif temp < 20 ',
+          codeAfter: ' raining:\n    print("Bring a jacket")',
+          answer: ['or'],
+          hint: 'The operator that only needs one side to be True.',
+          explanation: '<code>or</code> lets either condition (cold temp or raining) trigger the recommendation — either one is enough.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Project 6 · Step 6',
+          title: 'Handle a failed request gracefully',
+          body: [
+            'If <code>status_code</code> isn\'t 200, there\'s no weather data to read — respond with a clear message instead of crashing on a missing key.'
+          ],
+          code: 'weather = {"status_code": 404}\nif weather["status_code"] == 200:\n    print(f"{weather[\'temp_c\']}°C")\nelse:\n    print("Could not fetch weather data")\n\n# output:\nCould not fetch weather data'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Project 6 · Complete',
+          title: 'You built a weather checker',
+          code: 'weather = {"city": "Kuala Lumpur", "temp_c": 31, "humid": True, "status_code": 200}\n\nif weather["status_code"] == 200:\n    print(f"{weather[\'temp_c\']}°C in {weather[\'city\']}")\n    if weather["temp_c"] >= 30 and weather["humid"]:\n        print("Hot and humid — wear light clothing")\n    elif weather["temp_c"] < 20:\n        print("Bring a jacket")\nelse:\n    print("Could not fetch weather data")',
+          bullets: [
+            '<code>status_code == 200</code> gated everything else — no data gets used from a failed request.',
+            '<code>and</code> combined two conditions (hot AND humid) into one precise check.',
+            'This mirrors real API code almost exactly — only <code>requests.get(url).json()</code> would replace the simulated dict.'
+          ],
+          next: 'That rounds out logic and APIs on top of the original five-cycle course.'
         }
       ]
     }
