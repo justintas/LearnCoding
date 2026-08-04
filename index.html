@@ -1970,11 +1970,489 @@
             'A list comprehension picked out exactly the items running low, in one line.',
             '<code>try</code>/<code>except</code> inside a method kept a bad restock amount from crashing the whole program.'
           ],
-          next: 'That\'s three projects and three checkpoints — a solid personal Python foundation. Say the word whenever you want to keep going.'
+          next: 'Next up: string methods — the operations that let you clean up and reshape text.'
         }
       ]
     },
-    { id: 'more-soon-3', title: 'Sorting, string methods & a capstone project', sub: 'coming soon', locked: true }
+    {
+      id: 'string-methods',
+      title: 'String methods & operations',
+      sub: '8 steps · ~6 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 18 · Step 1',
+          title: 'Strings have built-in methods too',
+          body: [
+            'Just like lists, strings come with methods you call with a dot — <code>.upper()</code> and <code>.lower()</code> change case without altering the original string.'
+          ],
+          code: 'name = "Ada"\nprint(name.upper())\nprint(name.lower())\n\n# output:\nADA\nada'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 18 · Step 2',
+          title: 'Predict the output',
+          code: 'word = "Python"\nprint(word.lower())',
+          options: ['python', 'PYTHON', 'Python', 'Error'],
+          answer: 0,
+          explanation: '<code>.lower()</code> returns a new string with every letter lowercased — <b>python</b>.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 18 · Step 3',
+          title: 'Strip whitespace, split into a list',
+          body: [
+            '<code>.strip()</code> removes leading/trailing whitespace; <code>.split()</code> breaks a string into a list of pieces wherever a separator appears.'
+          ],
+          code: 'text = "  hello world  "\nprint(text.strip())\nprint(text.strip().split(" "))\n\n# output:\nhello world\n[\'hello\', \'world\']'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 18 · Step 4',
+          title: 'Predict the output',
+          code: 'sentence = "learn,python,fast"\nprint(sentence.split(","))',
+          options: ["['learn', 'python', 'fast']", '"learn,python,fast"', "['learn,python,fast']", 'Error'],
+          answer: 0,
+          explanation: '<code>.split(",")</code> breaks the string apart everywhere a comma appears, returning a list of the pieces.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 18 · Step 5',
+          title: 'Strings can be indexed and sliced, like lists',
+          body: [
+            'Square brackets grab one character by position; a colon inside grabs a range — <code>[start:end]</code>, stopping just before <code>end</code>.'
+          ],
+          code: 'word = "Python"\nprint(word[0])\nprint(word[0:3])\n\n# output:\nP\nPyt'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 18 · Step 6',
+          title: 'Predict the output',
+          code: 'word = "Python"\nprint(word[2:5])',
+          options: ['tho', 'yth', 'thon', 'Pyth'],
+          answer: 0,
+          explanation: 'Indices: P(0) y(1) t(2) h(3) o(4) n(5). <code>[2:5]</code> grabs 2 up to (not including) 5 — <b>tho</b>.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 18 · Step 7',
+          title: 'Complete the call',
+          body: [
+            '<code>replace(old, new)</code> swaps every occurrence of <code>old</code> with <code>new</code>. Finish the call so every "o" becomes "0".'
+          ],
+          codeBefore: 'word = "Python"\nprint(word.replace("o", ',
+          codeAfter: '))',
+          answer: ['"0"', "'0'"],
+          hint: 'The character "o" should be replaced with what digit — in quotes?',
+          explanation: '<code>word.replace("o", "0")</code> returns a new string with every "o" swapped for "0" — "Pyth0n".'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 18 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            'String methods like <code>.upper()</code>, <code>.lower()</code>, <code>.strip()</code>, and <code>.split()</code> return a new string or list — they don\'t change the original.',
+            'Strings can be indexed (<code>[0]</code>) and sliced (<code>[start:end]</code>) just like lists.',
+            '<code>.split(sep)</code> breaks a string into a list; <code>.replace(old, new)</code> swaps text.',
+            'None of these mutate the original string — strings are immutable in Python.'
+          ],
+          next: 'Next up: list operations — methods that do change a list in place.'
+        }
+      ]
+    },
+    {
+      id: 'list-operations',
+      title: 'List operations',
+      sub: '8 steps · ~6 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 19 · Step 1',
+          title: 'Lists can grow with .append()',
+          body: [
+            '<code>.append()</code> adds a new item to the end of a list — and unlike string methods, this changes the list in place.'
+          ],
+          code: 'fruits = ["apple", "banana"]\nfruits.append("cherry")\nprint(fruits)\n\n# output:\n[\'apple\', \'banana\', \'cherry\']'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 19 · Step 2',
+          title: 'Predict the output',
+          code: 'nums = [1, 2]\nnums.append(3)\nprint(nums)',
+          options: ['[1, 2, 3]', '[3, 1, 2]', '[1, 2, [3]]', 'Error'],
+          answer: 0,
+          explanation: '<code>.append(3)</code> adds 3 to the end of the existing list — <b>[1, 2, 3]</b>.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 19 · Step 3',
+          title: 'Remove items with .remove() or .pop()',
+          body: [
+            '<code>.remove(value)</code> deletes the first matching value; <code>.pop()</code> removes and returns the last item.'
+          ],
+          code: 'fruits = ["apple", "banana", "cherry"]\nfruits.remove("banana")\nprint(fruits)\n\nlast = fruits.pop()\nprint(last, fruits)\n\n# output:\n[\'apple\', \'cherry\']\ncherry [\'apple\']'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 19 · Step 4',
+          title: 'Predict the output',
+          code: 'nums = [5, 10, 15]\nnums.remove(10)\nprint(nums)',
+          options: ['[5, 15]', '[5, 10, 15]', '[10]', 'Error'],
+          answer: 0,
+          explanation: '<code>.remove(10)</code> deletes the first (and only) 10 it finds — leaving <b>[5, 15]</b>.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 19 · Step 5',
+          title: 'Sort a list in place',
+          body: [
+            '<code>.sort()</code> rearranges the list itself, low to high by default — no new list is created.'
+          ],
+          code: 'nums = [3, 1, 2]\nnums.sort()\nprint(nums)\n\n# output:\n[1, 2, 3]'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 19 · Step 6',
+          title: 'Predict the output',
+          code: 'nums = [3, 1, 2]\nnums.sort(reverse=True)\nprint(nums)',
+          options: ['[3, 2, 1]', '[1, 2, 3]', '[2, 1, 3]', 'Error'],
+          answer: 0,
+          explanation: '<code>reverse=True</code> flips the sort order to high-to-low — <b>[3, 2, 1]</b>.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 19 · Step 7',
+          title: 'Complete the append',
+          body: [
+            'Finish the line so "Dana" gets added to the end of the list.'
+          ],
+          codeBefore: 'names = ["Ada", "Sam"]\nnames.',
+          codeAfter: '("Dana")\nprint(names)',
+          answer: ['append'],
+          hint: 'The method that adds one item to the end of a list.',
+          explanation: '<code>names.append("Dana")</code> adds "Dana" to the end, changing the list in place.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 19 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            '<code>.append(value)</code> adds an item to the end of a list, in place.',
+            '<code>.remove(value)</code> deletes the first matching item; <code>.pop()</code> removes and returns the last one.',
+            '<code>.sort()</code> rearranges a list in place; <code>reverse=True</code> flips the order.',
+            'Unlike string methods, these list methods change the original list directly — they don\'t return a new one.'
+          ],
+          next: 'Next up: tuples and sets — two more ways to group values, each with their own rules.'
+        }
+      ]
+    },
+    {
+      id: 'tuples-sets',
+      title: 'Tuples & sets',
+      sub: '8 steps · ~6 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 20 · Step 1',
+          title: 'A tuple is a list that can\'t change',
+          body: [
+            'Round brackets create a tuple — ordered like a list, but immutable: once created, it can\'t be modified.'
+          ],
+          code: 'point = (3, 4)\nprint(point[0])\n\n# output:\n3'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 20 · Step 2',
+          title: 'Predict the output',
+          code: 'point = (3, 4)\npoint[0] = 10',
+          options: ["Error — tuples can't be changed", '(10, 4)', '(3, 4)', '10'],
+          answer: 0,
+          explanation: 'Tuples are immutable — trying to assign to an index raises a <code>TypeError</code>.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 20 · Step 3',
+          title: 'Tuples are great for unpacking',
+          body: [
+            'You can assign a tuple\'s items straight to multiple variables in one line, matching by position.'
+          ],
+          code: 'point = (3, 4)\nx, y = point\nprint(x, y)\n\n# output:\n3 4'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 20 · Step 4',
+          title: 'Predict the output',
+          code: 'name, age = ("Ada", 34)\nprint(age)',
+          options: ['34', 'Ada', '("Ada", 34)', 'Error'],
+          answer: 0,
+          explanation: 'Unpacking matches by position — <code>name</code> gets "Ada", <code>age</code> gets <b>34</b>.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 20 · Step 5',
+          title: 'A set holds only unique values',
+          body: [
+            'Curly braces without <code>key: value</code> pairs create a set — an unordered collection that automatically drops duplicates.'
+          ],
+          code: 'nums = {1, 2, 2, 3, 3, 3}\nprint(nums)\n\n# output:\n{1, 2, 3}'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 20 · Step 6',
+          title: 'Predict the output',
+          code: 'tags = {"python", "code", "python"}\nprint(len(tags))',
+          options: ['2', '3', '1', 'Error'],
+          answer: 0,
+          explanation: 'The set automatically drops the duplicate "python", leaving just <b>2</b> unique values.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 20 · Step 7',
+          title: 'Deduplicate a list',
+          body: [
+            'Turn this list into a set to drop the duplicates, then finish counting how many unique values remain.'
+          ],
+          codeBefore: 'nums = [1, 2, 2, 3]\nunique = set(nums)\nprint(',
+          codeAfter: '(unique))',
+          answer: ['len'],
+          hint: 'The function that counts items in a collection.',
+          explanation: '<code>len(unique)</code> counts the items in the set — 3 unique values (1, 2, 3).'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 20 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            '<code>(...)</code> creates a tuple — ordered like a list, but immutable.',
+            'Tuple unpacking assigns multiple variables from one tuple in a single line: <code>x, y = point</code>.',
+            '<code>{...}</code> (without key:value pairs) creates a set — unordered, and automatically unique.',
+            '<code>set(list)</code> is a quick way to drop duplicates from a list.'
+          ],
+          next: 'Next up: a checkpoint test on lessons 18 through 20.'
+        }
+      ]
+    },
+    {
+      id: 'checkpoint-4',
+      title: 'Checkpoint: Strings, Lists & Sets',
+      sub: 'Checkpoint · 10 questions',
+      isTest: true,
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Checkpoint 4 · Start',
+          title: 'Round four',
+          body: [
+            '10 questions on string methods, list operations, and tuples/sets — plus one older concept for good measure.'
+          ]
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint 4 · Question 1',
+          title: 'Predict the output',
+          code: 'word = "Data"\nprint(word.lower())',
+          options: ['data', 'DATA', 'Data', 'Error'],
+          answer: 0,
+          explanation: '<code>.lower()</code> returns every letter lowercased — <b>data</b>.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint 4 · Question 2',
+          title: 'Complete the split',
+          body: ['Finish the call so the string splits on the dash.'],
+          codeBefore: 'line = "a-b-c"\nparts = line.split(',
+          codeAfter: ')\nprint(parts)',
+          answer: ['"-"', "'-'"],
+          hint: 'The separator character, in quotes — matching the dashes in the string.',
+          explanation: '<code>.split("-")</code> breaks the string apart at each dash, returning <code>[\'a\', \'b\', \'c\']</code>.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint 4 · Question 3',
+          title: 'Predict the output',
+          code: 'word = "Coding"\nprint(word[1:4])',
+          options: ['odi', 'Cod', 'odin', 'din'],
+          answer: 0,
+          explanation: 'Indices: C(0) o(1) d(2) i(3) n(4) g(5). <code>[1:4]</code> grabs 1 up to 4 — <b>odi</b>.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint 4 · Question 4',
+          title: 'Predict the output',
+          code: 'nums = [4, 8]\nnums.append(15)\nprint(nums)',
+          options: ['[4, 8, 15]', '[15, 4, 8]', '[4, 8]', 'Error'],
+          answer: 0,
+          explanation: '<code>.append(15)</code> adds 15 to the end — <b>[4, 8, 15]</b>.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint 4 · Question 5',
+          title: 'Complete the sort',
+          body: ['Finish the line so nums gets rearranged low to high.'],
+          codeBefore: 'nums = [5, 1, 3]\nnums.',
+          codeAfter: '()\nprint(nums)',
+          answer: ['sort'],
+          hint: 'The method that rearranges a list in place.',
+          explanation: '<code>nums.sort()</code> rearranges it to <code>[1, 3, 5]</code>.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint 4 · Question 6',
+          title: 'Predict the output',
+          code: 'nums = [1, 2, 3]\nnums.remove(2)\nprint(nums)',
+          options: ['[1, 3]', '[1, 2, 3]', '[2]', 'Error'],
+          answer: 0,
+          explanation: '<code>.remove(2)</code> deletes the 2 — leaving <b>[1, 3]</b>.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint 4 · Question 7',
+          title: 'Predict the output',
+          code: 'point = (5, 9)\nx, y = point\nprint(x + y)',
+          options: ['14', '59', '(5, 9)', 'Error'],
+          answer: 0,
+          explanation: 'Unpacking gives <code>x = 5</code>, <code>y = 9</code>; <code>5 + 9 = </code><b>14</b>.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint 4 · Question 8',
+          title: 'Predict the output',
+          code: 'tags = {"a", "b", "a", "c"}\nprint(len(tags))',
+          options: ['3', '4', '2', 'Error'],
+          answer: 0,
+          explanation: 'The duplicate "a" is dropped, leaving 3 unique values: a, b, c.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint 4 · Question 9',
+          title: 'Predict the output',
+          code: 'point = (1, 2)\npoint[0] = 99',
+          options: ["Error — tuples can't be changed", '(99, 2)', '(1, 2)', '99'],
+          answer: 0,
+          explanation: 'Tuples are immutable, so assigning to an index raises a <code>TypeError</code>.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint 4 · Question 10',
+          title: 'Predict the output',
+          code: 'class Item:\n    def __init__(self, name):\n        self.name = name\n\ni = Item("Box")\nprint(i.name)',
+          options: ['Box', 'name', 'self.name', 'Error'],
+          answer: 0,
+          explanation: '<code>i.name</code> holds the value passed in when <code>i</code> was created — <b>Box</b>.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Checkpoint 4 · Complete',
+          title: 'Here\'s where you stand',
+          bullets: [
+            'String and list methods, tuples, and sets — the last stretch before this menu closes in on Mimo\'s full syllabus.',
+            'Retake this any time — the score updates and nothing is held against you.'
+          ],
+          next: 'Next up: a fourth project pulling strings, lists, and sets together.'
+        }
+      ]
+    },
+    {
+      id: 'project-wordcount',
+      title: 'Project: Word Frequency Counter',
+      sub: 'Project · 9 steps',
+      kind: 'project',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Project 4 · Brief',
+          title: 'The goal',
+          body: [
+            'Take a block of text, split it into words, count how often each one appears, and report the results sorted alphabetically — combining strings, sets, and dictionaries.'
+          ],
+          code: '# Target output:\nUnique words: 4\ncode: 2\nfun: 1\nis: 1\npython: 2'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Project 4 · Step 1',
+          title: 'Split the text into words',
+          body: [
+            'Start with a sentence, lowercase it so "Python" and "python" count the same, then split it into a list of words.'
+          ],
+          code: 'text = "Python is fun. Python code is fun code"\nwords = text.lower().replace(".", "").split(" ")\nprint(words)\n\n# output:\n[\'python\', \'is\', \'fun\', \'python\', \'code\', \'is\', \'fun\', \'code\']'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Project 4 · Step 2',
+          title: 'Find the unique words',
+          body: [
+            'Turn the word list into a set to see how many different words there are.'
+          ],
+          codeBefore: 'unique_words = ',
+          codeAfter: '(words)\nprint(len(unique_words))',
+          answer: ['set'],
+          hint: 'The type that automatically drops duplicates.',
+          explanation: '<code>set(words)</code> collapses the list down to its unique values — 4 of them.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Project 4 · Step 3',
+          title: 'Count each word with a dictionary',
+          body: [
+            'Loop over the unique words, and for each one, use <code>.count()</code> to see how many times it shows up in the full list.'
+          ],
+          code: 'counts = {}\nfor word in unique_words:\n    counts[word] = words.count(word)\nprint(counts)\n\n# output:\n{\'python\': 2, \'is\': 1, \'fun\': 1, \'code\': 2}'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Project 4 · Step 4',
+          title: 'Predict the output',
+          code: 'words = ["a", "b", "a", "c", "a"]\nprint(words.count("a"))',
+          options: ['3', '1', '2', 'Error'],
+          answer: 0,
+          explanation: '<code>.count("a")</code> counts every occurrence of "a" in the list — there are <b>3</b>.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Project 4 · Step 5',
+          title: 'Sort the words alphabetically with sorted()',
+          body: [
+            '<code>sorted()</code> is the function version of <code>.sort()</code> — it returns a new sorted list instead of changing the original, and it works on any collection, including a set.'
+          ],
+          code: 'unique_words = {"python", "is", "fun", "code"}\nprint(sorted(unique_words))\n\n# output:\n[\'code\', \'fun\', \'is\', \'python\']'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Project 4 · Step 6',
+          title: 'Print the final report',
+          body: [
+            'Loop over the words in sorted order, and print each one with its count using an f-string.'
+          ],
+          codeBefore: 'for word in sorted(unique_words):\n    print(f"{word}: {',
+          codeAfter: '[word]}")',
+          answer: ['counts'],
+          hint: 'The dictionary holding each word\'s count, from a couple steps back.',
+          explanation: '<code>counts[word]</code> looks up how many times that word appeared, printed alongside its name.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Project 4 · Step 7',
+          title: 'Predict the output',
+          code: 'counts = {"python": 2, "code": 2}\nprint(counts["code"])',
+          options: ['2', 'code', '"code": 2', 'Error'],
+          answer: 0,
+          explanation: '<code>counts["code"]</code> looks up the value stored under "code" — <b>2</b>.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Project 4 · Complete',
+          title: 'You built a word frequency counter',
+          code: 'text = "Python is fun. Python code is fun code"\nwords = text.lower().replace(".", "").split(" ")\n\nunique_words = set(words)\nprint("Unique words:", len(unique_words))\n\ncounts = {}\nfor word in unique_words:\n    counts[word] = words.count(word)\n\nfor word in sorted(unique_words):\n    print(f"{word}: {counts[word]}")',
+          bullets: [
+            'String methods (<code>.lower()</code>, <code>.replace()</code>, <code>.split()</code>) turned raw text into a clean list of words.',
+            'A set found the unique words in one line; a dict paired each one with its count.',
+            '<code>sorted()</code> gave a predictable, alphabetical order for the final report.'
+          ],
+          next: 'That\'s four projects and four checkpoints — closing in on Mimo\'s full syllabus. Next up: modules and deeper object-oriented programming (inheritance) for a true capstone.'
+        }
+      ]
+    },
+    { id: 'more-soon-4', title: 'Modules, inheritance & a capstone project', sub: 'coming soon', locked: true }
   ];
 
   var state = load();
