@@ -2452,7 +2452,408 @@
         }
       ]
     },
-    { id: 'more-soon-4', title: 'Modules, inheritance & a capstone project', sub: 'coming soon', locked: true }
+    {
+      id: 'modules',
+      title: 'Modules',
+      sub: '8 steps · ~6 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 23 · Step 1',
+          title: 'import brings in extra code',
+          body: [
+            'Python\'s standard library ships with modules — extra code you can use with <code>import</code>, instead of writing everything yourself.'
+          ],
+          code: 'import math\nprint(math.sqrt(16))\n\n# output:\n4.0'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 23 · Step 2',
+          title: 'Predict the output',
+          code: 'import math\nprint(math.pi)',
+          options: ['3.141592653589793', '3.14', 'pi', 'Error'],
+          answer: 0,
+          explanation: '<code>math.pi</code> is a constant defined inside the <code>math</code> module — Python prints its full precision value.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 23 · Step 3',
+          title: 'from ... import ... skips the prefix',
+          body: [
+            'Import just the piece you need directly into your code, so you can call it without the module name in front.'
+          ],
+          code: 'from math import sqrt\nprint(sqrt(25))\n\n# output:\n5.0'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 23 · Step 4',
+          title: 'Predict the output',
+          code: 'from math import floor\nprint(floor(7.9))',
+          options: ['7', '8', '7.9', 'Error'],
+          answer: 0,
+          explanation: '<code>floor()</code> rounds down to the nearest whole number — 7.9 becomes <b>7</b>.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 23 · Step 5',
+          title: 'random gives you unpredictable values',
+          body: [
+            '<code>random.randint(a, b)</code> picks a random whole number between <code>a</code> and <code>b</code>, inclusive — handy for games, sampling, or shuffling.'
+          ],
+          code: 'import random\nnumber = random.randint(1, 6)\nprint(number)\n\n# output (varies):\n4'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 23 · Step 6',
+          title: 'Predict the output',
+          code: 'import random\nchoice = random.choice(["red", "blue", "green"])\nprint(choice in ["red", "blue", "green"])',
+          options: ['True', 'False', 'Error', 'None'],
+          answer: 0,
+          explanation: '<code>random.choice()</code> always returns one of the items from the list you gave it, so the membership check is always <b>True</b>.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 23 · Step 7',
+          title: 'Complete the import',
+          body: [
+            'Finish the line so this code can use <code>math.sqrt()</code>.'
+          ],
+          codeBefore: '',
+          codeAfter: ' math\nprint(math.sqrt(9))',
+          answer: ['import'],
+          hint: 'The keyword that brings a module into your code.',
+          explanation: '<code>import math</code> loads the whole module, making <code>math.sqrt()</code> (and everything else in it) available.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 23 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            '<code>import module_name</code> loads a whole module; access its contents with <code>module_name.thing</code>.',
+            '<code>from module_name import thing</code> brings in just one piece, callable without the prefix.',
+            'The standard library ships with many modules — <code>math</code> for numbers, <code>random</code> for randomness, and more.',
+            'Modules keep code organized: you don\'t have to reinvent things like square roots or random choices.'
+          ],
+          next: 'Next up: inheritance — building new classes on top of ones you\'ve already written.'
+        }
+      ]
+    },
+    {
+      id: 'inheritance',
+      title: 'Inheritance',
+      sub: '8 steps · ~6 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 24 · Step 1',
+          title: 'A subclass inherits from a parent class',
+          body: [
+            'Put the parent class name in parentheses to inherit everything it has — attributes and methods — without rewriting them.'
+          ],
+          code: 'class Animal:\n    def __init__(self, name):\n        self.name = name\n\n    def speak(self):\n        print(f"{self.name} makes a sound")\n\nclass Dog(Animal):\n    pass\n\nd = Dog("Rex")\nd.speak()\n\n# output:\nRex makes a sound'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 24 · Step 2',
+          title: 'Predict the output',
+          code: 'class Animal:\n    def speak(self):\n        print("...")\n\nclass Cat(Animal):\n    pass\n\nc = Cat()\nc.speak()',
+          options: ['...', 'Error — Cat has no speak', 'Cat', 'None'],
+          answer: 0,
+          explanation: '<code>Cat</code> inherits <code>speak()</code> from <code>Animal</code> automatically, even though <code>Cat</code> itself is empty.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 24 · Step 3',
+          title: 'Override a method to customize behavior',
+          body: [
+            'Define a method with the same name in the subclass to replace the parent\'s version just for that subclass.'
+          ],
+          code: 'class Animal:\n    def speak(self):\n        print("...")\n\nclass Dog(Animal):\n    def speak(self):\n        print("Woof!")\n\nd = Dog()\nd.speak()\n\n# output:\nWoof!'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 24 · Step 4',
+          title: 'Predict the output',
+          code: 'class Animal:\n    def speak(self):\n        print("...")\n\nclass Dog(Animal):\n    def speak(self):\n        print("Woof!")\n\nclass Cat(Animal):\n    pass\n\nDog().speak()\nCat().speak()',
+          options: ['Woof!, then ...', '..., then Woof!', 'Woof! only', '... only'],
+          answer: 0,
+          explanation: '<code>Dog</code> overrides <code>speak()</code> to print "Woof!"; <code>Cat</code> has no override, so it falls back to <code>Animal</code>\'s "...".'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 24 · Step 5',
+          title: 'super() calls the parent\'s version',
+          body: [
+            'Inside an override, <code>super().method()</code> lets you run the parent\'s version too — useful in <code>__init__</code> to reuse setup logic before adding more.'
+          ],
+          code: 'class Animal:\n    def __init__(self, name):\n        self.name = name\n\nclass Dog(Animal):\n    def __init__(self, name, breed):\n        super().__init__(name)\n        self.breed = breed\n\nd = Dog("Rex", "Labrador")\nprint(d.name, d.breed)\n\n# output:\nRex Labrador'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 24 · Step 6',
+          title: 'Predict the output',
+          code: 'class Animal:\n    def __init__(self, name):\n        self.name = name\n\nclass Cat(Animal):\n    def __init__(self, name, indoor):\n        super().__init__(name)\n        self.indoor = indoor\n\nc = Cat("Milo", True)\nprint(c.name, c.indoor)',
+          options: ['Milo True', 'Milo', 'True', 'Error'],
+          answer: 0,
+          explanation: '<code>super().__init__(name)</code> sets <code>self.name</code> via the parent, then <code>Cat</code> adds its own <code>self.indoor</code> on top.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 24 · Step 7',
+          title: 'Complete the subclass',
+          body: [
+            'Finish the class definition so Bird inherits from Animal.'
+          ],
+          codeBefore: 'class Animal:\n    def __init__(self, name):\n        self.name = name\n\nclass Bird(',
+          codeAfter: '):\n    def speak(self):\n        print("Tweet!")',
+          answer: ['Animal'],
+          hint: 'The parent class named just above.',
+          explanation: '<code>class Bird(Animal):</code> makes Bird a subclass of Animal, inheriting its <code>__init__</code> while adding its own <code>speak()</code>.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 24 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            '<code>class Child(Parent):</code> inherits every attribute and method from <code>Parent</code> automatically.',
+            'Defining a method with the same name in the subclass overrides the parent\'s version.',
+            '<code>super().method()</code> calls the parent\'s version — handy inside <code>__init__</code> to reuse setup logic.',
+            'Inheritance lets you build specialized classes without duplicating shared code.'
+          ],
+          next: 'Next up: a checkpoint test on modules, inheritance, and a review of the whole course.'
+        }
+      ]
+    },
+    {
+      id: 'checkpoint-5',
+      title: 'Checkpoint: Modules, Inheritance & Review',
+      sub: 'Checkpoint · 10 questions',
+      isTest: true,
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Checkpoint 5 · Start',
+          title: 'The final round',
+          body: [
+            '10 questions: modules and inheritance, plus a review pulling from across the whole course. This is the last checkpoint before the capstone.'
+          ]
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint 5 · Question 1',
+          title: 'Predict the output',
+          code: 'import math\nprint(math.sqrt(49))',
+          options: ['7.0', '49', '7', 'Error'],
+          answer: 0,
+          explanation: '<code>math.sqrt(49)</code> returns <b>7.0</b> — square roots come back as floats.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint 5 · Question 2',
+          title: 'Complete the call',
+          body: ['Finish the line, given sqrt was imported directly.'],
+          codeBefore: 'from math import sqrt\nprint(',
+          codeAfter: '(64))',
+          answer: ['sqrt'],
+          hint: 'The function imported directly — no prefix needed.',
+          explanation: 'Since <code>sqrt</code> was imported directly, it\'s called on its own — <code>sqrt(64)</code> — no <code>math.</code> needed.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint 5 · Question 3',
+          title: 'Predict the output',
+          code: 'class Animal:\n    def speak(self):\n        print("...")\n\nclass Dog(Animal):\n    def speak(self):\n        print("Woof!")\n\nDog().speak()',
+          options: ['Woof!', '...', 'Error', 'None'],
+          answer: 0,
+          explanation: '<code>Dog</code> overrides <code>speak()</code>, so its own version runs — <b>Woof!</b>.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint 5 · Question 4',
+          title: 'Complete the subclass',
+          body: ['Finish so Car inherits from Vehicle.'],
+          codeBefore: 'class Vehicle:\n    def __init__(self, wheels):\n        self.wheels = wheels\n\nclass Car(',
+          codeAfter: '):\n    pass',
+          answer: ['Vehicle'],
+          hint: 'The parent class defined just above.',
+          explanation: '<code>class Car(Vehicle):</code> makes Car a subclass, inheriting <code>__init__</code> and <code>wheels</code>.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint 5 · Question 5',
+          title: 'Predict the output',
+          code: 'class Vehicle:\n    def __init__(self, wheels):\n        self.wheels = wheels\n\nclass Car(Vehicle):\n    def __init__(self, wheels, brand):\n        super().__init__(wheels)\n        self.brand = brand\n\nc = Car(4, "Toyota")\nprint(c.wheels, c.brand)',
+          options: ['4 Toyota', '4', 'Toyota', 'Error'],
+          answer: 0,
+          explanation: '<code>super().__init__(wheels)</code> sets <code>wheels</code> via the parent; <code>Car</code> adds <code>brand</code> on top.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint 5 · Question 6',
+          title: 'Predict the output — review',
+          code: 'nums = [1, 2, 3, 4]\nresult = [n * n for n in nums if n % 2 == 0]\nprint(result)',
+          options: ['[4, 16]', '[1, 4, 9, 16]', '[2, 4]', 'Error'],
+          answer: 0,
+          explanation: 'Only the even numbers (2, 4) pass the filter, then each gets squared — <b>[4, 16]</b>.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint 5 · Question 7',
+          title: 'Predict the output — review',
+          code: 'try:\n    x = int("5") + int("abc")\nexcept ValueError:\n    print("bad number")',
+          options: ['bad number', '5', 'Error crashes', '5abc'],
+          answer: 0,
+          explanation: '<code>int("abc")</code> raises a <code>ValueError</code>, caught by <code>except</code> — prints <b>bad number</b>.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint 5 · Question 8',
+          title: 'Predict the output — review',
+          code: 'scores = {"Ada": 95}\nname = "Ada"\nprint(f"{name} scored {scores[name]}")',
+          options: ['Ada scored 95', '{name} scored {scores[name]}', 'name scored scores[name]', 'Error'],
+          answer: 0,
+          explanation: 'The f-string substitutes both <code>name</code> and the dictionary lookup — <b>Ada scored 95</b>.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint 5 · Question 9',
+          title: 'Predict the output — review',
+          code: 'def total(nums):\n    return sum(nums)\n\nprint(total([1, 2, 3]))',
+          options: ['6', '[1, 2, 3]', 'Error', 'sum'],
+          answer: 0,
+          explanation: '<code>sum()</code> adds up every number in the list — 1+2+3 = <b>6</b>.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint 5 · Question 10',
+          title: 'Predict the output',
+          code: 'import random\nchoice = random.choice([1, 2, 3])\nprint(choice in [1, 2, 3])',
+          options: ['True', 'False', 'Error', 'None'],
+          answer: 0,
+          explanation: '<code>random.choice()</code> always returns one of the list\'s own items, so this is always <b>True</b>.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Checkpoint 5 · Complete',
+          title: 'Here\'s where you stand',
+          bullets: [
+            'Modules, inheritance, and a full review — checkpoint to checkpoint, that\'s the whole course.',
+            'Retake this any time — the score updates and nothing is held against you.'
+          ],
+          next: 'Next up: the capstone project — the biggest one yet, pulling together everything from this course.'
+        }
+      ]
+    },
+    {
+      id: 'project-capstone',
+      title: 'Capstone: Library Manager',
+      sub: 'Project · 10 steps',
+      kind: 'project',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Capstone · Brief',
+          title: 'The goal',
+          body: [
+            'The biggest one yet: a small library system using a class hierarchy, a comprehension to find available books, error handling for bad borrows, and the <code>random</code> module to suggest a pick of the day.'
+          ],
+          code: '# Target output:\nAvailable: [\'Dune\', \'Foundation\']\nBorrowed Dune\nAvailable: [\'Foundation\']\nDune is already borrowed'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Capstone · Step 1',
+          title: 'Define a base Item class',
+          body: [
+            'Start broad — any library item has a title and starts out available.'
+          ],
+          code: 'class Item:\n    def __init__(self, title):\n        self.title = title\n        self.available = True'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Capstone · Step 2',
+          title: 'Create the Book subclass',
+          body: [
+            'Book should inherit everything from Item, without adding anything new yet.'
+          ],
+          codeBefore: 'class Book(',
+          codeAfter: '):\n    pass',
+          answer: ['Item'],
+          hint: 'The parent class defined just above.',
+          explanation: '<code>class Book(Item):</code> makes Book a subclass of Item, inheriting <code>title</code> and <code>available</code> automatically.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Capstone · Step 3',
+          title: 'Add borrow and return methods',
+          body: [
+            'Each method flips <code>available</code>. <code>borrow()</code> intentionally <code>raise</code>s an error if the book\'s already out, so calling code can catch it instead of borrowing something unavailable.'
+          ],
+          code: 'class Book(Item):\n    def borrow(self):\n        if self.available:\n            self.available = False\n            print(f"Borrowed {self.title}")\n        else:\n            raise ValueError(f"{self.title} is already borrowed")\n\n    def return_book(self):\n        self.available = True'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Capstone · Step 4',
+          title: 'Predict the output',
+          code: 'book = Book("Dune")\nbook.borrow()\nprint(book.available)',
+          options: ['Borrowed Dune, then False', 'Borrowed Dune, then True', 'False only', 'Error'],
+          answer: 0,
+          explanation: '<code>borrow()</code> prints the confirmation and flips <code>available</code> to <b>False</b>.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Capstone · Step 5',
+          title: 'Catch the raised error',
+          body: [
+            'Wrap a second borrow attempt in <code>try</code>/<code>except</code> to handle an already-borrowed book gracefully instead of crashing.'
+          ],
+          code: 'book = Book("Dune")\nbook.borrow()\ntry:\n    book.borrow()\nexcept ValueError as e:\n    print(e)\n\n# output:\nBorrowed Dune\nDune is already borrowed'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Capstone · Step 6',
+          title: 'Find what\'s available',
+          body: [
+            'Complete the comprehension to list the titles of every available book.'
+          ],
+          codeBefore: 'library = [Book("Dune"), Book("Foundation")]\navailable = [b.title for b in library if b.',
+          codeAfter: ']\nprint(available)',
+          answer: ['available'],
+          hint: 'The attribute that tracks whether a book can be borrowed.',
+          explanation: '<code>b.available</code> filters the comprehension down to only the books still available to borrow.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Capstone · Step 7',
+          title: 'Pick a random book of the day, safely',
+          body: [
+            'Use the <code>random</code> module to suggest a book, handling the case where the library might be empty.'
+          ],
+          code: 'import random\n\nif library:\n    pick = random.choice(library)\n    print(f"Book of the day: {pick.title}")\nelse:\n    print("The library is empty")'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Capstone · Step 8',
+          title: 'Predict the output',
+          code: 'import random\nlibrary = []\nif library:\n    pick = random.choice(library)\n    print(pick.title)\nelse:\n    print("The library is empty")',
+          options: ['The library is empty', 'Error — empty list', 'None', 'random.choice([])'],
+          answer: 0,
+          explanation: 'An empty list is falsy, so the <code>if</code> fails and the <code>else</code> branch runs, avoiding a crash on an empty <code>random.choice()</code>.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Capstone · Complete',
+          title: 'You built a capstone library manager',
+          code: 'import random\n\nclass Item:\n    def __init__(self, title):\n        self.title = title\n        self.available = True\n\nclass Book(Item):\n    def borrow(self):\n        if self.available:\n            self.available = False\n            print(f"Borrowed {self.title}")\n        else:\n            raise ValueError(f"{self.title} is already borrowed")\n\n    def return_book(self):\n        self.available = True\n\nlibrary = [Book("Dune"), Book("Foundation")]\n\navailable = [b.title for b in library if b.available]\nprint("Available:", available)\n\nlibrary[0].borrow()\navailable = [b.title for b in library if b.available]\nprint("Available:", available)\n\ntry:\n    library[0].borrow()\nexcept ValueError as e:\n    print(e)\n\nif library:\n    pick = random.choice(library)\n    print(f"Book of the day: {pick.title}")',
+          bullets: [
+            'A class hierarchy (Item → Book) modeled the real thing — inheritance shared the common setup, <code>borrow()</code> added Book-specific behavior.',
+            '<code>raise</code> let the class trigger its own error on purpose, and <code>try</code>/<code>except</code> caught it exactly where it mattered.',
+            'A comprehension kept the available-books list always in sync with each book\'s state.',
+            'The <code>random</code> module picked a suggestion safely, checking for an empty library first.'
+          ],
+          next: 'That\'s the full course — five checkpoints, five projects, matching Mimo\'s syllabus and then some. Nicely done.'
+        }
+      ]
+    }
   ];
 
   var state = load();
