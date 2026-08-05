@@ -397,13 +397,77 @@
 
   var lessons = [
     {
+      id: 'standard-structure',
+      title: 'How the standard is organized',
+      sub: '6 steps · ~4 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 1 · Step 1',
+          title: 'The standard has two halves: ground rules, then development',
+          body: [
+            'The first block of clauses covers rules that apply to almost every project — scope, definitions, SIL, organisation, assurance. The second block covers the actual development lifecycle and a special case: software driven by configuration data rather than code.'
+          ]
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 1 · Step 2',
+          title: 'Clauses 1 through 6 set the ground rules',
+          body: [
+            'Clause 1 Scope, 2 Normative references, 3 Terms/definitions, 4 Objectives/conformance/SIL, 5 Software management &amp; organisation, 6 Software assurance (testing, verification, validation, assessment, quality assurance) — these apply across the whole project, not to one phase.'
+          ]
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 1 · Step 3',
+          title: 'Which clause would you check to understand what "verification" actually requires?',
+          options: ['Clause 6 (Software assurance)', 'Clause 1 (Scope)', 'Clause 9 (Deployment &amp; maintenance)', 'Annex D (Bibliography)'],
+          answer: 0,
+          explanation: 'Clause 6 covers cross-cutting assurance activities — testing, verification, validation, assessment, and quality assurance — that apply throughout the project, not to any single phase.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 1 · Step 4',
+          title: 'Clauses 7-9 cover the actual development, and four annexes back it all up',
+          body: [
+            'Clause 7 (Generic software development) is the main lifecycle clause — its sub-clauses map onto the V-model. Clause 8 covers software configured by application data or algorithms rather than code. Clause 9 covers deployment and maintenance. Backing it all up: Annex A rates every technique/measure by SIL, Annex B defines roles and responsibilities, Annex C summarizes document control, and Annex D is a bibliography.'
+          ]
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 1 · Step 5',
+          title: 'Name the annex',
+          body: [
+            'Which annex would you check to see who\'s actually responsible for verification vs validation — a Verifier vs a Validator?'
+          ],
+          codeBefore: 'Annex ',
+          codeAfter: ' = Key Roles and Responsibilities',
+          answer: ['B'],
+          hint: 'It comes right after the techniques-and-measures annex.',
+          explanation: 'Annex B defines every standard role — Verifier, Validator, Assessor, and the rest — and what each is responsible for.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 1 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            'Clauses 1-6 set ground rules that apply across the whole project: scope, definitions, SIL, organisation, and cross-cutting assurance activities.',
+            'Clause 7 (Generic software development) is the main lifecycle clause; Clause 8 covers data/algorithm-configured software; Clause 9 covers deployment and maintenance.',
+            'Annex A rates every technique/measure by SIL; Annex B defines roles and responsibilities; Annex C summarizes document control; Annex D is a bibliography.',
+            'Knowing where a topic lives in the standard\'s structure makes it much faster to find what you actually need later.'
+          ],
+          next: 'Next up: what EN 50128 is, and what SIL actually means.'
+        }
+      ]
+    },
+    {
       id: 'what-is-en50128',
       title: 'What EN 50128 is, and what SIL means',
       sub: '6 steps · ~4 min',
       steps: [
         {
           type: 'info',
-          eyebrow: 'Lesson 1 · Step 1',
+          eyebrow: 'Lesson 2 · Step 1',
           title: 'Why EN 50128 exists',
           body: [
             'EN 50128 is the European standard for software used in railway control and protection systems. It exists because a bug in signalling software isn\'t just an inconvenience — it can kill people.'
@@ -411,7 +475,7 @@
         },
         {
           type: 'info',
-          eyebrow: 'Lesson 1 · Step 2',
+          eyebrow: 'Lesson 2 · Step 2',
           title: 'SIL measures the consequence of failure',
           body: [
             'SIL — Safety Integrity Level — measures how much it matters if a function fails. It ranges from SIL 0 / Basic Integrity (non-safety software) up to SIL 4 (the most safety-critical functions, like interlocking logic that keeps trains from colliding).'
@@ -419,7 +483,7 @@
         },
         {
           type: 'predict',
-          eyebrow: 'Lesson 1 · Step 3',
+          eyebrow: 'Lesson 2 · Step 3',
           title: 'Which needs more rigorous documentation?',
           body: [
             'A SIL 4 train protection function, or a SIL 1 passenger information display?'
@@ -430,7 +494,7 @@
         },
         {
           type: 'info',
-          eyebrow: 'Lesson 1 · Step 4',
+          eyebrow: 'Lesson 2 · Step 4',
           title: 'The standard doesn\'t hand you a fixed checklist',
           body: [
             'Instead, EN 50128 rates each technique or document as Mandatory, Highly Recommended, Recommended, or Not Recommended — and that rating changes by SIL level. Something that\'s merely "Recommended" at SIL 1 can become expected at SIL 4.'
@@ -438,7 +502,7 @@
         },
         {
           type: 'fill',
-          eyebrow: 'Lesson 1 · Step 5',
+          eyebrow: 'Lesson 2 · Step 5',
           title: 'Name the concept',
           body: [
             'What three-letter acronym measures how severe the consequence of a software failure would be?'
@@ -451,7 +515,7 @@
         },
         {
           type: 'recap',
-          eyebrow: 'Lesson 1 · Complete',
+          eyebrow: 'Lesson 2 · Complete',
           title: 'What you\'ve got',
           bullets: [
             'EN 50128 governs software for railway control and protection systems, because failures there can be lethal.',
@@ -470,7 +534,7 @@
       steps: [
         {
           type: 'info',
-          eyebrow: 'Lesson 2 · Step 1',
+          eyebrow: 'Lesson 3 · Step 1',
           title: 'Training comes first, but experience teaches the rest',
           body: [
             'Most people\'s first real contact with EN 50128 is a formal training course — it explains the vocabulary and structure, but the standard only really clicks once you\'re applying it against an actual product.'
@@ -478,7 +542,7 @@
         },
         {
           type: 'info',
-          eyebrow: 'Lesson 2 · Step 2',
+          eyebrow: 'Lesson 3 · Step 2',
           title: 'You need the actual standard, not just summaries',
           body: [
             'EN 50128 is a purchased, copyrighted document published by CENELEC. No course, article, or summary — this one included — is a substitute for reading the actual clauses when doing real compliance work.'
@@ -486,7 +550,7 @@
         },
         {
           type: 'predict',
-          eyebrow: 'Lesson 2 · Step 3',
+          eyebrow: 'Lesson 3 · Step 3',
           title: 'A training slide and the standard seem to disagree. Which do you trust?',
           options: ['The standard — always treat it as the source of truth', 'The training slide, since it\'s probably newer', 'Whichever is easier to follow', 'Neither — ask a colleague instead'],
           answer: 0,
@@ -494,7 +558,7 @@
         },
         {
           type: 'info',
-          eyebrow: 'Lesson 2 · Step 4',
+          eyebrow: 'Lesson 3 · Step 4',
           title: 'Real understanding comes from applying it, not just reading it',
           body: [
             'Reading the standard once won\'t make its clauses click. Understanding comes from writing an actual plan, having it reviewed, seeing where reviewers push back, and revising — the same way any specification only really makes sense once you try to build against it.'
@@ -502,7 +566,7 @@
         },
         {
           type: 'fill',
-          eyebrow: 'Lesson 2 · Step 5',
+          eyebrow: 'Lesson 3 · Step 5',
           title: 'Name the role',
           body: [
             'What three-letter acronym names the independent role who checks compliance and ultimately signs off before certification? You\'ll meet this role properly later in the course — for now, it\'s the person outside the project team who has to agree you\'re compliant.'
@@ -515,7 +579,7 @@
         },
         {
           type: 'recap',
-          eyebrow: 'Lesson 2 · Complete',
+          eyebrow: 'Lesson 3 · Complete',
           title: 'What you\'ve got',
           bullets: [
             'Training explains the vocabulary and structure, but real understanding comes from applying the standard to an actual product.',
@@ -534,7 +598,7 @@
       steps: [
         {
           type: 'info',
-          eyebrow: 'Lesson 3 · Step 1',
+          eyebrow: 'Lesson 4 · Step 1',
           title: 'The V-model splits a project into two sides',
           body: [
             'The left side moves from broad to detailed: requirements → architecture/design → component design → implementation. The right side mirrors it back up: component testing → integration → overall validation.'
@@ -542,7 +606,7 @@
         },
         {
           type: 'info',
-          eyebrow: 'Lesson 3 · Step 2',
+          eyebrow: 'Lesson 4 · Step 2',
           title: 'Each right-side phase verifies the matching left-side phase',
           body: [
             'Component design pairs with component testing; architecture pairs with integration testing; requirements pair with overall validation. The V shape isn\'t decorative — it shows which testing phase is supposed to catch a mistake made at which design phase.'
@@ -550,7 +614,7 @@
         },
         {
           type: 'predict',
-          eyebrow: 'Lesson 3 · Step 3',
+          eyebrow: 'Lesson 4 · Step 3',
           title: 'Which phase is meant to catch a mistake in the system\'s overall requirements?',
           options: ['Overall (final) validation', 'Component testing', 'Code review', 'None — requirements can\'t be tested'],
           answer: 0,
@@ -558,7 +622,7 @@
         },
         {
           type: 'info',
-          eyebrow: 'Lesson 3 · Step 4',
+          eyebrow: 'Lesson 4 · Step 4',
           title: '"Did we build it right" vs "did we build the right thing"',
           body: [
             'Verification confirms each phase\'s output matches its own inputs (does the design satisfy the requirements). Validation confirms the finished software actually does what it\'s supposed to do in real use. Both matter, and they ask different questions.'
@@ -566,7 +630,7 @@
         },
         {
           type: 'fill',
-          eyebrow: 'Lesson 3 · Step 5',
+          eyebrow: 'Lesson 4 · Step 5',
           title: 'Which V&V question is which?',
           body: [
             'Checking that a design correctly implements its requirements is an example of which activity?'
@@ -579,7 +643,7 @@
         },
         {
           type: 'recap',
-          eyebrow: 'Lesson 3 · Complete',
+          eyebrow: 'Lesson 4 · Complete',
           title: 'What you\'ve got',
           bullets: [
             'The V-model\'s left side goes broad-to-detailed (requirements → design → implementation); the right side mirrors it back up through testing.',
@@ -598,7 +662,7 @@
       steps: [
         {
           type: 'info',
-          eyebrow: 'Lesson 4 · Step 1',
+          eyebrow: 'Lesson 5 · Step 1',
           title: 'The standard sets outcomes, not paperwork',
           body: [
             'EN 50128 rates each document/technique as Mandatory, Highly Recommended, Recommended, or Not Recommended per SIL — but it doesn\'t hand you a template. Every company builds its own set of document templates and calls that its "SIL format."'
@@ -606,7 +670,7 @@
         },
         {
           type: 'info',
-          eyebrow: 'Lesson 4 · Step 2',
+          eyebrow: 'Lesson 5 · Step 2',
           title: 'Tailoring means deciding your own structure that still satisfies the clause',
           body: [
             'Two companies building SIL 2 software can have completely different document names, templates, and internal review processes — and both be fully compliant, as long as each can show how their process satisfies what the clause actually requires.'
@@ -614,7 +678,7 @@
         },
         {
           type: 'predict',
-          eyebrow: 'Lesson 4 · Step 3',
+          eyebrow: 'Lesson 5 · Step 3',
           title: 'A company merges its verification and validation plans into one combined document. Allowed?',
           options: ['Yes, as long as the combined document still covers what both clauses require', 'No, they must always be two separate documents', 'Only at Basic Integrity', 'Only with special permission from CENELEC'],
           answer: 0,
@@ -622,7 +686,7 @@
         },
         {
           type: 'info',
-          eyebrow: 'Lesson 4 · Step 4',
+          eyebrow: 'Lesson 5 · Step 4',
           title: 'An auditor\'s real question is "can you explain it"',
           body: [
             'When an auditor reviews your tailored process, they\'re not checking it against someone else\'s template — they\'re checking whether you can justify that your approach satisfies the standard, and whether you\'re actually following your own documented process.'
@@ -630,7 +694,7 @@
         },
         {
           type: 'fill',
-          eyebrow: 'Lesson 4 · Step 5',
+          eyebrow: 'Lesson 5 · Step 5',
           title: 'Name the concept',
           body: [
             'What\'s the general word for adapting a standard\'s generic requirements to fit your own project, without contradicting it? (It\'s this lesson\'s own title.)'
@@ -643,7 +707,7 @@
         },
         {
           type: 'recap',
-          eyebrow: 'Lesson 4 · Complete',
+          eyebrow: 'Lesson 5 · Complete',
           title: 'What you\'ve got',
           bullets: [
             'EN 50128 rates documents/techniques by SIL, but doesn\'t provide templates — every company tailors its own format.',
@@ -658,7 +722,7 @@
     {
       id: 'checkpoint-1',
       title: 'Checkpoint: Foundations',
-      sub: 'Checkpoint · 8 questions',
+      sub: 'Checkpoint · 10 questions',
       isTest: true,
       steps: [
         {
@@ -666,12 +730,31 @@
           eyebrow: 'Checkpoint · Start',
           title: 'Time to check what stuck',
           body: [
-            '8 questions pulling from what EN 50128 is, getting oriented, the V-model, and tailoring — no new concepts, just practice recalling what you\'ve already covered.'
+            '10 questions pulling from how the standard is organized, what EN 50128 is, getting oriented, the V-model, and tailoring — no new concepts, just practice recalling what you\'ve already covered.'
           ]
         },
         {
           type: 'predict',
           eyebrow: 'Checkpoint · Question 1',
+          title: 'Which clause covers testing, verification, validation, and assessment — activities that apply throughout the project?',
+          options: ['Clause 6 (Software assurance)', 'Clause 1 (Scope)', 'Clause 9 (Deployment &amp; maintenance)', 'Annex D (Bibliography)'],
+          answer: 0,
+          explanation: 'Clause 6 (Software assurance) covers these cross-cutting activities, which apply across every phase rather than one.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint · Question 2',
+          title: 'Name the annex',
+          body: ['Which annex defines roles and responsibilities — who\'s a Verifier vs a Validator?'],
+          codeBefore: 'Annex ',
+          codeAfter: ' = Key Roles and Responsibilities',
+          answer: ['B'],
+          hint: 'Covered in Lesson 1.',
+          explanation: 'Annex B defines every standard role and what each is responsible for.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 3',
           title: 'Which needs more rigorous documentation?',
           body: ['A SIL 4 train protection function, or a SIL 1 passenger information display?'],
           options: ['The SIL 4 train protection function', 'The SIL 1 passenger display', 'Both need exactly the same rigor', 'Neither needs formal documentation'],
@@ -680,18 +763,18 @@
         },
         {
           type: 'fill',
-          eyebrow: 'Checkpoint · Question 2',
+          eyebrow: 'Checkpoint · Question 4',
           title: 'Name the concept',
           body: ['What three-letter acronym measures how severe the consequence of a software failure would be?'],
           codeBefore: '',
           codeAfter: ' = Safety Integrity Level',
           answer: ['SIL'],
-          hint: 'Covered in Lesson 1.',
+          hint: 'Covered in Lesson 2.',
           explanation: 'SIL — Safety Integrity Level — sizes the standard\'s expectations to the consequence of failure.'
         },
         {
           type: 'predict',
-          eyebrow: 'Checkpoint · Question 3',
+          eyebrow: 'Checkpoint · Question 5',
           title: 'A training slide and the standard disagree. Which do you trust?',
           options: ['The standard — always the source of truth', 'The training slide', 'Whichever is easier to follow', 'Neither'],
           answer: 0,
@@ -699,18 +782,18 @@
         },
         {
           type: 'fill',
-          eyebrow: 'Checkpoint · Question 4',
+          eyebrow: 'Checkpoint · Question 6',
           title: 'Name the role',
           body: ['What three-letter acronym names the independent role who signs off before certification?'],
           codeBefore: '',
           codeAfter: ' = Independent Safety Assessor',
           answer: ['ISA'],
-          hint: 'Covered in Lesson 2.',
+          hint: 'Covered in Lesson 3.',
           explanation: 'ISA — Independent Safety Assessor.'
         },
         {
           type: 'predict',
-          eyebrow: 'Checkpoint · Question 5',
+          eyebrow: 'Checkpoint · Question 7',
           title: 'Which phase is meant to catch a mistake in the system\'s overall requirements?',
           options: ['Overall (final) validation', 'Component testing', 'Code review', 'None'],
           answer: 0,
@@ -718,7 +801,7 @@
         },
         {
           type: 'fill',
-          eyebrow: 'Checkpoint · Question 6',
+          eyebrow: 'Checkpoint · Question 8',
           title: 'Which V&V question is which?',
           body: ['Checking that a design correctly implements its requirements is an example of which activity?'],
           codeBefore: '',
@@ -729,7 +812,7 @@
         },
         {
           type: 'predict',
-          eyebrow: 'Checkpoint · Question 7',
+          eyebrow: 'Checkpoint · Question 9',
           title: 'A company merges its verification and validation plans into one document. Allowed?',
           options: ['Yes, if the combined document still covers what both clauses require', 'No, never', 'Only at Basic Integrity', 'Only with CENELEC permission'],
           answer: 0,
@@ -737,13 +820,13 @@
         },
         {
           type: 'fill',
-          eyebrow: 'Checkpoint · Question 8',
+          eyebrow: 'Checkpoint · Question 10',
           title: 'Name the concept',
           body: ['What\'s the general word for adapting the standard\'s generic requirements to your own project, without contradicting it?'],
           codeBefore: '',
           codeAfter: ' = adapting a generic standard to your specific project',
           answer: ['tailoring'],
-          hint: 'Covered in Lesson 4.',
+          hint: 'Covered in Lesson 5.',
           explanation: 'Tailoring — deciding your own structure that still satisfies the standard.'
         },
         {
@@ -890,8 +973,8 @@
     var html = '';
     html += '<p class="eyebrow">Practice terminal</p>';
     html += '<h1 class="step-title">EN 50128 & software safety, one sitting at a time</h1>';
-    html += '<p class="intro-copy">Short, self-contained lessons on how railway software safety actually works in practice — SIL, the V-model lifecycle, and how a real project runs end to end.</p>';
-    html += '<div class="disclaimer-box"><b>For education only.</b> This course explains general concepts in the author\'s own words — it is not a substitute for the actual EN 50128 standard, which is copyrighted and must be purchased for compliance work. If anything here conflicts with the standard, the standard is correct. Nothing here reflects any specific employer\'s or client\'s confidential process. Used at your own risk — no responsibility is accepted for outcomes from relying on this content.</div>';
+    html += '<p class="intro-copy">Short, self-contained lessons on how railway software safety actually works in practice — SIL, the V-model lifecycle, and how a real project runs end to end. Written for engineers who already know how to build software and are new to functional safety specifically — not a from-scratch beginner course.</p>';
+    html += '<div class="disclaimer-box"><b>For education only.</b> This course explains general concepts in the author\'s own words — it is not a substitute for the actual EN 50128 standard, which is copyrighted and must be purchased for real compliance work (you don\'t need a copy to follow along here, but you will for anything beyond learning). If anything here conflicts with the standard, the standard is correct. Nothing here reflects any specific employer\'s or client\'s confidential process. Used at your own risk — no responsibility is accepted for outcomes from relying on this content.</div>';
     html += '<div class="menu-list">';
     lessons.forEach(function(l, i) {
       var done = state.completedLessons[l.id];
