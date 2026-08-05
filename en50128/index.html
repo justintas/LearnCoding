@@ -1844,7 +1844,318 @@
         }
       ]
     },
-    { id: 'more-soon', title: 'Governance & closeout — coming soon', sub: 'coming soon', locked: true }
+    {
+      id: 'phase-assessment',
+      title: 'Phase assessments & internal audits',
+      sub: '6 steps · ~4 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 12 · Step 1',
+          title: 'Assessment happens throughout, not just at the end',
+          body: [
+            'Rather than one big assessment at project close, EN 50128 expects assessment activity at defined points — phase assessments — so problems get caught while they\'re still cheap to fix, not after months of work are built on top of them.'
+          ]
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 12 · Step 2',
+          title: 'Internal audit checks the process; assessment checks the product',
+          body: [
+            'An internal audit asks "are we actually following our own documented process" (are reviews happening the way the plans say they should). A phase assessment asks "is this phase\'s actual output — the requirements, the design — good enough to build on."'
+          ]
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 12 · Step 3',
+          title: 'A team follows every step of its documented review process perfectly, but the resulting design still has a serious safety gap. What does this tell you?',
+          options: ['Following the process (which an audit checks) doesn\'t guarantee the output is actually adequate (which an assessment checks) — they\'re different questions', 'The audit must have been done wrong', 'Assessments are unnecessary if audits pass', 'This situation can\'t happen in practice'],
+          answer: 0,
+          explanation: 'A process can be followed perfectly and still produce an inadequate result — that\'s exactly why audit (process conformance) and assessment (output adequacy) are separate, complementary checks.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 12 · Step 4',
+          title: 'Late-caught problems are expensive',
+          body: [
+            'Catching a requirements gap during the requirements phase assessment costs far less than catching the same gap during final system testing, after design, implementation, and testing have all been built on the flawed foundation.'
+          ]
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 12 · Step 5',
+          title: 'Complete the distinction',
+          body: [
+            'An internal audit checks whether you\'re following your own process; a phase ____ checks whether that phase\'s actual output is good enough to build on.'
+          ],
+          codeBefore: '',
+          codeAfter: ' checks whether the phase\'s output is good enough to build on',
+          answer: ['assessment'],
+          hint: 'The word used throughout this lesson for checking output adequacy.',
+          explanation: 'Assessment checks output adequacy; audit checks process conformance — different questions, both needed.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 12 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            'Phase assessments happen at defined points throughout the project, not just once at the end — catching problems while they\'re still cheap to fix.',
+            'Internal audit asks whether you\'re following your own documented process; assessment asks whether the phase\'s actual output is good enough to build on.',
+            'A team can follow its process perfectly and still produce an inadequate result — audit and assessment are separate, complementary checks.',
+            'The earlier a gap is caught, the less expensive it is to fix — a big part of why assessment happens throughout, not just at closeout.'
+          ],
+          next: 'Next up: the change request process — handling a requirement that changes mid-project without breaking the safety case.'
+        }
+      ]
+    },
+    {
+      id: 'change-control',
+      title: 'Change control',
+      sub: '6 steps · ~4 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 13 · Step 1',
+          title: 'Nothing changes without a documented request',
+          body: [
+            'Once requirements, design, or code are baselined, a change — even a small one — goes through a formal change request rather than being edited directly. This keeps the safety case traceable: you can always see what changed, why, and what was re-verified.'
+          ]
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 13 · Step 2',
+          title: 'A change can ripple further than it looks',
+          body: [
+            'A single requirement change might only touch one line of a spec, but everything built on that requirement — design, code, tests — may need to be re-checked, not just the line that visibly changed.'
+          ]
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 13 · Step 3',
+          title: 'A requirement changes after the design phase is already complete. What\'s the safest assumption about impact?',
+          options: ['Assume the change might affect the design and downstream artifacts until impact analysis proves otherwise', 'Assume only the requirements document itself needs updating', 'Assume no impact unless someone happens to notice a problem later', 'Assume the ISA will catch anything relevant at the end'],
+          answer: 0,
+          explanation: 'Change impact analysis exists precisely because effects aren\'t always obvious — the safe default is investigating what a change touches, not assuming it\'s contained until proven otherwise.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 13 · Step 4',
+          title: 'Traceability makes impact analysis possible',
+          body: [
+            'This is exactly why traceability matters — if you can trace a requirement forward to every design element, test, and piece of code built from it, a change\'s impact becomes something you can actually determine rather than guess at.'
+          ]
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 13 · Step 5',
+          title: 'Name the process',
+          body: [
+            'What\'s the general term for the formal process a proposed change goes through before it\'s accepted, rather than being edited directly?'
+          ],
+          codeBefore: '',
+          codeAfter: ' process — keeps changes traceable',
+          answer: ['change request', 'change control'],
+          hint: 'Two words, mentioned in the first info step of this lesson.',
+          explanation: 'A change request (or change control) process keeps every change traceable — what changed, why, and what was re-verified as a result.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 13 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            'Once artifacts are baselined, changes go through a formal change request rather than direct edits — keeping the safety case traceable.',
+            'A change can ripple further than it visibly looks — everything built on a changed requirement may need re-checking, not just the obvious spot.',
+            'The safe default after any change is investigating its impact, not assuming it\'s contained.',
+            'Traceability (requirement → design → code → test) is what makes impact analysis actually possible instead of guesswork.'
+          ],
+          next: 'Next up: a checkpoint test on governance.'
+        }
+      ]
+    },
+    {
+      id: 'checkpoint-5',
+      title: 'Checkpoint: Governance',
+      sub: 'Checkpoint · 8 questions',
+      isTest: true,
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Checkpoint 5 · Start',
+          title: 'Round five',
+          body: [
+            '8 questions on phase assessments, audits, and change control, plus a few older concepts for review.'
+          ]
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint 5 · Question 1',
+          title: 'A team follows its documented process perfectly, but the design still has a safety gap. What does this show?',
+          options: ['Following the process doesn\'t guarantee adequate output — audit and assessment check different things', 'The audit must have been done wrong', 'Assessments are unnecessary if audits pass', 'This can\'t happen in practice'],
+          answer: 0,
+          explanation: 'Process conformance (audit) and output adequacy (assessment) are separate, complementary checks.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint 5 · Question 2',
+          title: 'Complete the distinction',
+          body: ['An internal audit checks the process; a phase ____ checks whether the output is good enough to build on.'],
+          codeBefore: '',
+          codeAfter: ' checks the output',
+          answer: ['assessment'],
+          hint: 'Covered in Lesson 12.',
+          explanation: 'Assessment checks output adequacy.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint 5 · Question 3',
+          title: 'A requirement changes after design is complete. What\'s the safest assumption?',
+          options: ['Assume the change might affect downstream artifacts until impact analysis proves otherwise', 'Assume only the requirements document needs updating', 'Assume no impact unless someone notices later', 'Assume the ISA will catch it at the end'],
+          answer: 0,
+          explanation: 'The safe default is investigating impact, not assuming it\'s contained.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint 5 · Question 4',
+          title: 'Name the process',
+          body: ['What\'s the general term for the formal process a change goes through before being accepted?'],
+          codeBefore: '',
+          codeAfter: ' process — keeps changes traceable',
+          answer: ['change request', 'change control'],
+          hint: 'Covered in Lesson 13.',
+          explanation: 'Change request / change control keeps every change traceable.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint 5 · Question 5',
+          title: 'At the highest SIL levels, why might the assessor need to be from a separate organisation — review',
+          options: ['Even good-faith internal pressures could subtly bias someone still inside the same company', 'Internal assessors are always less competent', 'It\'s a legal formality with no safety rationale', 'External assessors are always cheaper'],
+          answer: 0,
+          explanation: 'Full organisational separation removes shared incentives that could bias judgment even with good intentions.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint 5 · Question 6',
+          title: 'Name the role — review',
+          body: ['What\'s the short name for the internal role that advises on compliance without doing the development work?'],
+          codeBefore: '',
+          codeAfter: ' = Software Assurance',
+          answer: ['SwA'],
+          hint: 'Covered in Lesson 10.',
+          explanation: 'SwA — Software Assurance.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint 5 · Question 7',
+          title: 'A component passes its own tests, but the system misbehaves only when two modules interact — review',
+          options: ['Integration testing catches this', 'Component testing catches this', 'Neither catches this', 'Only a code review catches this'],
+          answer: 0,
+          explanation: 'This is exactly what integration testing targets.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint 5 · Question 8',
+          title: 'Name the concept — review',
+          body: ['What\'s the word for verification done by someone other than the artifact\'s author?'],
+          codeBefore: '',
+          codeAfter: ' — increases at higher SIL',
+          answer: ['independence'],
+          hint: 'Covered in Lesson 9.',
+          explanation: 'Independence — someone other than the author checking the work.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Checkpoint 5 · Complete',
+          title: 'Here\'s where you stand',
+          bullets: [
+            'Phase assessments, internal audits, and change control — how a project governs itself while it\'s running, plus review of earlier modules.',
+            'Retake this any time — the score updates and nothing is held against you.'
+          ],
+          next: 'Next up: a project — handling a mid-project change end to end.'
+        }
+      ]
+    },
+    {
+      id: 'project-change',
+      title: 'Project: Handle a Mid-Project Change',
+      sub: 'Project · 8 steps',
+      kind: 'project',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Project · Brief',
+          title: 'The goal',
+          body: [
+            'Midway through a SIL 2 project, a system-level requirement changes. Walk through how it should be handled from request to closure.'
+          ]
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Project · Step 1',
+          title: 'Should the team edit the existing requirements document directly to reflect the new wording?',
+          options: ['No — it should go through a formal change request, not a direct edit', 'Yes, since it saves time', 'Only if the change is small', 'Only the ISA can make document edits'],
+          answer: 0,
+          explanation: 'Even a small change goes through change control — direct edits would break the traceable record of what changed and why.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Project · Step 2',
+          title: 'Who owns the process',
+          body: [
+            'The Configuration Manager typically owns the change request process — logging the request, tracking its status, and coordinating who needs to review its impact.'
+          ]
+        },
+        {
+          type: 'info',
+          eyebrow: 'Project · Step 3',
+          title: 'Tracing the impact',
+          body: [
+            'The changed requirement already had a design element, two test cases, and a code module built from it — all recorded in the traceability matrix.'
+          ]
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Project · Step 4',
+          title: 'Which of these need to be reviewed for impact, given what\'s already built on the requirement?',
+          options: ['All of them — the design element, both test cases, and the code module', 'Only the design element', 'Only the test cases', 'None — only the requirements document itself matters'],
+          answer: 0,
+          explanation: 'Traceability exists precisely so you can see everything built on a requirement — all of it needs impact review, not just the parts that seem obviously related.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Project · Step 5',
+          title: 'After the change is implemented',
+          body: [
+            'Once the affected design, code, and tests are updated and re-verified, the change and its evidence get recorded — closing the loop on the change request.'
+          ]
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Project · Step 6',
+          title: 'Complete the safeguard',
+          body: [
+            'The reason none of this can be skipped: without it, the safety case stops being ____ — you\'d lose the ability to show what changed and what was re-checked.'
+          ],
+          codeBefore: '',
+          codeAfter: ' — the ability to show what changed and what was re-checked',
+          answer: ['traceable', 'traceability'],
+          hint: 'The concept from earlier in this module tying a requirement to everything built from it.',
+          explanation: 'Without traceability, you lose the ability to reliably show what a change touched and what was re-verified as a result.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Project · Complete',
+          title: 'You handled a mid-project change',
+          bullets: [
+            'A requirement change goes through a formal change request, not a direct document edit.',
+            'Traceability reveals everything built on a changed requirement — design, tests, code — all of which need impact review, not just the obviously related pieces.',
+            'Closing a change means updating and re-verifying every affected artifact, then recording the evidence — not just fixing the original document.',
+            'Skipping this process breaks traceability — the whole point of change control.'
+          ],
+          next: 'Next up: maintenance and final certification — closing out the project.'
+        }
+      ]
+    },
+    { id: 'more-soon', title: 'Maintenance & certification — coming soon', sub: 'coming soon', locked: true }
   ];
 
   var state = load();
