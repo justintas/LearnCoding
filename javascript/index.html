@@ -1244,7 +1244,435 @@
         }
       ]
     },
-    { id: 'more-soon', title: 'Objects, the DOM & async', sub: 'coming soon', locked: true }
+    {
+      id: 'objects',
+      title: 'Objects',
+      sub: '7 steps · ~5 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 07 · Step 1',
+          title: 'Curly braces create an object',
+          body: [
+            'An object groups related data together as key-value pairs. Read a value with dot notation: <code>object.key</code>.'
+          ],
+          code: 'const person = {\n  name: "Ada",\n  age: 30\n};\nconsole.log(person.name);\n\n// output:\nAda'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 07 · Step 2',
+          title: 'Predict the output',
+          code: 'const car = { brand: "Toyota", year: 2020 };\nconsole.log(car.year);',
+          options: ['2020', '"year"', 'undefined', 'Error'],
+          answer: 0,
+          explanation: '<code>car.year</code> reads the <code>year</code> property, which is <code>2020</code>.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 07 · Step 3',
+          title: 'Bracket notation works too',
+          body: [
+            '<code>object["key"]</code> reads the same property as dot notation, and is required when the key is stored in a variable.'
+          ],
+          code: 'const car = { brand: "Toyota" };\nconsole.log(car["brand"]);\n\nconst key = "brand";\nconsole.log(car[key]);\n\n// output:\nToyota\nToyota'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 07 · Step 4',
+          title: 'Predict the output',
+          code: 'const user = { name: "Sam" };\nuser.name = "Alex";\nconsole.log(user.name);',
+          options: ['"Alex"', '"Sam"', 'undefined', 'Error'],
+          answer: 0,
+          explanation: 'Dot notation can reassign an existing property — <code>name</code> changes from <code>"Sam"</code> to <code>"Alex"</code>.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 07 · Step 5',
+          title: 'Objects can hold methods too',
+          body: [
+            'A function stored as a property is called a method. Inside a method, <code>this</code> refers to the object it was called on.'
+          ],
+          code: 'const dog = {\n  name: "Rex",\n  bark() {\n    console.log(this.name + " says woof!");\n  }\n};\ndog.bark();\n\n// output:\nRex says woof!'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 07 · Step 6',
+          title: 'Complete the property read',
+          body: [
+            'Finish the line so it reads the person\'s <code>age</code> using dot notation.'
+          ],
+          codeBefore: 'const person = { name: "Ada", age: 30 };\nconsole.log(person.',
+          codeAfter: ');',
+          answer: ['age'],
+          hint: 'The property you want to read.',
+          explanation: '<code>person.age</code> reads the <code>age</code> property, printing <code>30</code>.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 07 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            'Curly braces <code>{}</code> create an object — a collection of key-value pairs.',
+            'Dot notation (<code>obj.key</code>) and bracket notation (<code>obj["key"]</code>) both read and write properties; brackets are needed for dynamic keys.',
+            'A function stored as a property is a method; <code>this</code> inside a method refers to the object it was called on.',
+            'Objects group related data and behavior together, the way arrays group ordered lists.'
+          ],
+          next: 'Next up: destructuring — pulling values out of objects and arrays in one line.'
+        }
+      ]
+    },
+    {
+      id: 'destructuring',
+      title: 'Destructuring & template literals',
+      sub: '7 steps · ~5 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 08 · Step 1',
+          title: 'Destructuring pulls values out of an object',
+          body: [
+            '<code>const { key } = object</code> extracts a property directly into a variable of the same name.'
+          ],
+          code: 'const person = { name: "Ada", age: 30 };\nconst { name, age } = person;\nconsole.log(name, age);\n\n// output:\nAda 30'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 08 · Step 2',
+          title: 'Predict the output',
+          code: 'const car = { brand: "Toyota", year: 2020 };\nconst { brand } = car;\nconsole.log(brand);',
+          options: ['"Toyota"', '"brand"', 'undefined', 'Error'],
+          answer: 0,
+          explanation: '<code>const { brand } = car</code> extracts the <code>brand</code> property, <code>"Toyota"</code>.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 08 · Step 3',
+          title: 'Arrays can be destructured too, by position',
+          body: [
+            '<code>const [a, b] = array</code> assigns items to variables in order — the first item to <code>a</code>, the second to <code>b</code>.'
+          ],
+          code: 'const point = [10, 20];\nconst [x, y] = point;\nconsole.log(x, y);\n\n// output:\n10 20'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 08 · Step 4',
+          title: 'Predict the output',
+          code: 'const colors = ["red", "green", "blue"];\nconst [first, second] = colors;\nconsole.log(second);',
+          options: ['"green"', '"red"', '"blue"', 'undefined'],
+          answer: 0,
+          explanation: 'Array destructuring assigns by position — <code>second</code> gets index 1, <code>"green"</code>.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 08 · Step 5',
+          title: 'Template literals build strings with embedded expressions',
+          body: [
+            'Backticks (<code>`</code>) let you embed variables and expressions directly with <code>${...}</code> — no more string concatenation with <code>+</code>.'
+          ],
+          code: 'const name = "Ada";\nconst age = 30;\nconsole.log(`${name} is ${age} years old`);\n\n// output:\nAda is 30 years old'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 08 · Step 6',
+          title: 'Complete the destructuring',
+          body: [
+            'Finish the destructuring so <code>email</code> is pulled out of the object.'
+          ],
+          codeBefore: 'const user = { name: "Sam", email: "sam@mail.com" };\nconst { ',
+          codeAfter: ' } = user;',
+          answer: ['email'],
+          hint: 'The property name you want to extract.',
+          explanation: '<code>const { email } = user</code> extracts the <code>email</code> property into its own variable.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 08 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            '<code>const { key } = obj</code> destructures a property directly into a variable of the same name.',
+            '<code>const [a, b] = array</code> destructures array items by position.',
+            'Template literals (<code>`${expr}`</code>) embed values directly in a string, replacing string concatenation with <code>+</code>.',
+            'Destructuring and template literals are everywhere in modern JavaScript — they make code far more readable.'
+          ],
+          next: 'Next up: the spread operator — copying and combining arrays and objects.'
+        }
+      ]
+    },
+    {
+      id: 'spread-rest',
+      title: 'Spread & rest',
+      sub: '7 steps · ~5 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 09 · Step 1',
+          title: 'The spread operator (...) expands an array',
+          body: [
+            '<code>[...array]</code> copies every item from an array into a new array — useful for adding items without mutating the original.'
+          ],
+          code: 'const nums = [1, 2, 3];\nconst copy = [...nums, 4];\nconsole.log(copy);\n\n// output:\n[1, 2, 3, 4]'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 09 · Step 2',
+          title: 'Predict the output',
+          code: 'const a = [1, 2];\nconst b = [...a, 3, 4];\nconsole.log(b);',
+          options: ['[1, 2, 3, 4]', '[1, 2]', '[[1, 2], 3, 4]', 'Error'],
+          answer: 0,
+          explanation: '<code>...a</code> spreads <code>1</code> and <code>2</code> into the new array, then <code>3</code> and <code>4</code> are added.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 09 · Step 3',
+          title: 'Spread works on objects too',
+          body: [
+            '<code>{...object}</code> copies every property from an object into a new object — the standard way to merge or copy without mutating.'
+          ],
+          code: 'const base = { name: "Ada" };\nconst updated = { ...base, age: 30 };\nconsole.log(updated);\n\n// output:\n{ name: "Ada", age: 30 }'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 09 · Step 4',
+          title: 'Predict the output',
+          code: 'const base = { name: "Ada", age: 25 };\nconst updated = { ...base, age: 30 };\nconsole.log(updated.age);',
+          options: ['30', '25', 'undefined', 'Error'],
+          answer: 0,
+          explanation: 'Properties listed after the spread override the spread ones — <code>age</code> becomes <code>30</code>.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 09 · Step 5',
+          title: 'Rest parameters gather extra arguments into an array',
+          body: [
+            '<code>...args</code> in a function\'s parameter list collects any number of arguments into a real array — useful when you don\'t know how many will be passed.'
+          ],
+          code: 'function sum(...nums) {\n  let total = 0;\n  for (const n of nums) {\n    total += n;\n  }\n  return total;\n}\nconsole.log(sum(1, 2, 3, 4));\n\n// output:\n10'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 09 · Step 6',
+          title: 'Complete the spread',
+          body: [
+            'Finish the line so <code>newNums</code> is a copy of <code>nums</code> with <code>4</code> added, without mutating <code>nums</code>.'
+          ],
+          codeBefore: 'const nums = [1, 2, 3];\nconst newNums = [',
+          codeAfter: ', 4];',
+          answer: ['...nums'],
+          hint: 'The spread operator, followed by the array name.',
+          explanation: '<code>[...nums, 4]</code> copies every item from <code>nums</code> into a new array, then adds <code>4</code>.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 09 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            '<code>...array</code> or <code>...object</code> expands (spreads) all its items or properties into a new array or object.',
+            'Spreading is the standard way to copy or merge arrays and objects without mutating the originals.',
+            'In a function\'s parameters, <code>...args</code> (rest) gathers any number of extra arguments into a real array.',
+            'Spread and rest use the same <code>...</code> syntax but do opposite jobs: spread expands, rest collects.'
+          ],
+          next: 'Next up: a checkpoint test on objects and ES6.'
+        }
+      ]
+    },
+    {
+      id: 'checkpoint-3',
+      title: 'Checkpoint: Objects & ES6',
+      sub: 'Checkpoint · 8 questions',
+      isTest: true,
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Checkpoint · Start',
+          title: 'Time to check what stuck',
+          body: [
+            '8 quick questions pulling from objects, destructuring, template literals, and spread/rest.'
+          ]
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 1',
+          title: 'Predict the output',
+          code: 'const car = { brand: "Honda", year: 2022 };\nconsole.log(car.brand);',
+          options: ['"Honda"', '"car"', 'undefined', 'Error'],
+          answer: 0,
+          explanation: '<code>car.brand</code> reads the <code>brand</code> property, <code>"Honda"</code>.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint · Question 2',
+          title: 'Complete the property read',
+          body: ['Finish the line so it reads the person\'s <code>age</code>.'],
+          codeBefore: 'const person = { name: "Ada", age: 30 };\nconsole.log(person.',
+          codeAfter: ');',
+          answer: ['age'],
+          hint: 'The property you want to read.',
+          explanation: '<code>person.age</code> reads the <code>age</code> property.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 3',
+          title: 'Predict the output',
+          code: 'const user = { name: "Sam", email: "sam@mail.com" };\nconst { email } = user;\nconsole.log(email);',
+          options: ['"sam@mail.com"', '"email"', 'undefined', 'Error'],
+          answer: 0,
+          explanation: 'Destructuring extracts the <code>email</code> property into its own variable.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint · Question 4',
+          title: 'Complete the destructuring',
+          body: ['Finish the destructuring so <code>first</code> gets the first color by position.'],
+          codeBefore: 'const colors = ["red", "green", "blue"];\nconst [',
+          codeAfter: ', second] = colors;',
+          answer: ['first'],
+          hint: 'The variable name for the first item.',
+          explanation: '<code>const [first, second] = colors</code> destructures by position — <code>first</code> gets <code>"red"</code>.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 5',
+          title: 'Predict the output',
+          code: 'const name = "Max";\nconst score = 95;\nconsole.log(`${name} scored ${score}`);',
+          options: ['"Max scored 95"', '"name scored score"', '"${name} scored ${score}"', 'Error'],
+          answer: 0,
+          explanation: 'A template literal substitutes <code>${name}</code> and <code>${score}</code> with their values.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint · Question 6',
+          title: 'Complete the spread',
+          body: ['Finish the line so <code>copy</code> is a new array containing every item from <code>nums</code>, plus <code>3</code>.'],
+          codeBefore: 'const nums = [1, 2];\nconst copy = [',
+          codeAfter: ', 3];',
+          answer: ['...nums'],
+          hint: 'The spread operator, followed by the array name.',
+          explanation: '<code>[...nums, 3]</code> copies every item from <code>nums</code>, then adds <code>3</code>.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 7',
+          title: 'Predict the output',
+          code: 'const base = { color: "red", size: 10 };\nconst updated = { ...base, size: 20 };\nconsole.log(updated.size);',
+          options: ['20', '10', 'undefined', 'Error'],
+          answer: 0,
+          explanation: 'The <code>size: 20</code> listed after the spread overrides the spread value.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint · Question 8',
+          title: 'Complete the rest parameter',
+          body: ['Finish the parameter list so <code>sum</code> can accept any number of arguments, gathered into an array called <code>nums</code>.'],
+          codeBefore: 'function sum(',
+          codeAfter: ') {\n  let total = 0;\n  for (const n of nums) {\n    total += n;\n  }\n  return total;\n}',
+          answer: ['...nums'],
+          hint: 'The rest operator, followed by the array name.',
+          explanation: '<code>...nums</code> gathers every argument passed to <code>sum</code> into a real array called <code>nums</code>.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Checkpoint · Complete',
+          title: 'Here\'s where you stand',
+          bullets: [
+            'Objects, destructuring, template literals, and spread/rest — the modern JavaScript toolkit for working with structured data.',
+            'If anything felt shaky, the matching lesson is one tap away in the menu — and you can retake this checkpoint any time.'
+          ],
+          next: 'Next up: a project — building and transforming a user profile.'
+        }
+      ]
+    },
+    {
+      id: 'project-profile',
+      title: 'Project: Build a User Profile',
+      sub: 'Project · 8 steps',
+      kind: 'project',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Project · Brief',
+          title: 'The goal',
+          body: [
+            'Build a user object, destructure key fields, format a greeting with a template literal, and produce an updated copy with spread — without touching the original.'
+          ]
+        },
+        {
+          type: 'info',
+          eyebrow: 'Project · Step 1',
+          title: 'Start with the data',
+          body: [
+            'A user object with three fields.'
+          ],
+          code: 'const user = {\n  name: "Priya",\n  age: 28,\n  city: "Austin"\n};'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Project · Step 2',
+          title: 'Complete the destructuring',
+          body: [
+            'Finish the destructuring so <code>name</code> is pulled out of <code>user</code>.'
+          ],
+          codeBefore: 'const { ',
+          codeAfter: ', city } = user;',
+          answer: ['name'],
+          hint: 'The property you want to extract, matching the object above.',
+          explanation: '<code>const { name, city } = user</code> extracts both fields into their own variables.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Project · Step 3',
+          title: 'Predict the output',
+          code: 'const user = { name: "Priya", age: 28, city: "Austin" };\nconst { name, city } = user;\nconsole.log(`${name} lives in ${city}`);',
+          options: ['"Priya lives in Austin"', '"name lives in city"', '"${name} lives in ${city}"', 'Error'],
+          answer: 0,
+          explanation: 'The template literal substitutes the destructured <code>name</code> and <code>city</code> values.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Project · Step 4',
+          title: 'Create an updated copy without mutating the original',
+          body: [
+            'Spreading <code>user</code> into a new object copies every field, then the override changes just one.'
+          ],
+          code: 'const updatedUser = { ...user, city: "Denver" };\nconsole.log(updatedUser.city);\nconsole.log(user.city);\n\n// output:\nDenver\nAustin'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Project · Step 5',
+          title: 'Complete the spread',
+          body: [
+            'Finish the object so <code>updatedUser</code> copies every field from <code>user</code>, then overrides <code>age</code>.'
+          ],
+          codeBefore: 'const updatedUser = { ',
+          codeAfter: ', age: 29 };',
+          answer: ['...user'],
+          hint: 'The spread operator, followed by the object name.',
+          explanation: '<code>{ ...user, age: 29 }</code> copies every field from <code>user</code>, then <code>age: 29</code> overrides just that one field.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Project · Step 6',
+          title: 'Predict the output',
+          code: 'const user = { name: "Priya", age: 28 };\nconst updatedUser = { ...user, age: 29 };\nconsole.log(updatedUser.age, user.age);',
+          options: ['29 28', '28 28', '29 29', 'Error'],
+          answer: 0,
+          explanation: '<code>updatedUser.age</code> is overridden to <code>29</code>; the original <code>user</code> object is untouched at <code>28</code>.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Project · Complete',
+          title: 'You built and updated a user profile',
+          code: 'const user = {\n  name: "Priya",\n  age: 28,\n  city: "Austin"\n};\n\nconst { name, city } = user;\nconsole.log(`${name} lives in ${city}`);\n\nconst updatedUser = { ...user, age: 29 };\nconsole.log(updatedUser.age, user.age);\n\n// output:\nPriya lives in Austin\n29 28',
+          bullets: [
+            'Destructuring pulled <code>name</code> and <code>city</code> straight out of the <code>user</code> object.',
+            'A template literal built a readable greeting without string concatenation.',
+            'Spreading <code>user</code> into a new object copied every field, and the override updated just <code>age</code>.',
+            'The original <code>user</code> object was never mutated — spread always produces a new object.'
+          ],
+          next: 'More lessons — the DOM, async, and classes — are on the way.'
+        }
+      ]
+    },
+    { id: 'more-soon', title: 'The DOM, async & classes', sub: 'coming soon', locked: true }
   ];
 
   var state = load();
