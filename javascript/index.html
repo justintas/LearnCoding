@@ -2552,7 +2552,387 @@
         }
       ]
     },
-    { id: 'more-soon', title: 'Classes', sub: 'coming soon', locked: true }
+    {
+      id: 'classes',
+      title: 'Classes',
+      sub: '7 steps · ~5 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 16 · Step 1',
+          title: 'class defines a blueprint for creating objects',
+          body: [
+            'A class bundles data (properties) and behavior (methods) into a single reusable blueprint. <code>new ClassName(...)</code> creates an instance.'
+          ],
+          code: 'class Dog {\n  constructor(name) {\n    this.name = name;\n  }\n  bark() {\n    console.log(this.name + " says woof!");\n  }\n}\n\nconst rex = new Dog("Rex");\nrex.bark();\n\n// output:\nRex says woof!'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 16 · Step 2',
+          title: 'Predict the output',
+          code: 'class Car {\n  constructor(brand) {\n    this.brand = brand;\n  }\n}\nconst car = new Car("Toyota");\nconsole.log(car.brand);',
+          options: ['"Toyota"', '"brand"', 'undefined', 'Error'],
+          answer: 0,
+          explanation: 'The constructor sets <code>this.brand</code> to the argument passed to <code>new Car(...)</code>, so <code>car.brand</code> is <code>"Toyota"</code>.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 16 · Step 3',
+          title: 'constructor runs automatically when you create an instance',
+          body: [
+            '<code>new ClassName(args)</code> calls the constructor immediately, setting up that instance\'s starting properties via <code>this</code>.'
+          ],
+          code: 'class Counter {\n  constructor() {\n    this.count = 0;\n  }\n  increment() {\n    this.count++;\n  }\n}\nconst c = new Counter();\nc.increment();\nc.increment();\nconsole.log(c.count);\n\n// output:\n2'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 16 · Step 4',
+          title: 'Predict the output',
+          code: 'class Counter {\n  constructor() {\n    this.count = 0;\n  }\n  increment() {\n    this.count++;\n  }\n}\nconst a = new Counter();\nconst b = new Counter();\na.increment();\nconsole.log(a.count, b.count);',
+          options: ['1 0', '1 1', '0 0', 'Error'],
+          answer: 0,
+          explanation: 'Each instance has its own independent <code>count</code> — incrementing <code>a</code> doesn\'t affect <code>b</code>, so <code>a.count</code> is <code>1</code> and <code>b.count</code> stays <code>0</code>.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 16 · Step 5',
+          title: 'Methods are shared by every instance',
+          body: [
+            'Every instance created from a class uses the same method definitions — only the data (properties) differs between instances.'
+          ],
+          code: 'class Dog {\n  constructor(name) {\n    this.name = name;\n  }\n  bark() {\n    console.log(this.name + " says woof!");\n  }\n}\nconst rex = new Dog("Rex");\nconst fido = new Dog("Fido");\nrex.bark();\nfido.bark();\n\n// output:\nRex says woof!\nFido says woof!'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 16 · Step 6',
+          title: 'Complete the method name',
+          body: [
+            'Finish the method name so it runs automatically when a new <code>Cat</code> is created.'
+          ],
+          codeBefore: 'class Cat {\n  ',
+          codeAfter: '(name) {\n    this.name = name;\n  }\n}',
+          answer: ['constructor'],
+          hint: 'The special method that initializes a new instance.',
+          explanation: '<code>constructor</code> runs automatically whenever <code>new Cat(...)</code> is called.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 16 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            '<code>class Name { }</code> defines a reusable blueprint; <code>new Name(args)</code> creates an instance from it.',
+            '<code>constructor(args)</code> runs automatically when an instance is created, setting up its starting properties with <code>this</code>.',
+            'Each instance has its own independent copies of its properties.',
+            'Every instance shares the same method definitions — only the data differs.'
+          ],
+          next: 'Next up: inheritance — building one class on top of another.'
+        }
+      ]
+    },
+    {
+      id: 'inheritance',
+      title: 'Inheritance',
+      sub: '7 steps · ~5 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 17 · Step 1',
+          title: 'extends builds one class on top of another',
+          body: [
+            '<code>class Child extends Parent</code> inherits every property and method from <code>Parent</code>, then can add or override its own.'
+          ],
+          code: 'class Animal {\n  constructor(name) {\n    this.name = name;\n  }\n  speak() {\n    console.log(this.name + " makes a sound");\n  }\n}\n\nclass Dog extends Animal {\n  bark() {\n    console.log(this.name + " barks");\n  }\n}\n\nconst rex = new Dog("Rex");\nrex.speak();\nrex.bark();\n\n// output:\nRex makes a sound\nRex barks'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 17 · Step 2',
+          title: 'Predict the outcome',
+          code: 'class Shape {\n  describe() {\n    console.log("I am a shape");\n  }\n}\nclass Circle extends Shape {}\nconst c = new Circle();\nc.describe();',
+          options: ['"I am a shape" prints', 'Error — describe is not defined', 'undefined', 'Nothing prints'],
+          answer: 0,
+          explanation: '<code>Circle</code> inherits <code>describe()</code> from <code>Shape</code> even though it doesn\'t define its own — that\'s the point of <code>extends</code>.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 17 · Step 3',
+          title: 'super() calls the parent\'s constructor',
+          body: [
+            'When a child class defines its own constructor, it must call <code>super(args)</code> first to run the parent\'s constructor and set up inherited properties.'
+          ],
+          code: 'class Animal {\n  constructor(name) {\n    this.name = name;\n  }\n}\n\nclass Dog extends Animal {\n  constructor(name, breed) {\n    super(name);\n    this.breed = breed;\n  }\n}\n\nconst rex = new Dog("Rex", "Labrador");\nconsole.log(rex.name, rex.breed);\n\n// output:\nRex Labrador'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 17 · Step 4',
+          title: 'Predict the outcome',
+          code: 'class Animal {\n  constructor(name) {\n    this.name = name;\n  }\n  speak() {\n    console.log(this.name + " makes a sound");\n  }\n}\nclass Cat extends Animal {\n  speak() {\n    console.log(this.name + " meows");\n  }\n}\nconst c = new Cat("Whiskers");\nc.speak();',
+          options: ['"Whiskers meows"', '"Whiskers makes a sound"', 'Error', 'undefined'],
+          answer: 0,
+          explanation: '<code>Cat</code> overrides <code>speak()</code> with its own version, so calling <code>c.speak()</code> uses <code>Cat</code>\'s method instead of <code>Animal</code>\'s.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 17 · Step 5',
+          title: 'Overriding lets a child customize inherited behavior',
+          body: [
+            'Defining a method with the same name in the child class replaces the parent\'s version for that class — the rest of the inherited behavior stays the same.'
+          ],
+          code: 'class Employee {\n  constructor(name, pay) {\n    this.name = name;\n    this.pay = pay;\n  }\n  getPay() {\n    return this.pay;\n  }\n}\nclass Manager extends Employee {\n  getPay() {\n    return this.pay + 500;\n  }\n}\nconst m = new Manager("Sam", 3000);\nconsole.log(m.getPay());\n\n// output:\n3500'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 17 · Step 6',
+          title: 'Complete the call',
+          body: [
+            'Finish the line so <code>Dog</code>\'s constructor runs <code>Animal</code>\'s constructor first.'
+          ],
+          codeBefore: 'class Dog extends Animal {\n  constructor(name, breed) {\n    ',
+          codeAfter: '(name);\n    this.breed = breed;\n  }\n}',
+          answer: ['super'],
+          hint: 'Calls the parent class\'s constructor.',
+          explanation: '<code>super(name)</code> runs <code>Animal</code>\'s constructor, which sets <code>this.name</code>, before <code>Dog</code> adds its own <code>breed</code> property.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 17 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            '<code>class Child extends Parent</code> inherits every property and method from <code>Parent</code>.',
+            '<code>super(args)</code> calls the parent\'s constructor — required before using <code>this</code> in a child\'s own constructor.',
+            'A child class can override an inherited method by defining one with the same name.',
+            'Inheritance lets related classes share common behavior while customizing what\'s different.'
+          ],
+          next: 'Next up: a final checkpoint covering the whole course.'
+        }
+      ]
+    },
+    {
+      id: 'checkpoint-6',
+      title: 'Final Checkpoint: JavaScript',
+      sub: 'Checkpoint · 10 questions',
+      isTest: true,
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Checkpoint · Start',
+          title: 'The full-course review',
+          body: [
+            '10 questions — the last two lessons on classes and inheritance, plus a review of arrays, objects, the DOM, and async from earlier in the course.'
+          ]
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 1',
+          title: 'Predict the output',
+          code: 'class Car {\n  constructor(brand) {\n    this.brand = brand;\n  }\n}\nconst car = new Car("Honda");\nconsole.log(car.brand);',
+          options: ['"Honda"', '"brand"', 'undefined', 'Error'],
+          answer: 0,
+          explanation: 'The constructor sets <code>this.brand</code> to <code>"Honda"</code>.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint · Question 2',
+          title: 'Complete the method name',
+          body: ['Finish the method name so it runs automatically when a new <code>Cat</code> is created.'],
+          codeBefore: 'class Cat {\n  ',
+          codeAfter: '(name) {\n    this.name = name;\n  }\n}',
+          answer: ['constructor'],
+          hint: 'The special method that initializes a new instance.',
+          explanation: '<code>constructor</code> runs automatically whenever <code>new Cat(...)</code> is called.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 3',
+          title: 'Predict the output',
+          code: 'class Counter {\n  constructor() {\n    this.count = 0;\n  }\n  increment() {\n    this.count++;\n  }\n}\nconst a = new Counter();\nconst b = new Counter();\na.increment();\nconsole.log(a.count, b.count);',
+          options: ['1 0', '1 1', '0 0', 'Error'],
+          answer: 0,
+          explanation: 'Each instance keeps its own independent <code>count</code> — <code>b</code> is untouched.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 4',
+          title: 'Predict the outcome',
+          code: 'class Shape {\n  describe() {\n    console.log("I am a shape");\n  }\n}\nclass Circle extends Shape {}\nconst c = new Circle();\nc.describe();',
+          options: ['"I am a shape" prints', 'Error', 'undefined', 'Nothing prints'],
+          answer: 0,
+          explanation: '<code>Circle</code> inherits <code>describe()</code> from <code>Shape</code> through <code>extends</code>.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint · Question 5',
+          title: 'Complete the call',
+          body: ['Finish the line so <code>Dog</code>\'s constructor runs <code>Animal</code>\'s constructor first.'],
+          codeBefore: 'class Dog extends Animal {\n  constructor(name, breed) {\n    ',
+          codeAfter: '(name);\n    this.breed = breed;\n  }\n}',
+          answer: ['super'],
+          hint: 'Calls the parent class\'s constructor.',
+          explanation: '<code>super(name)</code> runs the parent constructor before the child adds its own properties.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 6',
+          title: 'Predict the outcome',
+          code: 'class Animal {\n  speak() {\n    console.log("...");\n  }\n}\nclass Cat extends Animal {\n  speak() {\n    console.log("Meow");\n  }\n}\nnew Cat().speak();',
+          options: ['"Meow" prints', '"..." prints', 'Error', 'Nothing prints'],
+          answer: 0,
+          explanation: '<code>Cat</code> overrides <code>speak()</code>, so its own version runs instead of the parent\'s.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 7',
+          title: 'Review: predict the output',
+          code: 'const user = { name: "Ana", age: 27 };\nconst { name } = user;\nconsole.log(`${name} is here`);',
+          options: ['"Ana is here"', '"name is here"', '"${name} is here"', 'Error'],
+          answer: 0,
+          explanation: 'Destructuring pulls <code>name</code> out, and the template literal substitutes it into the string.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint · Question 8',
+          title: 'Review: complete the call',
+          body: ['Finish the call so this keeps only the even numbers.'],
+          codeBefore: 'const nums = [1, 2, 3, 4];\nconst evens = nums.',
+          codeAfter: '(n => n % 2 === 0);',
+          answer: ['filter'],
+          hint: 'Keeps only items that pass a test.',
+          explanation: '<code>filter</code> keeps only items where the function returns <code>true</code>.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 9',
+          title: 'Review: predict the outcome',
+          code: 'async function greet() {\n  console.log("Before");\n  await wait(50);\n  console.log("After");\n}\ngreet();\nconsole.log("Outside");',
+          options: ['Before, Outside, After', 'Before, After, Outside', 'Outside, Before, After', 'Error'],
+          answer: 0,
+          explanation: 'The function runs synchronously up to <code>await</code>, then the rest of the script continues before the wait finishes.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint · Question 10',
+          title: 'Review: complete the call',
+          body: ['Finish the call so clicking the button logs a message.'],
+          codeBefore: 'button.addEventListener(',
+          codeAfter: ', () => {\n  console.log("Clicked!");\n});',
+          answer: ['"click"'],
+          hint: 'The event name, as a string.',
+          explanation: '<code>addEventListener("click", ...)</code> registers the function to run on every click.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Checkpoint · Complete',
+          title: 'Here\'s where you stand',
+          bullets: [
+            'Classes and inheritance close out the language — everything from variables to async now fits into one picture.',
+            'If anything felt shaky, the matching lesson is one tap away in the menu — and you can retake this checkpoint any time.'
+          ],
+          next: 'Next up: the capstone project — bringing it all together.'
+        }
+      ]
+    },
+    {
+      id: 'capstone-taskmanager',
+      title: 'Capstone: Task Manager',
+      sub: 'Capstone · 9 steps',
+      kind: 'project',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Capstone · Brief',
+          title: 'The goal',
+          body: [
+            'Bring together classes, arrays, the DOM, and async: build a small task manager that loads tasks from an API, renders them as a list, and models priority tasks differently from regular ones.'
+          ]
+        },
+        {
+          type: 'info',
+          eyebrow: 'Capstone · Step 1',
+          title: 'Start with a base class',
+          body: [
+            'A <code>Task</code> class holding a title and a done flag.'
+          ],
+          code: 'class Task {\n  constructor(title) {\n    this.title = title;\n    this.done = false;\n  }\n  describe() {\n    return this.title;\n  }\n}'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Capstone · Step 2',
+          title: 'Extend it for priority tasks',
+          body: [
+            '<code>PriorityTask</code> inherits everything from <code>Task</code>, then overrides <code>describe()</code>.'
+          ],
+          code: 'class PriorityTask extends Task {\n  constructor(title) {\n    super(title);\n    this.priority = true;\n  }\n  describe() {\n    return "⭐ " + this.title;\n  }\n}\n\nconst t1 = new Task("Write docs");\nconst t2 = new PriorityTask("Fix bug");\nconsole.log(t1.describe());\nconsole.log(t2.describe());\n\n// output:\nWrite docs\n⭐ Fix bug'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Capstone · Step 3',
+          title: 'Complete the constructor',
+          body: [
+            'Finish the line so <code>PriorityTask</code>\'s constructor sets up the title through <code>Task</code>\'s constructor.'
+          ],
+          codeBefore: 'class PriorityTask extends Task {\n  constructor(title) {\n    ',
+          codeAfter: '(title);\n    this.priority = true;\n  }\n}',
+          answer: ['super'],
+          hint: 'Calls the parent class\'s constructor.',
+          explanation: '<code>super(title)</code> runs <code>Task</code>\'s constructor first, setting up <code>title</code> and <code>done</code> before <code>priority</code> is added.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Capstone · Step 4',
+          title: 'Load tasks from an API',
+          body: [
+            '<code>fetch</code> and <code>await</code> pull raw data, then <code>map</code> turns each object into the right class instance.'
+          ],
+          code: 'async function loadTasks() {\n  const response = await fetch("/api/tasks");\n  const data = await response.json();\n  return data.map((t) => t.priority ? new PriorityTask(t.title) : new Task(t.title));\n}'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Capstone · Step 5',
+          title: 'Predict the outcome',
+          body: [
+            'Assume the API returns <code>[{ "title": "Write docs", "priority": false }, { "title": "Fix bug", "priority": true }]</code>.'
+          ],
+          code: 'loadTasks().then((tasks) => {\n  tasks.forEach((t) => console.log(t.describe()));\n});',
+          options: ['"Write docs" then "⭐ Fix bug"', 'Two identical Task objects print', 'Error', 'Nothing prints'],
+          answer: 0,
+          explanation: '<code>map</code> turns each raw object into the right class instance, so <code>describe()</code> gives the plain title for the regular task and the starred title for the priority one.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Capstone · Step 6',
+          title: 'Render tasks to the DOM',
+          body: [
+            'For each task, create a new <code>&lt;li&gt;</code> and append it to the list.'
+          ],
+          code: 'function renderTasks(tasks) {\n  const list = document.getElementById("taskList");\n  tasks.forEach((task) => {\n    const li = document.createElement("li");\n    li.textContent = task.describe();\n    list.appendChild(li);\n  });\n}'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Capstone · Step 7',
+          title: 'Complete the filter',
+          body: [
+            'Finish the line so <code>onlyPending</code> only contains tasks that aren\'t done yet.'
+          ],
+          codeBefore: 'const onlyPending = tasks.',
+          codeAfter: '((task) => !task.done);',
+          answer: ['filter'],
+          hint: 'Keeps only items that pass a test.',
+          explanation: '<code>tasks.filter((task) =&gt; !task.done)</code> keeps only the tasks where <code>done</code> is still <code>false</code>.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Capstone · Complete',
+          title: 'You built a task manager',
+          code: 'class Task {\n  constructor(title) {\n    this.title = title;\n    this.done = false;\n  }\n  describe() {\n    return this.title;\n  }\n}\n\nclass PriorityTask extends Task {\n  constructor(title) {\n    super(title);\n    this.priority = true;\n  }\n  describe() {\n    return "⭐ " + this.title;\n  }\n}\n\nasync function loadTasks() {\n  const response = await fetch("/api/tasks");\n  const data = await response.json();\n  return data.map((t) => t.priority ? new PriorityTask(t.title) : new Task(t.title));\n}\n\nfunction renderTasks(tasks) {\n  const list = document.getElementById("taskList");\n  tasks.forEach((task) => {\n    const li = document.createElement("li");\n    li.textContent = task.describe();\n    list.appendChild(li);\n  });\n}\n\nloadTasks().then(renderTasks);',
+          bullets: [
+            '<code>PriorityTask extends Task</code> and overrides <code>describe()</code> to show a star, while sharing everything else.',
+            '<code>loadTasks</code> used <code>fetch</code> and <code>await</code> to pull raw data, then <code>map</code> turned each object into the right class instance.',
+            '<code>renderTasks</code> used <code>createElement</code> and <code>appendChild</code> to turn task instances into real list items on the page.',
+            'This is the same shape behind most real front-end features: fetch data, model it with classes, render it to the DOM.'
+          ],
+          next: 'That\'s the full JavaScript course — variables through classes, the DOM, and async. Nicely done.'
+        }
+      ]
+    }
   ];
 
   var state = load();
