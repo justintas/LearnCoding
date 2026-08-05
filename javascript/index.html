@@ -2120,7 +2120,439 @@
         }
       ]
     },
-    { id: 'more-soon', title: 'Async & classes', sub: 'coming soon', locked: true }
+    {
+      id: 'promises',
+      title: 'Promises',
+      sub: '7 steps · ~5 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 13 · Step 1',
+          title: 'Asynchronous code doesn\'t block — it runs later',
+          body: [
+            'Some operations (network requests, timers) take time. JavaScript doesn\'t wait around; it registers what to do when the result arrives and moves on.'
+          ],
+          code: 'console.log("Start");\nsetTimeout(() => {\n  console.log("Delayed");\n}, 1000);\nconsole.log("End");\n\n// output:\nStart\nEnd\nDelayed'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 13 · Step 2',
+          title: 'Predict the output',
+          code: 'console.log("A");\nsetTimeout(() => {\n  console.log("B");\n}, 0);\nconsole.log("C");',
+          options: ['A C B', 'A B C', 'B A C', 'A C'],
+          answer: 0,
+          explanation: 'Even with a 0ms delay, <code>setTimeout</code>\'s callback always runs after the current code finishes — <code>"A"</code> then <code>"C"</code> then <code>"B"</code>.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 13 · Step 3',
+          title: 'A Promise represents a value that isn\'t ready yet',
+          body: [
+            'A Promise is either pending, fulfilled (succeeded), or rejected (failed). <code>.then()</code> runs when it fulfills.'
+          ],
+          code: 'const promise = new Promise((resolve) => {\n  setTimeout(() => resolve("Done!"), 1000);\n});\npromise.then((result) => {\n  console.log(result);\n});\n\n// output (after 1 second):\nDone!'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 13 · Step 4',
+          title: 'Predict the outcome',
+          code: 'function wait(ms) {\n  return new Promise((resolve) => {\n    setTimeout(resolve, ms);\n  });\n}\nwait(100).then(() => {\n  console.log("Waited!");\n});\nconsole.log("Started");',
+          options: ['"Started" then "Waited!"', '"Waited!" then "Started"', 'Error', 'Only "Started" prints'],
+          answer: 0,
+          explanation: 'The synchronous <code>console.log("Started")</code> runs immediately; <code>"Waited!"</code> only prints once the promise resolves, later.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 13 · Step 5',
+          title: '.catch handles a rejected promise',
+          body: [
+            'If a promise fails (rejects), <code>.catch()</code> runs instead of <code>.then()</code>.'
+          ],
+          code: 'const promise = new Promise((resolve, reject) => {\n  reject("Something broke");\n});\npromise\n  .then((result) => console.log(result))\n  .catch((error) => console.log("Error:", error));\n\n// output:\nError: Something broke'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 13 · Step 6',
+          title: 'Complete the chain',
+          body: [
+            'Finish the chain so <code>result</code> gets logged once the promise resolves.'
+          ],
+          codeBefore: 'fetchData()\n  .',
+          codeAfter: '((result) => {\n    console.log(result);\n  });',
+          answer: ['then'],
+          hint: 'Runs a callback once a promise resolves successfully.',
+          explanation: '<code>.then(callback)</code> runs the callback with the resolved value.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 13 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            'JavaScript runs asynchronous code (timers, network calls) without blocking — the rest of the script keeps going first.',
+            'A Promise represents a value that will be available later: pending, then fulfilled or rejected.',
+            '<code>.then(callback)</code> runs when a promise fulfills; <code>.catch(callback)</code> runs when it rejects.',
+            'Code after a promise, but not inside <code>.then</code>, always runs before the promise resolves.'
+          ],
+          next: 'Next up: async/await — writing asynchronous code that reads like synchronous code.'
+        }
+      ]
+    },
+    {
+      id: 'async-await',
+      title: 'async & await',
+      sub: '7 steps · ~5 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 14 · Step 1',
+          title: 'async/await makes promise code read top to bottom',
+          body: [
+            'Marking a function <code>async</code> lets you use <code>await</code> inside it — <code>await</code> pauses just that function until the promise resolves, without blocking anything else.'
+          ],
+          code: 'function wait(ms) {\n  return new Promise((resolve) => setTimeout(resolve, ms));\n}\n\nasync function getData() {\n  await wait(100);\n  console.log("Done!");\n}\ngetData();\n\n// output (after 100ms):\nDone!'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 14 · Step 2',
+          title: 'Predict the outcome',
+          code: 'async function greet() {\n  console.log("Before");\n  await wait(100);\n  console.log("After");\n}\ngreet();\nconsole.log("Outside");',
+          options: ['Before, Outside, After', 'Before, After, Outside', 'Outside, Before, After', 'Error'],
+          answer: 0,
+          explanation: '<code>greet()</code> runs synchronously up to <code>await</code>, printing <code>"Before"</code>; then it pauses and the rest of the script continues, printing <code>"Outside"</code>; <code>"After"</code> prints once the wait finishes.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 14 · Step 3',
+          title: 'await unwraps the resolved value directly',
+          body: [
+            'Instead of chaining <code>.then()</code>, <code>await</code> lets you assign the resolved value straight to a variable, as if it were synchronous.'
+          ],
+          code: 'function getName() {\n  return new Promise((resolve) => {\n    setTimeout(() => resolve("Ada"), 100);\n  });\n}\n\nasync function greet() {\n  const name = await getName();\n  console.log(`Hello, ${name}`);\n}\ngreet();\n\n// output (after 100ms):\nHello, Ada'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 14 · Step 4',
+          title: 'Predict the outcome',
+          code: 'function getScore() {\n  return new Promise((resolve) => {\n    setTimeout(() => resolve(95), 50);\n  });\n}\n\nasync function report() {\n  const score = await getScore();\n  console.log(score + 5);\n}\nreport();',
+          options: ['100 (after the delay)', '95', 'Error', 'undefined'],
+          answer: 0,
+          explanation: '<code>await</code> unwraps the resolved value (<code>95</code>) directly, so <code>score + 5</code> is <code>100</code>.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 14 · Step 5',
+          title: 'Multiple awaits run one after another, in order',
+          body: [
+            'Each <code>await</code> pauses until its own promise resolves before the next line runs — this makes async code predictable, at the cost of running requests one at a time.'
+          ],
+          code: 'async function loadAll() {\n  const a = await wait(100);\n  const b = await wait(100);\n  console.log("Both done");\n}\n\n// takes about 200ms total, not 100ms'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 14 · Step 6',
+          title: 'Complete the function',
+          body: [
+            'Finish the function signature so <code>await</code> can be used inside it.'
+          ],
+          codeBefore: '',
+          codeAfter: ' function loadData() {\n  // ...\n}',
+          answer: ['async'],
+          hint: 'The keyword that unlocks await inside a function.',
+          explanation: '<code>async</code> marks the function as asynchronous, allowing <code>await</code> inside its body.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 14 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            'A function marked <code>async</code> can use <code>await</code> inside it.',
+            '<code>await</code> pauses that function until a promise resolves, then unwraps the resolved value directly.',
+            'Multiple <code>await</code>s run one after another, in the order they\'re written.',
+            'async/await is built on promises — it\'s just a more readable way to write the same thing.'
+          ],
+          next: 'Next up: fetch and error handling — talking to a real API.'
+        }
+      ]
+    },
+    {
+      id: 'fetch-errors',
+      title: 'fetch & error handling',
+      sub: '7 steps · ~5 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 15 · Step 1',
+          title: 'fetch makes an HTTP request and returns a promise',
+          body: [
+            '<code>fetch(url)</code> returns a promise that resolves to a Response object.'
+          ],
+          code: 'async function getUser() {\n  const response = await fetch("/api/user");\n  const data = await response.json();\n  console.log(data.name);\n}'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 15 · Step 2',
+          title: 'Predict the outcome',
+          body: [
+            'Assume the API returns <code>{ "name": "Nova", "age": 5 }</code>.'
+          ],
+          code: 'async function getPet() {\n  const response = await fetch("/api/pet");\n  const data = await response.json();\n  console.log(data.name);\n}\ngetPet();',
+          options: ['"Nova" (after the request completes)', 'undefined', 'Error', '"/api/pet"'],
+          answer: 0,
+          explanation: 'Awaiting both the fetch and the <code>.json()</code> parse gives back the parsed object, so <code>data.name</code> is <code>"Nova"</code>.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 15 · Step 3',
+          title: '.json() parses the response body, and is itself async',
+          body: [
+            '<code>response.json()</code> returns another promise — it needs its own <code>await</code>, since parsing the body also takes a moment.'
+          ],
+          code: 'async function getData() {\n  const response = await fetch("/api/data");\n  const data = await response.json();\n  console.log(data);\n}'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 15 · Step 4',
+          title: 'Predict the outcome',
+          code: 'async function getData() {\n  const response = await fetch("/api/data");\n  const data = response.json();\n  console.log(data);\n}\ngetData();',
+          options: ['A pending Promise object prints, not the data', 'The parsed data prints', 'Error', 'undefined'],
+          answer: 0,
+          explanation: 'Without <code>await</code>, <code>response.json()</code> returns a Promise, not the actual data — awaiting it is required to get the parsed value.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 15 · Step 5',
+          title: 'try/catch handles errors in async functions',
+          body: [
+            'Wrap <code>await</code> calls in <code>try/catch</code> to handle a rejected promise or failed request, the same way you\'d catch a thrown error.'
+          ],
+          code: 'async function getData() {\n  try {\n    const response = await fetch("/api/data");\n    const data = await response.json();\n    console.log(data);\n  } catch (error) {\n    console.log("Failed:", error.message);\n  }\n}'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 15 · Step 6',
+          title: 'Complete the line',
+          body: [
+            'Finish the line so the function waits for <code>fetch</code> to resolve before continuing.'
+          ],
+          codeBefore: 'async function getUser() {\n  const response = ',
+          codeAfter: ' fetch("/api/user");\n  console.log(response);\n}',
+          answer: ['await'],
+          hint: 'Pauses an async function until a promise resolves.',
+          explanation: '<code>await</code> pauses execution until the fetch promise resolves, giving you the actual Response.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 15 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            '<code>fetch(url)</code> returns a promise for an HTTP response.',
+            '<code>response.json()</code> parses the body as JSON, and is itself async — it needs its own <code>await</code>.',
+            'Forgetting to <code>await</code> a promise gives you the Promise object itself, not the resolved value.',
+            '<code>try/catch</code> around <code>await</code> calls handles rejected promises and failed requests.'
+          ],
+          next: 'Next up: a checkpoint test on async JavaScript.'
+        }
+      ]
+    },
+    {
+      id: 'checkpoint-5',
+      title: 'Checkpoint: Async JavaScript',
+      sub: 'Checkpoint · 8 questions',
+      isTest: true,
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Checkpoint · Start',
+          title: 'Time to check what stuck',
+          body: [
+            '8 quick questions pulling from promises, async/await, and fetch.'
+          ]
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 1',
+          title: 'Predict the output',
+          code: 'console.log("1");\nsetTimeout(() => {\n  console.log("2");\n}, 0);\nconsole.log("3");',
+          options: ['1 3 2', '1 2 3', '2 1 3', '3 1 2'],
+          answer: 0,
+          explanation: '<code>setTimeout</code>\'s callback always runs after the synchronous code finishes, even with a 0ms delay.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint · Question 2',
+          title: 'Complete the chain',
+          body: ['Finish the chain so <code>result</code> gets logged once the promise resolves.'],
+          codeBefore: 'fetchData()\n  .',
+          codeAfter: '((result) => {\n    console.log(result);\n  });',
+          answer: ['then'],
+          hint: 'Runs a callback once a promise resolves successfully.',
+          explanation: '<code>.then(callback)</code> runs the callback with the resolved value.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 3',
+          title: 'Predict the outcome',
+          code: 'function wait(ms) {\n  return new Promise((resolve) => setTimeout(resolve, ms));\n}\nwait(50).then(() => console.log("Done"));\nconsole.log("Started");',
+          options: ['"Started" then "Done"', '"Done" then "Started"', 'Error', 'Only "Started"'],
+          answer: 0,
+          explanation: 'The synchronous <code>console.log("Started")</code> runs immediately; <code>"Done"</code> only prints once the promise resolves, later.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint · Question 4',
+          title: 'Complete the function',
+          body: ['Finish the function signature so <code>await</code> can be used inside it.'],
+          codeBefore: '',
+          codeAfter: ' function loadData() {\n  // ...\n}',
+          answer: ['async'],
+          hint: 'The keyword that unlocks await inside a function.',
+          explanation: '<code>async</code> marks the function as asynchronous, allowing <code>await</code> inside its body.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 5',
+          title: 'Predict the outcome',
+          code: 'function getScore() {\n  return new Promise((resolve) => {\n    setTimeout(() => resolve(95), 50);\n  });\n}\n\nasync function report() {\n  const score = await getScore();\n  console.log(score + 5);\n}\nreport();',
+          options: ['100 (after the delay)', '95', 'Error', 'undefined'],
+          answer: 0,
+          explanation: '<code>await</code> unwraps the resolved value (<code>95</code>) directly, so <code>score + 5</code> is <code>100</code>.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint · Question 6',
+          title: 'Complete the line',
+          body: ['Finish the line so the function waits for <code>fetch</code> to resolve before continuing.'],
+          codeBefore: 'async function getUser() {\n  const response = ',
+          codeAfter: ' fetch("/api/user");\n}',
+          answer: ['await'],
+          hint: 'Pauses an async function until a promise resolves.',
+          explanation: '<code>await</code> pauses execution until the fetch promise resolves, giving you the actual Response.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 7',
+          title: 'Predict the outcome',
+          body: ['Assume the API returns <code>{ "name": "Nova" }</code>.'],
+          code: 'async function getPet() {\n  const response = await fetch("/api/pet");\n  const data = await response.json();\n  console.log(data.name);\n}\ngetPet();',
+          options: ['"Nova" (after the request completes)', 'undefined', 'Error', '"/api/pet"'],
+          answer: 0,
+          explanation: 'Awaiting both the fetch and the <code>.json()</code> parse gives back the parsed object, so <code>data.name</code> is <code>"Nova"</code>.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint · Question 8',
+          title: 'Complete the block',
+          body: ['Finish the block so a rejected promise or thrown error gets caught and logged.'],
+          codeBefore: 'try {\n  const response = await fetch(url);\n  const data = await response.json();\n} ',
+          codeAfter: ' (error) {\n  console.log("Failed:", error.message);\n}',
+          answer: ['catch'],
+          hint: 'Runs when a promise rejects or an awaited call throws.',
+          explanation: '<code>catch</code> runs if anything in the <code>try</code> block throws or rejects.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Checkpoint · Complete',
+          title: 'Here\'s where you stand',
+          bullets: [
+            'Promises, async/await, and fetch — the tools for working with data that isn\'t available right away.',
+            'If anything felt shaky, the matching lesson is one tap away in the menu — and you can retake this checkpoint any time.'
+          ],
+          next: 'Next up: a project — fetching and displaying weather data.'
+        }
+      ]
+    },
+    {
+      id: 'project-weather',
+      title: 'Project: Fetch Weather Data',
+      sub: 'Project · 8 steps',
+      kind: 'project',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Project · Brief',
+          title: 'The goal',
+          body: [
+            'Fetch weather data for a city and gracefully handle a failed request — combining fetch, async/await, template literals, and try/catch.'
+          ]
+        },
+        {
+          type: 'info',
+          eyebrow: 'Project · Step 1',
+          title: 'Start with the API shape',
+          body: [
+            'Assume this endpoint exists, returning JSON like this when successful.'
+          ],
+          code: 'fetch("/api/weather?city=Austin")\n\n// resolves to:\n{ "city": "Austin", "tempF": 82, "condition": "Sunny" }'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Project · Step 2',
+          title: 'Complete the function',
+          body: [
+            'Finish the function so it\'s marked <code>async</code>, allowing <code>await</code> inside.'
+          ],
+          codeBefore: '',
+          codeAfter: ' function getWeather(city) {\n  // ...\n}',
+          answer: ['async'],
+          hint: 'The keyword that unlocks await inside a function.',
+          explanation: '<code>async</code> marks the function as asynchronous.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Project · Step 3',
+          title: 'Predict the outcome',
+          code: 'async function getWeather(city) {\n  const response = await fetch(`/api/weather?city=${city}`);\n  const data = await response.json();\n  console.log(`${data.city}: ${data.tempF}°F, ${data.condition}`);\n}\ngetWeather("Austin");',
+          options: ['"Austin: 82°F, Sunny" (after the request completes)', 'undefined', 'Error', 'Nothing prints'],
+          answer: 0,
+          explanation: 'Awaiting the fetch and the JSON parse gives the weather object, and the template literal formats it into a readable line.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Project · Step 4',
+          title: 'Wrap it in try/catch for a failed request',
+          body: [
+            'If the city doesn\'t exist or the network fails, the fetch can throw — catch it and show something useful instead of crashing.'
+          ],
+          code: 'async function getWeather(city) {\n  try {\n    const response = await fetch(`/api/weather?city=${city}`);\n    const data = await response.json();\n    console.log(`${data.city}: ${data.tempF}°F`);\n  } catch (error) {\n    console.log("Could not load weather:", error.message);\n  }\n}'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Project · Step 5',
+          title: 'Complete the block',
+          body: [
+            'Finish the block so a failed request is caught and logged instead of crashing the app.'
+          ],
+          codeBefore: 'try {\n  const response = await fetch(url);\n  const data = await response.json();\n} ',
+          codeAfter: ' (error) {\n  console.log("Could not load weather:", error.message);\n}',
+          answer: ['catch'],
+          hint: 'Runs when the try block throws or rejects.',
+          explanation: '<code>catch (error)</code> runs if anything in the <code>try</code> block fails.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Project · Step 6',
+          title: 'Predict the outcome',
+          code: 'async function getWeather(city) {\n  try {\n    const response = await fetch(`/api/weather?city=${city}`);\n    const data = await response.json();\n    console.log(data.tempF);\n  } catch (error) {\n    console.log("Could not load weather:", error.message);\n  }\n}\ngetWeather("Nowhere");\n\n// the fetch throws: "Network request failed"',
+          options: ['"Could not load weather: Network request failed" prints', '82 prints', 'The app crashes', 'Nothing prints'],
+          answer: 0,
+          explanation: 'The thrown error is caught by the <code>catch</code> block, which logs a friendly message instead of crashing.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Project · Complete',
+          title: 'You built a weather fetcher',
+          code: 'async function getWeather(city) {\n  try {\n    const response = await fetch(`/api/weather?city=${city}`);\n    const data = await response.json();\n    console.log(`${data.city}: ${data.tempF}°F, ${data.condition}`);\n  } catch (error) {\n    console.log("Could not load weather:", error.message);\n  }\n}\n\ngetWeather("Austin");',
+          bullets: [
+            '<code>async</code> and <code>await</code> let the function read top-to-bottom despite the fetch taking real time.',
+            '<code>fetch</code> returned a promise for the response; a second <code>await</code> parsed the JSON body.',
+            'A template literal built the request URL and the display string from the fetched data.',
+            '<code>try/catch</code> caught a failed request and showed a friendly message instead of crashing.'
+          ],
+          next: 'One more module — classes — and this course is complete.'
+        }
+      ]
+    },
+    { id: 'more-soon', title: 'Classes', sub: 'coming soon', locked: true }
   ];
 
   var state = load();
