@@ -1672,7 +1672,455 @@
         }
       ]
     },
-    { id: 'more-soon', title: 'The DOM, async & classes', sub: 'coming soon', locked: true }
+    {
+      id: 'dom-selecting',
+      title: 'Selecting & reading elements',
+      sub: '7 steps · ~5 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 10 · Step 1',
+          title: 'document.querySelector finds one element',
+          body: [
+            '<code>querySelector</code> takes a CSS selector and returns the first matching element, or <code>null</code> if none exists.'
+          ],
+          code: '// assume: <h1>Welcome</h1>\nconst heading = document.querySelector("h1");\nconsole.log(heading.textContent);\n\n// output:\nWelcome'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 10 · Step 2',
+          title: 'Predict the output',
+          body: [
+            'Imagine this HTML is on the page: <code>&lt;p id="msg"&gt;Hello&lt;/p&gt;</code>'
+          ],
+          code: 'const el = document.getElementById("msg");\nconsole.log(el.textContent);',
+          options: ['"Hello"', '"msg"', 'null', 'undefined'],
+          answer: 0,
+          explanation: '<code>getElementById</code> finds the element by its id, and <code>.textContent</code> reads its text.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 10 · Step 3',
+          title: 'querySelectorAll finds every match',
+          body: [
+            '<code>document.querySelectorAll</code> returns every element matching the selector, not just the first.'
+          ],
+          code: '// assume: three <li> elements on the page\nconst items = document.querySelectorAll("li");\nconsole.log(items.length);\n\n// output:\n3'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 10 · Step 4',
+          title: 'Predict the output',
+          body: [
+            'Imagine the page has three <code>&lt;li&gt;</code> elements.'
+          ],
+          code: 'const items = document.querySelectorAll("li");\nconsole.log(items.length);',
+          options: ['3', '1', '0', 'undefined'],
+          answer: 0,
+          explanation: '<code>querySelectorAll</code> matches every <code>&lt;li&gt;</code> on the page — all three.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 10 · Step 5',
+          title: 'textContent reads or changes the text inside an element',
+          body: [
+            'Setting <code>.textContent</code> replaces everything inside the element with plain text.'
+          ],
+          code: 'const heading = document.querySelector("h1");\nheading.textContent = "Updated!";\nconsole.log(heading.textContent);\n\n// output:\nUpdated!'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 10 · Step 6',
+          title: 'Complete the selector',
+          body: [
+            'Finish the call so it selects the element with id <code>"title"</code>.'
+          ],
+          codeBefore: 'const el = document.',
+          codeAfter: '("title");',
+          answer: ['getElementById'],
+          hint: 'Selects a single element by its id attribute.',
+          explanation: '<code>document.getElementById("title")</code> finds the element whose id is <code>"title"</code>.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 10 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            '<code>document.querySelector(selector)</code> finds the first matching element; <code>querySelectorAll</code> finds every match.',
+            '<code>document.getElementById(id)</code> finds a single element by its id attribute, no <code>#</code> needed.',
+            '<code>.textContent</code> reads or replaces the plain text inside an element.',
+            'Selecting elements is the first step before you can read or change anything on a page.'
+          ],
+          next: 'Next up: changing styles and classes.'
+        }
+      ]
+    },
+    {
+      id: 'dom-styling',
+      title: 'Styling & classes',
+      sub: '7 steps · ~5 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 11 · Step 1',
+          title: 'classList adds and removes CSS classes',
+          body: [
+            '<code>element.classList.add("name")</code> adds a class; <code>.remove("name")</code> removes one — the standard way to change styling from JavaScript.'
+          ],
+          code: '// assume: <div class="box"></div>\nconst box = document.querySelector(".box");\nbox.classList.add("highlight");\nconsole.log(box.className);\n\n// output:\nbox highlight'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 11 · Step 2',
+          title: 'Predict the output',
+          body: [
+            'Imagine <code>&lt;div class="card"&gt;&lt;/div&gt;</code> is on the page.'
+          ],
+          code: 'const card = document.querySelector(".card");\ncard.classList.add("active");\nconsole.log(card.className);',
+          options: ['"card active"', '"card"', '"active"', 'undefined'],
+          answer: 0,
+          explanation: '<code>classList.add</code> appends the new class, so <code>className</code> becomes <code>"card active"</code>.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 11 · Step 3',
+          title: 'classList.toggle flips a class on or off',
+          body: [
+            '<code>toggle("name")</code> adds the class if it\'s missing, or removes it if it\'s already there — perfect for something like a menu that opens and closes.'
+          ],
+          code: 'const menu = document.querySelector(".menu");\nmenu.classList.toggle("open");\nconsole.log(menu.classList.contains("open"));\n\n// output:\ntrue'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 11 · Step 4',
+          title: 'Predict the output',
+          body: [
+            '<code>menu</code> already has the class <code>"open"</code>.'
+          ],
+          code: 'menu.classList.toggle("open");\nconsole.log(menu.classList.contains("open"));',
+          options: ['false', 'true', 'undefined', 'Error'],
+          answer: 0,
+          explanation: '<code>toggle</code> removes the class since it was already present, so <code>contains("open")</code> is now <code>false</code>.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 11 · Step 5',
+          title: 'style sets inline CSS directly',
+          body: [
+            '<code>element.style.property</code> sets a single inline CSS property, using camelCase for hyphenated properties (<code>backgroundColor</code>, not <code>background-color</code>).'
+          ],
+          code: 'const box = document.querySelector(".box");\nbox.style.backgroundColor = "yellow";'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 11 · Step 6',
+          title: 'Complete the call',
+          body: [
+            'Finish the call so <code>"hidden"</code> is removed from the element\'s classes.'
+          ],
+          codeBefore: 'el.classList.',
+          codeAfter: '("hidden");',
+          answer: ['remove'],
+          hint: 'Takes a class name away from an element.',
+          explanation: '<code>classList.remove("hidden")</code> removes the class, making the element visible again if <code>hidden</code> was used to hide it.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 11 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            '<code>classList.add(name)</code> and <code>classList.remove(name)</code> add or remove a single CSS class.',
+            '<code>classList.toggle(name)</code> flips a class on if it\'s missing, off if it\'s present.',
+            '<code>classList.contains(name)</code> checks whether a class is currently applied.',
+            '<code>element.style.property</code> sets inline CSS directly, using camelCase for property names.'
+          ],
+          next: 'Next up: events — responding to clicks and other user actions.'
+        }
+      ]
+    },
+    {
+      id: 'dom-events',
+      title: 'Events',
+      sub: '7 steps · ~5 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 12 · Step 1',
+          title: 'addEventListener responds to user actions',
+          body: [
+            '<code>element.addEventListener("click", function)</code> runs the function every time that element is clicked.'
+          ],
+          code: 'const button = document.querySelector("button");\nbutton.addEventListener("click", function() {\n  console.log("Clicked!");\n});'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 12 · Step 2',
+          title: 'Predict the outcome',
+          code: 'button.addEventListener("click", () => {\n  console.log("Button pressed");\n});\n\n// user clicks the button',
+          options: ['"Button pressed" prints', 'Nothing happens', 'Error', '"click" prints'],
+          answer: 0,
+          explanation: 'The arrow function passed to <code>addEventListener</code> runs each time the button is clicked, printing <code>"Button pressed"</code>.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 12 · Step 3',
+          title: 'The event object carries details about what happened',
+          body: [
+            'The listener function receives an <code>event</code> object as its first argument — <code>event.target</code> is the element that triggered the event.'
+          ],
+          code: 'button.addEventListener("click", (event) => {\n  console.log(event.target.textContent);\n});\n\n// user clicks a button that says "Submit"\n\n// output:\nSubmit'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 12 · Step 4',
+          title: 'Predict the outcome',
+          body: [
+            'The input has <code>id="search"</code> and the user types into it.'
+          ],
+          code: 'const input = document.querySelector("#search");\ninput.addEventListener("input", (event) => {\n  console.log(event.target.value);\n});\n\n// user types "cat"',
+          options: ['"cat" prints', '"search" prints', 'Nothing happens', 'Error'],
+          answer: 0,
+          explanation: 'The <code>"input"</code> event fires as the user types, and <code>event.target.value</code> holds the current text in the field.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 12 · Step 5',
+          title: 'Common events: click, input, submit, keydown',
+          body: [
+            '<code>click</code> fires on a click, <code>input</code> fires as a text field\'s value changes, <code>submit</code> fires when a form is submitted, and <code>keydown</code> fires on any key press.'
+          ],
+          code: 'form.addEventListener("submit", (event) => {\n  event.preventDefault();\n  console.log("Form submitted");\n});'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 12 · Step 6',
+          title: 'Complete the call',
+          body: [
+            'Finish the call so clicking the button logs a message.'
+          ],
+          codeBefore: 'button.addEventListener(',
+          codeAfter: ', () => {\n  console.log("Clicked!");\n});',
+          answer: ['"click"'],
+          hint: 'The event name, as a string.',
+          explanation: '<code>addEventListener("click", ...)</code> registers the function to run on every click.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 12 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            '<code>element.addEventListener(eventName, function)</code> runs a function whenever that event happens on the element.',
+            'The listener function receives an <code>event</code> object — <code>event.target</code> is the element the event happened on.',
+            'Common events: <code>click</code>, <code>input</code> (typing), <code>submit</code> (forms), <code>keydown</code> (key presses).',
+            '<code>event.preventDefault()</code> stops a form\'s default behavior, like a page reload on submit.'
+          ],
+          next: 'Next up: a checkpoint test on the DOM and events.'
+        }
+      ]
+    },
+    {
+      id: 'checkpoint-4',
+      title: 'Checkpoint: DOM & Events',
+      sub: 'Checkpoint · 8 questions',
+      isTest: true,
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Checkpoint · Start',
+          title: 'Time to check what stuck',
+          body: [
+            '8 quick questions pulling from selecting elements, styling, classList, and events.'
+          ]
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 1',
+          title: 'Predict the output',
+          body: [
+            'Imagine <code>&lt;h1 id="title"&gt;Hello&lt;/h1&gt;</code> is on the page.'
+          ],
+          code: 'const el = document.getElementById("title");\nconsole.log(el.textContent);',
+          options: ['"Hello"', '"title"', 'null', 'undefined'],
+          answer: 0,
+          explanation: '<code>getElementById</code> finds the element by id, and <code>.textContent</code> reads <code>"Hello"</code>.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint · Question 2',
+          title: 'Complete the selector',
+          body: ['Finish the call so it selects the first element with class <code>"box"</code>.'],
+          codeBefore: 'const el = document.',
+          codeAfter: '(".box");',
+          answer: ['querySelector'],
+          hint: 'Finds the first element matching a CSS selector.',
+          explanation: '<code>document.querySelector(".box")</code> finds the first element with class <code>"box"</code>.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 3',
+          title: 'Predict the output',
+          body: ['The page has four <code>&lt;li&gt;</code> elements.'],
+          code: 'const items = document.querySelectorAll("li");\nconsole.log(items.length);',
+          options: ['4', '1', '0', 'undefined'],
+          answer: 0,
+          explanation: '<code>querySelectorAll</code> matches every <code>&lt;li&gt;</code> — all four.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint · Question 4',
+          title: 'Complete the call',
+          body: ['Finish the call so <code>"active"</code> gets added to the element\'s classes.'],
+          codeBefore: 'el.classList.',
+          codeAfter: '("active");',
+          answer: ['add'],
+          hint: 'Adds a class to an element.',
+          explanation: '<code>classList.add("active")</code> adds the class <code>"active"</code> to the element.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 5',
+          title: 'Predict the output',
+          body: ['<code>menu</code> does not currently have the class <code>"open"</code>.'],
+          code: 'menu.classList.toggle("open");\nconsole.log(menu.classList.contains("open"));',
+          options: ['true', 'false', 'undefined', 'Error'],
+          answer: 0,
+          explanation: '<code>toggle</code> adds the class since it was missing, so <code>contains("open")</code> becomes <code>true</code>.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint · Question 6',
+          title: 'Complete the call',
+          body: ['Finish the call so clicking the button logs a message.'],
+          codeBefore: 'button.addEventListener(',
+          codeAfter: ', () => {\n  console.log("Clicked!");\n});',
+          answer: ['"click"'],
+          hint: 'The event name, as a string.',
+          explanation: '<code>addEventListener("click", ...)</code> registers the function to run on every click.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 7',
+          title: 'Predict the outcome',
+          code: 'input.addEventListener("input", (event) => {\n  console.log(event.target.value);\n});\n\n// user types "hi"',
+          options: ['"hi" prints', '"input" prints', 'Nothing happens', 'Error'],
+          answer: 0,
+          explanation: 'The <code>"input"</code> event fires as the user types, printing the current value, <code>"hi"</code>.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint · Question 8',
+          title: 'Complete the assignment',
+          body: ['Finish the line so the heading\'s text is replaced with <code>"Updated!"</code>.'],
+          codeBefore: 'const heading = document.querySelector("h1");\nheading.',
+          codeAfter: ' = "Updated!";',
+          answer: ['textContent'],
+          hint: 'The property that reads or replaces an element\'s text.',
+          explanation: '<code>heading.textContent = "Updated!"</code> replaces the text inside the element.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Checkpoint · Complete',
+          title: 'Here\'s where you stand',
+          bullets: [
+            'Selecting elements, styling with classList, and responding to events — the core of interactive web pages.',
+            'If anything felt shaky, the matching lesson is one tap away in the menu — and you can retake this checkpoint any time.'
+          ],
+          next: 'Next up: a project — a working to-do list.'
+        }
+      ]
+    },
+    {
+      id: 'project-todo',
+      title: 'Project: Build a To-Do List',
+      sub: 'Project · 8 steps',
+      kind: 'project',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Project · Brief',
+          title: 'The goal',
+          body: [
+            'Wire up a to-do list: read the input\'s value, add it to the list, and let clicking an item mark it done — combining DOM selection, events, and classList.'
+          ]
+        },
+        {
+          type: 'info',
+          eyebrow: 'Project · Step 1',
+          title: 'Start with the markup',
+          body: [
+            'Assume this HTML exists on the page.'
+          ],
+          code: '<input id="todoInput" type="text">\n<button id="addBtn">Add</button>\n<ul id="todoList"></ul>'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Project · Step 2',
+          title: 'Complete the selector',
+          body: [
+            'Finish the line so <code>input</code> holds a reference to the text field.'
+          ],
+          codeBefore: 'const input = document.',
+          codeAfter: '("todoInput");',
+          answer: ['getElementById'],
+          hint: 'Selects a single element by its id.',
+          explanation: '<code>document.getElementById("todoInput")</code> grabs the input field.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Project · Step 3',
+          title: 'Predict the outcome',
+          code: 'const addBtn = document.getElementById("addBtn");\naddBtn.addEventListener("click", () => {\n  console.log(input.value);\n});\n\n// user types "Buy milk" then clicks Add',
+          options: ['"Buy milk" prints', '"addBtn" prints', 'Nothing happens', 'Error'],
+          answer: 0,
+          explanation: 'The click listener reads whatever is currently in the input — <code>"Buy milk"</code>.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Project · Step 4',
+          title: 'Create and append a new list item',
+          body: [
+            '<code>document.createElement</code> builds a new element in memory; <code>appendChild</code> adds it to the page.'
+          ],
+          code: 'const li = document.createElement("li");\nli.textContent = input.value;\ntodoList.appendChild(li);'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Project · Step 5',
+          title: 'Complete the call',
+          body: [
+            'Finish the line so the new <code>&lt;li&gt;</code> gets added to the list.'
+          ],
+          codeBefore: 'const todoList = document.getElementById("todoList");\ntodoList.',
+          codeAfter: '(li);',
+          answer: ['appendChild'],
+          hint: 'Adds a new element as a child of another element.',
+          explanation: '<code>todoList.appendChild(li)</code> inserts the new <code>&lt;li&gt;</code> into the page.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Project · Step 6',
+          title: 'Predict the outcome',
+          code: 'li.addEventListener("click", () => {\n  li.classList.toggle("done");\n});\n\n// user clicks the item twice',
+          options: ['classList ends up without "done"', 'classList ends up with "done"', 'Error', 'Nothing happens'],
+          answer: 0,
+          explanation: '<code>toggle</code> flips the class each click — after two clicks, <code>"done"</code> is added then removed, ending back without it.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Project · Complete',
+          title: 'You built a to-do list',
+          code: 'const input = document.getElementById("todoInput");\nconst addBtn = document.getElementById("addBtn");\nconst todoList = document.getElementById("todoList");\n\naddBtn.addEventListener("click", () => {\n  const li = document.createElement("li");\n  li.textContent = input.value;\n  li.addEventListener("click", () => {\n    li.classList.toggle("done");\n  });\n  todoList.appendChild(li);\n  input.value = "";\n});',
+          bullets: [
+            '<code>getElementById</code> grabbed references to the input, button, and list once, up front.',
+            '<code>createElement</code> plus <code>appendChild</code> built and inserted a new list item from the input\'s value.',
+            'A second <code>addEventListener</code> on each item let clicking it toggle a <code>"done"</code> class.',
+            'This click-to-add, click-to-toggle pattern is the backbone of most interactive lists.'
+          ],
+          next: 'More lessons — async and classes — are on the way.'
+        }
+      ]
+    },
+    { id: 'more-soon', title: 'Async & classes', sub: 'coming soon', locked: true }
   ];
 
   var state = load();
