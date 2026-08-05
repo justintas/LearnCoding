@@ -463,7 +463,374 @@
         }
       ]
     },
-    { id: 'more-soon', title: 'More of Module 1 — coming soon', sub: 'coming soon', locked: true }
+    {
+      id: 'getting-oriented',
+      title: 'Getting oriented on a real project',
+      sub: '6 steps · ~4 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 2 · Step 1',
+          title: 'Training comes first, but experience teaches the rest',
+          body: [
+            'Most people\'s first real contact with EN 50128 is a formal training course — it explains the vocabulary and structure, but the standard only really clicks once you\'re applying it against an actual product.'
+          ]
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 2 · Step 2',
+          title: 'You need the actual standard, not just summaries',
+          body: [
+            'EN 50128 is a purchased, copyrighted document published by CENELEC. No course, article, or summary — this one included — is a substitute for reading the actual clauses when doing real compliance work.'
+          ]
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 2 · Step 3',
+          title: 'A training slide and the standard seem to disagree. Which do you trust?',
+          options: ['The standard — always treat it as the source of truth', 'The training slide, since it\'s probably newer', 'Whichever is easier to follow', 'Neither — ask a colleague instead'],
+          answer: 0,
+          explanation: 'Training materials, courses, and summaries are teaching aids. The standard itself is the only authoritative reference for real compliance work.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 2 · Step 4',
+          title: 'Real understanding comes from applying it, not just reading it',
+          body: [
+            'Reading the standard once won\'t make its clauses click. Understanding comes from writing an actual plan, having it reviewed, seeing where reviewers push back, and revising — the same way any specification only really makes sense once you try to build against it.'
+          ]
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 2 · Step 5',
+          title: 'Name the role',
+          body: [
+            'What three-letter acronym names the independent role who checks compliance and ultimately signs off before certification? You\'ll meet this role properly later in the course — for now, it\'s the person outside the project team who has to agree you\'re compliant.'
+          ],
+          codeBefore: '',
+          codeAfter: ' = Independent Safety Assessor',
+          answer: ['ISA'],
+          hint: 'Independent Safety Assessor — the initials of each word.',
+          explanation: 'ISA — Independent Safety Assessor — is the independent check before certification. What "independent" actually requires is covered properly in a later module.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 2 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            'Training explains the vocabulary and structure, but real understanding comes from applying the standard to an actual product.',
+            'The standard itself — not training slides, summaries, or this course — is the authoritative source for real compliance work.',
+            'EN 50128 is a purchased, copyrighted CENELEC document.',
+            'An Independent Safety Assessor (ISA) is the outside check that ultimately has to agree a project is compliant before certification.'
+          ],
+          next: 'Next up: the V-model — how a project\'s phases actually connect to each other.'
+        }
+      ]
+    },
+    {
+      id: 'v-model',
+      title: 'The V-model lifecycle in practice',
+      sub: '6 steps · ~4 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 3 · Step 1',
+          title: 'The V-model splits a project into two sides',
+          body: [
+            'The left side moves from broad to detailed: requirements → architecture/design → component design → implementation. The right side mirrors it back up: component testing → integration → overall validation.'
+          ]
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 3 · Step 2',
+          title: 'Each right-side phase verifies the matching left-side phase',
+          body: [
+            'Component design pairs with component testing; architecture pairs with integration testing; requirements pair with overall validation. The V shape isn\'t decorative — it shows which testing phase is supposed to catch a mistake made at which design phase.'
+          ]
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 3 · Step 3',
+          title: 'Which phase is meant to catch a mistake in the system\'s overall requirements?',
+          options: ['Overall (final) validation', 'Component testing', 'Code review', 'None — requirements can\'t be tested'],
+          answer: 0,
+          explanation: 'Requirements sit at the top of the left side, so overall validation — the top of the right side — is what confirms the finished system actually satisfies them.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 3 · Step 4',
+          title: '"Did we build it right" vs "did we build the right thing"',
+          body: [
+            'Verification confirms each phase\'s output matches its own inputs (does the design satisfy the requirements). Validation confirms the finished software actually does what it\'s supposed to do in real use. Both matter, and they ask different questions.'
+          ]
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 3 · Step 5',
+          title: 'Which V&V question is which?',
+          body: [
+            'Checking that a design correctly implements its requirements is an example of which activity?'
+          ],
+          codeBefore: '',
+          codeAfter: ', not validation',
+          answer: ['verification'],
+          hint: 'The word describing "did we build it right" from the info step above.',
+          explanation: 'Verification checks each phase against its own inputs — design against requirements, in this case. Validation separately checks that the finished system meets its intended use.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 3 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            'The V-model\'s left side goes broad-to-detailed (requirements → design → implementation); the right side mirrors it back up through testing.',
+            'Each right-side phase verifies the matching left-side phase — component testing checks component design, and so on.',
+            'Verification asks "did we build it right" (matches its inputs); validation asks "did we build the right thing" (meets intended use).',
+            'Both verification and validation are required — they catch different kinds of mistakes.'
+          ],
+          next: 'Next up: tailoring — turning the standard\'s generic requirements into your own project\'s SIL format.'
+        }
+      ]
+    },
+    {
+      id: 'tailoring',
+      title: 'Tailoring: building your SIL format',
+      sub: '6 steps · ~4 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 4 · Step 1',
+          title: 'The standard sets outcomes, not paperwork',
+          body: [
+            'EN 50128 rates each document/technique as Mandatory, Highly Recommended, Recommended, or Not Recommended per SIL — but it doesn\'t hand you a template. Every company builds its own set of document templates and calls that its "SIL format."'
+          ]
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 4 · Step 2',
+          title: 'Tailoring means deciding your own structure that still satisfies the clause',
+          body: [
+            'Two companies building SIL 2 software can have completely different document names, templates, and internal review processes — and both be fully compliant, as long as each can show how their process satisfies what the clause actually requires.'
+          ]
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 4 · Step 3',
+          title: 'A company merges its verification and validation plans into one combined document. Allowed?',
+          options: ['Yes, as long as the combined document still covers what both clauses require', 'No, they must always be two separate documents', 'Only at Basic Integrity', 'Only with special permission from CENELEC'],
+          answer: 0,
+          explanation: 'The standard cares about content and outcome, not document boundaries — merging or splitting documents is a normal tailoring decision, as long as everything required is still covered somewhere.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 4 · Step 4',
+          title: 'An auditor\'s real question is "can you explain it"',
+          body: [
+            'When an auditor reviews your tailored process, they\'re not checking it against someone else\'s template — they\'re checking whether you can justify that your approach satisfies the standard, and whether you\'re actually following your own documented process.'
+          ]
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 4 · Step 5',
+          title: 'Name the concept',
+          body: [
+            'What\'s the general word for adapting a standard\'s generic requirements to fit your own project, without contradicting it? (It\'s this lesson\'s own title.)'
+          ],
+          codeBefore: '',
+          codeAfter: ' = adapting a generic standard to your specific project, without contradicting it',
+          answer: ['tailoring'],
+          hint: 'Check the lesson title at the top of this screen.',
+          explanation: 'Tailoring is deciding your own structure, process, and templates that still satisfy what the standard actually requires.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 4 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            'EN 50128 rates documents/techniques by SIL, but doesn\'t provide templates — every company tailors its own format.',
+            'Two companies can have completely different document structures and both be fully compliant, as long as each satisfies what the clauses actually require.',
+            'Merging, splitting, or renaming documents is a normal tailoring decision — the standard cares about content and outcome, not document boundaries.',
+            'An auditor\'s real question is whether you can justify your process against the standard and show you\'re actually following it — not whether it matches a particular template.'
+          ],
+          next: 'Next up: a checkpoint test on lessons 1 through 4.'
+        }
+      ]
+    },
+    {
+      id: 'checkpoint-1',
+      title: 'Checkpoint: Foundations',
+      sub: 'Checkpoint · 8 questions',
+      isTest: true,
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Checkpoint · Start',
+          title: 'Time to check what stuck',
+          body: [
+            '8 questions pulling from what EN 50128 is, getting oriented, the V-model, and tailoring — no new concepts, just practice recalling what you\'ve already covered.'
+          ]
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 1',
+          title: 'Which needs more rigorous documentation?',
+          body: ['A SIL 4 train protection function, or a SIL 1 passenger information display?'],
+          options: ['The SIL 4 train protection function', 'The SIL 1 passenger display', 'Both need exactly the same rigor', 'Neither needs formal documentation'],
+          answer: 0,
+          explanation: 'Higher SIL means a failure has more severe consequences, so the standard expects more rigorous evidence — SIL 4 demands the most.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint · Question 2',
+          title: 'Name the concept',
+          body: ['What three-letter acronym measures how severe the consequence of a software failure would be?'],
+          codeBefore: '',
+          codeAfter: ' = Safety Integrity Level',
+          answer: ['SIL'],
+          hint: 'Covered in Lesson 1.',
+          explanation: 'SIL — Safety Integrity Level — sizes the standard\'s expectations to the consequence of failure.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 3',
+          title: 'A training slide and the standard disagree. Which do you trust?',
+          options: ['The standard — always the source of truth', 'The training slide', 'Whichever is easier to follow', 'Neither'],
+          answer: 0,
+          explanation: 'The standard itself is the only authoritative reference — training materials are just teaching aids.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint · Question 4',
+          title: 'Name the role',
+          body: ['What three-letter acronym names the independent role who signs off before certification?'],
+          codeBefore: '',
+          codeAfter: ' = Independent Safety Assessor',
+          answer: ['ISA'],
+          hint: 'Covered in Lesson 2.',
+          explanation: 'ISA — Independent Safety Assessor.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 5',
+          title: 'Which phase is meant to catch a mistake in the system\'s overall requirements?',
+          options: ['Overall (final) validation', 'Component testing', 'Code review', 'None'],
+          answer: 0,
+          explanation: 'Requirements sit at the top of the V\'s left side; overall validation is the matching point on the right side.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint · Question 6',
+          title: 'Which V&V question is which?',
+          body: ['Checking that a design correctly implements its requirements is an example of which activity?'],
+          codeBefore: '',
+          codeAfter: ', not validation',
+          answer: ['verification'],
+          hint: '"Did we build it right."',
+          explanation: 'Verification checks a phase\'s output against its own inputs.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 7',
+          title: 'A company merges its verification and validation plans into one document. Allowed?',
+          options: ['Yes, if the combined document still covers what both clauses require', 'No, never', 'Only at Basic Integrity', 'Only with CENELEC permission'],
+          answer: 0,
+          explanation: 'Tailoring cares about content and outcome, not document boundaries.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint · Question 8',
+          title: 'Name the concept',
+          body: ['What\'s the general word for adapting the standard\'s generic requirements to your own project, without contradicting it?'],
+          codeBefore: '',
+          codeAfter: ' = adapting a generic standard to your specific project',
+          answer: ['tailoring'],
+          hint: 'Covered in Lesson 4.',
+          explanation: 'Tailoring — deciding your own structure that still satisfies the standard.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Checkpoint · Complete',
+          title: 'Here\'s where you stand',
+          bullets: [
+            'What EN 50128 and SIL are, getting properly oriented, the V-model, and tailoring — the foundation for everything else in this course.',
+            'Retake this any time — the score updates and nothing is held against you.'
+          ],
+          next: 'Next up: a project — walking a hypothetical product through tailoring decisions.'
+        }
+      ]
+    },
+    {
+      id: 'project-tailoring',
+      title: 'Project: Tailor a SIL Format',
+      sub: 'Project · 7 steps',
+      kind: 'project',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Project · Brief',
+          title: 'The goal',
+          body: [
+            'You\'ve been asked to help scope the documentation approach for a new product: a SIL 2 point machine controller (the equipment that moves railway track switches). Walk through the tailoring decisions involved.'
+          ]
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Project · Step 1',
+          title: 'Is a Software Quality Assurance Plan expected for this SIL 2 controller?',
+          options: ['Yes — it\'s expected at every SIL level', 'No — only SIL 3+ needs one', 'Only if the customer asks for it', 'Only for Basic Integrity components'],
+          answer: 0,
+          explanation: 'A Software Quality Assurance Plan is rated Highly Recommended at every SIL level from 1 through 4 — its expectation barely shifts with SIL.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Project · Step 2',
+          title: 'A tailoring decision: reusing a template',
+          body: [
+            'Your company already has a combined Verification & Validation Plan template from a previous project. Reusing it here is a tailoring decision, not a violation — as long as it still covers both verification and validation activities for this new product.'
+          ]
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Project · Step 3',
+          title: 'Complete the safeguard',
+          body: [
+            'Whatever template you reuse, you must be able to ____ it against the standard\'s actual requirements for this specific product.'
+          ],
+          codeBefore: '',
+          codeAfter: ' it against the standard\'s actual requirements',
+          answer: ['justify', 'explain'],
+          hint: 'The word from this module\'s "auditor\'s real question" lesson.',
+          explanation: 'You must be able to justify — explain — why your reused template still satisfies the standard for this product, not just assume it carries over.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Project · Step 4',
+          title: 'The team proposes skipping a dedicated Requirements Verification Report, since SRS review meeting minutes already show requirements were checked. Reasonable?',
+          options: ['Could be reasonable, if the minutes actually capture a real independent check against the SRS', 'Always fine — minutes are always enough', 'Never fine — a dedicated report is mandatory in all cases', 'Only allowed at Basic Integrity'],
+          answer: 0,
+          explanation: 'The test is never "does it have the right title" — it\'s whether the evidence, wherever it lives, actually demonstrates the required activity happened.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Project · Step 5',
+          title: 'The pattern underneath all of this',
+          body: [
+            'Every tailoring decision in this project followed the same test: not "does this match a standard template," but "can I point to evidence that satisfies what the clause actually asks for." That\'s the real skill EN 50128 compliance work requires.'
+          ]
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Project · Complete',
+          title: 'You scoped a SIL 2 documentation approach',
+          bullets: [
+            'A Software Quality Assurance Plan is expected at every SIL level — that one\'s non-negotiable regardless of tailoring.',
+            'Reusing a template, combining documents, or capturing evidence in an unconventional place can all be valid tailoring — if you can justify that it actually satisfies the standard.',
+            'The recurring test throughout tailoring is always the same: can you explain why your approach satisfies the clause, not whether it matches a specific template.'
+          ],
+          next: 'Next up: execution — implementation, testing, and V&V in practice.'
+        }
+      ]
+    },
+    { id: 'more-soon', title: 'Execution, assurance & independence — coming soon', sub: 'coming soon', locked: true }
   ];
 
   var state = load();
