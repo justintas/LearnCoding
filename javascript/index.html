@@ -816,7 +816,435 @@
         }
       ]
     },
-    { id: 'more-soon', title: 'Arrays, functions & objects', sub: 'coming soon', locked: true }
+    {
+      id: 'arrays',
+      title: 'Arrays',
+      sub: '7 steps · ~5 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 04 · Step 1',
+          title: 'Square brackets create an array',
+          body: [
+            'An array is an ordered list of values, just like a Python list. Access items with square-bracket indexing, starting at <code>0</code>.'
+          ],
+          code: 'const fruits = ["apple", "banana", "cherry"];\nconsole.log(fruits[0]);\n\n// output:\napple'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 04 · Step 2',
+          title: 'Predict the output',
+          code: 'const nums = [10, 20, 30];\nconsole.log(nums[2]);',
+          options: ['30', '20', '10', 'undefined'],
+          answer: 0,
+          explanation: 'Index 2 is the third item (0-indexed) — <code>30</code>.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 04 · Step 3',
+          title: 'push and pop add or remove from the end',
+          body: [
+            '<code>array.push(value)</code> adds an item to the end; <code>array.pop()</code> removes and returns the last item. Both mutate the array directly.'
+          ],
+          code: 'const nums = [1, 2];\nnums.push(3);\nconsole.log(nums);\n\n// output:\n[1, 2, 3]'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 04 · Step 4',
+          title: 'Predict the output',
+          code: 'const nums = [1, 2, 3];\nconst last = nums.pop();\nconsole.log(last, nums);',
+          options: ['3 [1, 2]', '3 [1, 2, 3]', '[3] [1, 2]', 'undefined [1, 2, 3]'],
+          answer: 0,
+          explanation: '<code>pop()</code> removes and returns the last item (<code>3</code>), leaving <code>[1, 2]</code> behind.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 04 · Step 5',
+          title: 'length tells you how many items are in the array',
+          body: [
+            '<code>array.length</code> is a property, not a method — no parentheses — giving the current item count.'
+          ],
+          code: 'const colors = ["red", "green", "blue"];\nconsole.log(colors.length);\n\n// output:\n3'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 04 · Step 6',
+          title: 'Complete the method',
+          body: [
+            'Finish the call so <code>"grape"</code> gets added to the end of the array.'
+          ],
+          codeBefore: 'const fruits = ["apple", "banana"];\nfruits.',
+          codeAfter: '("grape");',
+          answer: ['push'],
+          hint: 'Adds one item to the end of an array.',
+          explanation: '<code>fruits.push("grape")</code> adds <code>"grape"</code> to the end, mutating the array in place.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 04 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            'Square brackets <code>[]</code> create an array; access items by index, starting at <code>0</code>.',
+            '<code>push(value)</code> adds to the end; <code>pop()</code> removes and returns the last item — both mutate the array.',
+            '<code>length</code> is a property (no parentheses) giving the current item count.',
+            'Arrays in JavaScript work a lot like Python lists — ordered, indexed, mutable.'
+          ],
+          next: 'Next up: map and filter — transforming arrays without writing a loop by hand.'
+        }
+      ]
+    },
+    {
+      id: 'map-filter',
+      title: 'map & filter',
+      sub: '7 steps · ~5 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 05 · Step 1',
+          title: 'map transforms every item into something new',
+          body: [
+            '<code>array.map(item =&gt; ...)</code> runs a function on every item and returns a brand-new array of the results — the original array is untouched.'
+          ],
+          code: 'const nums = [1, 2, 3];\nconst doubled = nums.map(n => n * 2);\nconsole.log(doubled);\n\n// output:\n[2, 4, 6]'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 05 · Step 2',
+          title: 'Predict the output',
+          code: 'const nums = [1, 2, 3, 4];\nconst squared = nums.map(n => n * n);\nconsole.log(squared);',
+          options: ['[1, 4, 9, 16]', '[1, 2, 3, 4]', '[2, 4, 6, 8]', 'Error'],
+          answer: 0,
+          explanation: 'Each number gets squared: <code>1, 4, 9, 16</code>.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 05 · Step 3',
+          title: 'filter keeps only items that pass a test',
+          body: [
+            '<code>array.filter(item =&gt; condition)</code> returns a new array containing only the items where the function returns <code>true</code>.'
+          ],
+          code: 'const nums = [1, 2, 3, 4, 5, 6];\nconst evens = nums.filter(n => n % 2 === 0);\nconsole.log(evens);\n\n// output:\n[2, 4, 6]'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 05 · Step 4',
+          title: 'Predict the output',
+          code: 'const nums = [10, 15, 20, 25];\nconst big = nums.filter(n => n > 15);\nconsole.log(big);',
+          options: ['[20, 25]', '[10, 15, 20, 25]', '[15, 20, 25]', 'Error'],
+          answer: 0,
+          explanation: 'Only <code>20</code> and <code>25</code> pass <code>n &gt; 15</code>.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 05 · Step 5',
+          title: '=> is arrow function syntax',
+          body: [
+            '<code>n =&gt; n * 2</code> is shorthand for a function that takes <code>n</code> and returns <code>n * 2</code>. It\'s the standard way to write short functions passed into <code>map</code>, <code>filter</code>, and similar methods.'
+          ],
+          code: 'const double = n => n * 2;\nconsole.log(double(5));\n\n// output:\n10'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 05 · Step 6',
+          title: 'Complete the call',
+          body: [
+            'Finish the method so this keeps only names longer than 3 characters.'
+          ],
+          codeBefore: 'const names = ["Al", "Ada", "Alexander"];\nconst longNames = names.',
+          codeAfter: '(name => name.length > 3);',
+          answer: ['filter'],
+          hint: 'Keeps only items that pass a test.',
+          explanation: '<code>filter(name =&gt; name.length &gt; 3)</code> keeps only <code>"Alexander"</code> — the only name over 3 characters.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 05 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            '<code>array.map(fn)</code> transforms every item into something new, returning a new array.',
+            '<code>array.filter(fn)</code> keeps only items where <code>fn</code> returns <code>true</code>, returning a new array.',
+            '<code>n =&gt; n * 2</code> is arrow function shorthand — a compact way to write small functions.',
+            'Both <code>map</code> and <code>filter</code> leave the original array untouched — they return new arrays.'
+          ],
+          next: 'Next up: functions — packaging up reusable logic properly.'
+        }
+      ]
+    },
+    {
+      id: 'functions',
+      title: 'Functions',
+      sub: '7 steps · ~5 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 06 · Step 1',
+          title: 'function declarations package up reusable code',
+          body: [
+            '<code>function name(params) { ... }</code> defines a named, reusable block of code — call it any time with <code>name(args)</code>.'
+          ],
+          code: 'function greet(name) {\n  console.log("Hello, " + name);\n}\ngreet("Ada");\n\n// output:\nHello, Ada'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 06 · Step 2',
+          title: 'Predict the output',
+          code: 'function triple(n) {\n  return n * 3;\n}\nconsole.log(triple(4));',
+          options: ['12', '4', '"triple(4)"', 'undefined'],
+          answer: 0,
+          explanation: '<code>triple(4)</code> returns <code>4 * 3 = 12</code>, which <code>console.log</code> then displays.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 06 · Step 3',
+          title: 'return sends a value back; console.log just displays it',
+          body: [
+            'Without <code>return</code>, a function\'s result is <code>undefined</code> — the caller gets nothing back, even if something was logged inside.'
+          ],
+          code: 'function addNoReturn(a, b) {\n  console.log(a + b);\n}\nconst result = addNoReturn(2, 3);\nconsole.log(result);\n\n// output:\n5\nundefined'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 06 · Step 4',
+          title: 'Predict the output',
+          code: 'function add(a, b) {\n  return a + b;\n}\nconst total = add(3, 4) + 1;\nconsole.log(total);',
+          options: ['8', '7', '"3 + 4 + 1"', 'Error'],
+          answer: 0,
+          explanation: '<code>add(3, 4)</code> returns <code>7</code>, then <code>+ 1</code> makes it <code>8</code>.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 06 · Step 5',
+          title: 'Arrow functions can also be assigned to a variable',
+          body: [
+            '<code>const name = (params) =&gt; { ... }</code> is another way to write a reusable function — common for short utility functions, same idea as function declarations.'
+          ],
+          code: 'const square = n => {\n  return n * n;\n};\nconsole.log(square(5));\n\n// output:\n25'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 06 · Step 6',
+          title: 'Complete the function',
+          body: [
+            'Finish the function so it returns the product of two numbers instead of just printing it.'
+          ],
+          codeBefore: 'function multiply(a, b) {\n  ',
+          codeAfter: ' a * b;\n}',
+          answer: ['return'],
+          hint: 'The keyword that hands a value back to whoever called the function.',
+          explanation: '<code>return a * b</code> sends the product back so it can be stored, printed, or reused.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 06 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            '<code>function name(params) { }</code> defines a reusable block of code, called with <code>name(args)</code>.',
+            '<code>return</code> sends a value back to the caller; <code>console.log</code> only displays a value — it doesn\'t return anything.',
+            'Arrow functions (<code>params =&gt; { }</code>) are another way to write a function, often for short utilities.',
+            'A function without <code>return</code> gives the caller <code>undefined</code>, even if it logged something internally.'
+          ],
+          next: 'Next up: a checkpoint test on arrays and functions.'
+        }
+      ]
+    },
+    {
+      id: 'checkpoint-2',
+      title: 'Checkpoint: Arrays & Functions',
+      sub: 'Checkpoint · 8 questions',
+      isTest: true,
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Checkpoint · Start',
+          title: 'Time to check what stuck',
+          body: [
+            '8 quick questions pulling from arrays, map, filter, and functions.'
+          ]
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 1',
+          title: 'Predict the output',
+          code: 'const nums = [10, 20, 30];\nconsole.log(nums[1]);',
+          options: ['20', '10', '30', 'undefined'],
+          answer: 0,
+          explanation: 'Index 1 is the second item — <code>20</code>.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint · Question 2',
+          title: 'Complete the method',
+          body: ['Finish the call so <code>"banana"</code> gets added to the end of the array.'],
+          codeBefore: 'const fruits = ["apple"];\nfruits.',
+          codeAfter: '("banana");',
+          answer: ['push'],
+          hint: 'Adds one item to the end of an array.',
+          explanation: '<code>push</code> adds an item to the end of an array.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 3',
+          title: 'Predict the output',
+          code: 'const nums = [1, 2, 3];\nconst doubled = nums.map(n => n * 2);\nconsole.log(doubled);',
+          options: ['[2, 4, 6]', '[1, 2, 3]', 'Error', 'undefined'],
+          answer: 0,
+          explanation: '<code>map</code> transforms every item, doubling each one.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint · Question 4',
+          title: 'Complete the call',
+          body: ['Finish the method so this keeps only the even numbers.'],
+          codeBefore: 'const nums = [1, 2, 3, 4];\nconst evens = nums.',
+          codeAfter: '(n => n % 2 === 0);',
+          answer: ['filter'],
+          hint: 'Keeps only items that pass a test.',
+          explanation: '<code>filter</code> keeps only items where the function returns <code>true</code>.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 5',
+          title: 'Predict the output',
+          code: 'function triple(n) {\n  return n * 3;\n}\nconsole.log(triple(4));',
+          options: ['12', '4', 'undefined', 'Error'],
+          answer: 0,
+          explanation: '<code>triple(4)</code> returns <code>12</code>.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint · Question 6',
+          title: 'Complete the function',
+          body: ['Finish the function so it returns the product of two numbers.'],
+          codeBefore: 'function multiply(a, b) {\n  ',
+          codeAfter: ' a * b;\n}',
+          answer: ['return'],
+          hint: 'The keyword that hands a value back to the caller.',
+          explanation: '<code>return</code> sends a value back to whoever called the function.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 7',
+          title: 'Predict the output',
+          code: 'for (let i = 1; i <= 3; i++) {\n  console.log(i * 2);\n}',
+          options: ['2 4 6', '1 2 3', '0 2 4', 'Error'],
+          answer: 0,
+          explanation: 'i goes 1, 2, 3; each doubled prints 2, 4, 6.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint · Question 8',
+          title: 'Complete the declaration',
+          body: ['Finish the keyword so this variable can never be reassigned.'],
+          codeBefore: '',
+          codeAfter: ' name = "Ada";',
+          answer: ['const'],
+          hint: 'The keyword for a variable that shouldn\'t change.',
+          explanation: '<code>const</code> declares a variable that can\'t be reassigned.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Checkpoint · Complete',
+          title: 'Here\'s where you stand',
+          bullets: [
+            'Arrays, <code>map</code>, <code>filter</code>, and functions — the tools for working with lists of data.',
+            'If anything felt shaky, the matching lesson is one tap away in the menu — and you can retake this checkpoint any time.'
+          ],
+          next: 'Next up: a project — filtering and transforming a product catalog.'
+        }
+      ]
+    },
+    {
+      id: 'project-catalog',
+      title: 'Project: Filter a Product Catalog',
+      sub: 'Project · 8 steps',
+      kind: 'project',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Project · Brief',
+          title: 'The goal',
+          body: [
+            'Given a list of prices, filter for anything under $10, apply a 10% discount to each with a function, and see the results — combining arrays, filter, map, and functions.'
+          ]
+        },
+        {
+          type: 'info',
+          eyebrow: 'Project · Step 1',
+          title: 'Start with the data',
+          body: [
+            'An array of five prices to process.'
+          ],
+          code: 'const prices = [25, 8, 15, 6, 30];'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Project · Step 2',
+          title: 'Complete the filter',
+          body: [
+            'Finish the call so it keeps only prices under $10.'
+          ],
+          codeBefore: 'const cheap = prices.',
+          codeAfter: '(p => p < 10);',
+          answer: ['filter'],
+          hint: 'Keeps only items that pass a test.',
+          explanation: '<code>prices.filter(p =&gt; p &lt; 10)</code> keeps only the prices under $10.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Project · Step 3',
+          title: 'Predict the output',
+          code: 'const prices = [25, 8, 15, 6, 30];\nconst cheap = prices.filter(p => p < 10);\nconsole.log(cheap);',
+          options: ['[8, 6]', '[25, 15, 30]', '[25, 8, 15, 6, 30]', 'Error'],
+          answer: 0,
+          explanation: 'Only <code>8</code> and <code>6</code> are under 10.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Project · Step 4',
+          title: 'Write a discount function',
+          body: [
+            'A named function that takes a price and returns it discounted by 10%.'
+          ],
+          code: 'function applyDiscount(price) {\n  return price * 0.9;\n}'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Project · Step 5',
+          title: 'Complete the map',
+          body: [
+            'Finish the call so <code>applyDiscount</code> runs on every cheap price.'
+          ],
+          codeBefore: 'const discounted = cheap.',
+          codeAfter: '(applyDiscount);',
+          answer: ['map'],
+          hint: 'Transforms every item using a function.',
+          explanation: '<code>cheap.map(applyDiscount)</code> runs <code>applyDiscount</code> on every item, returning a new array of discounted prices.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Project · Step 6',
+          title: 'Predict the output',
+          code: 'const cheap = [8, 6];\nfunction applyDiscount(price) {\n  return price * 0.9;\n}\nconst discounted = cheap.map(applyDiscount);\nconsole.log(discounted);',
+          options: ['[7.2, 5.4]', '[8, 6]', '[7, 5]', 'Error'],
+          answer: 0,
+          explanation: '<code>8 * 0.9 = 7.2</code> and <code>6 * 0.9 = 5.4</code>.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Project · Complete',
+          title: 'You filtered and transformed a catalog',
+          code: 'const prices = [25, 8, 15, 6, 30];\nconst cheap = prices.filter(p => p < 10);\n\nfunction applyDiscount(price) {\n  return price * 0.9;\n}\nconst discounted = cheap.map(applyDiscount);\nconsole.log(discounted);\n\n// output:\n[7.2, 5.4]',
+          bullets: [
+            '<code>filter(p =&gt; p &lt; 10)</code> picked out only the prices under $10.',
+            'A named function (<code>applyDiscount</code>) captured the discount logic, reusable anywhere.',
+            '<code>map(applyDiscount)</code> applied that function to every filtered price, without writing a manual loop.',
+            '<code>filter</code> then <code>map</code> is an extremely common JavaScript pattern: narrow down, then transform.'
+          ],
+          next: 'More lessons — objects, the DOM, and async — are on the way.'
+        }
+      ]
+    },
+    { id: 'more-soon', title: 'Objects, the DOM & async', sub: 'coming soon', locked: true }
   ];
 
   var state = load();
