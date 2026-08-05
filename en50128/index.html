@@ -1222,7 +1222,318 @@
         }
       ]
     },
-    { id: 'more-soon', title: 'Implementation, testing, V&V & more — coming soon', sub: 'coming soon', locked: true }
+    {
+      id: 'implementation-practices',
+      title: 'Implementation practices',
+      sub: '6 steps · ~4 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 8 · Step 1',
+          title: 'Turning design into code, safely',
+          body: [
+            'Implementation is where design becomes actual source code. EN 50128 expects this step to follow a documented coding standard and use defensive techniques appropriate to the SIL — not just "write code that works."'
+          ]
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 8 · Step 2',
+          title: 'A coding standard is more than a style guide',
+          body: [
+            'A coding standard defines rules for structure, naming, complexity limits, and which language features are allowed or banned — often removing risky constructs entirely at higher SIL, not just discouraging them.'
+          ]
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 8 · Step 3',
+          title: 'Why might a coding standard ban a language feature outright, rather than just recommending caution?',
+          options: ['Some features are hard to verify reliably, so removing the risk is safer than trusting careful use', 'Banned features always run slower', 'It makes the code shorter', 'Compilers require it'],
+          answer: 0,
+          explanation: 'If a feature is genuinely hard to verify or prone to subtle mistakes, banning it removes the risk instead of relying on every developer to use it carefully every time.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 8 · Step 4',
+          title: 'Defensive programming assumes things will go wrong',
+          body: [
+            'Defensive programming means checking inputs, handling unexpected states, and failing safely rather than assuming the rest of the system always behaves. It\'s one of the Annex A techniques rated more strongly at higher SIL.'
+          ]
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 8 · Step 5',
+          title: 'Complete the idea',
+          body: [
+            'A coding standard doesn\'t just describe good style — at higher SIL it can ____ certain risky language features entirely, not just discourage them.'
+          ],
+          codeBefore: '',
+          codeAfter: ' certain risky features, not just discourage them',
+          answer: ['ban', 'forbid', 'prohibit'],
+          hint: 'The opposite of "allow."',
+          explanation: 'At higher SIL, a coding standard often removes risky constructs outright rather than trusting careful use.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 8 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            'Implementation turns design into source code, following a documented coding standard rather than ad-hoc style.',
+            'A coding standard defines structure, naming, complexity limits, and which language features are allowed or banned.',
+            'Higher SIL coding standards often ban risky constructs outright rather than just discouraging them.',
+            'Defensive programming — checking inputs, handling unexpected states, failing safely — is a technique rated more strongly at higher SIL.'
+          ],
+          next: 'Next up: testing in practice — the different levels of testing and what each one is actually checking.'
+        }
+      ]
+    },
+    {
+      id: 'testing-practice',
+      title: 'Testing in practice',
+      sub: '6 steps · ~4 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 9 · Step 1',
+          title: 'Testing happens at more than one level',
+          body: [
+            'Component (unit) testing checks one piece in isolation. Integration testing checks that pieces work together correctly. Overall (system) testing checks the whole thing against the original requirements — this maps directly onto the V-model\'s right side.'
+          ]
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 9 · Step 2',
+          title: 'A function correctly calculates a value in isolation, but the system crashes when two modules exchange data. Which level of testing is most likely to catch this?',
+          options: ['Integration testing', 'Component testing', 'Neither — this can\'t be tested', 'Only a code review would catch it'],
+          answer: 0,
+          explanation: 'Component testing already passed (each piece works alone) — the problem shows up specifically when pieces interact, which is exactly what integration testing targets.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 9 · Step 3',
+          title: 'Every test needs a specification and a report',
+          body: [
+            'A test isn\'t just "run the code and see" — EN 50128 expects a test specification (what will be tested, and what result is expected) written before testing, and a test report (what actually happened) afterward, so the evidence exists independent of any one person\'s memory.'
+          ]
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 9 · Step 4',
+          title: 'Independence increases with SIL',
+          body: [
+            'At higher SIL, the person testing a component often can\'t be the same person who wrote it — this organizational independence is meant to catch a mistake that its own author, too close to the code, might not notice.'
+          ]
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 9 · Step 5',
+          title: 'Name the concept',
+          body: [
+            'What\'s the word for testing/verification being done by someone other than the person who created the artifact being checked?'
+          ],
+          codeBefore: '',
+          codeAfter: ' — increases at higher SIL',
+          answer: ['independence'],
+          hint: 'It\'s mentioned directly in the info step above.',
+          explanation: 'Independence — having someone other than the author check the work — is meant to catch mistakes an author might be too close to notice.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 9 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            'Component (unit) testing checks one piece alone; integration testing checks pieces working together; overall testing checks the whole system against requirements.',
+            'A problem that only appears when pieces interact is exactly what integration testing is meant to catch, even if component testing already passed.',
+            'Every test needs a specification (written before) and a report (written after) — evidence, not memory.',
+            'Independence — someone other than the author checking the work — increases at higher SIL.'
+          ],
+          next: 'Next up: a checkpoint test on implementation and testing.'
+        }
+      ]
+    },
+    {
+      id: 'checkpoint-3',
+      title: 'Checkpoint: Implementation & Testing',
+      sub: 'Checkpoint · 8 questions',
+      isTest: true,
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Checkpoint 3 · Start',
+          title: 'Round three',
+          body: [
+            '8 questions on implementation and testing practices, plus a few older concepts for review.'
+          ]
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint 3 · Question 1',
+          title: 'Why might a coding standard ban a language feature outright, rather than just recommending caution?',
+          options: ['Some features are hard to verify reliably, so removing the risk is safer than trusting careful use', 'Banned features always run slower', 'It makes the code shorter', 'Compilers require it'],
+          answer: 0,
+          explanation: 'Removing the risk entirely is safer than relying on every developer to use a risky feature carefully every time.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint 3 · Question 2',
+          title: 'Complete the idea',
+          body: ['At higher SIL, a coding standard can do more than discourage a risky feature — it can ____ it entirely.'],
+          codeBefore: '',
+          codeAfter: ' it entirely, not just discourage it',
+          answer: ['ban', 'forbid', 'prohibit'],
+          hint: 'The opposite of "allow."',
+          explanation: 'Higher SIL coding standards often remove risky constructs outright.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint 3 · Question 3',
+          title: 'A component passes its own tests, but the system misbehaves only when two modules exchange data. Which level catches this?',
+          options: ['Integration testing', 'Component testing', 'Neither', 'Only a code review'],
+          answer: 0,
+          explanation: 'This is exactly what integration testing targets — problems that only appear when pieces interact.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint 3 · Question 4',
+          title: 'Name the concept',
+          body: ['What\'s the word for verification done by someone other than the artifact\'s author?'],
+          codeBefore: '',
+          codeAfter: ' — increases at higher SIL',
+          answer: ['independence'],
+          hint: 'Covered in Lesson 9.',
+          explanation: 'Independence — someone other than the author checking the work.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint 3 · Question 5',
+          title: 'A compiler translates source code into the shipped executable — review',
+          options: ['T3', 'T1', 'T2', 'Tools aren\'t classified'],
+          answer: 0,
+          explanation: 'A compiler\'s output ships as part of the product — that\'s the highest-risk class, T3.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint 3 · Question 6',
+          title: 'Name the annex — review',
+          body: ['Which annex rates techniques and measures by SIL?'],
+          codeBefore: 'Annex ',
+          codeAfter: ' = Criteria for the Selection of Techniques and Measures',
+          answer: ['A'],
+          hint: 'Covered in Lesson 1.',
+          explanation: 'Annex A rates every recognized technique/measure by SIL.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint 3 · Question 7',
+          title: 'A technique is rated "Mandatory" at your project\'s SIL — review',
+          options: ['It must be used — no substitute', 'Use it if convenient', 'It\'s automatically waived by tailoring', 'It only matters for T3 tools'],
+          answer: 0,
+          explanation: 'Mandatory means mandatory — tailoring adapts structure and templates, not Mandatory-rated techniques.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint 3 · Question 8',
+          title: 'Name the concept — review',
+          body: ['What three-letter acronym measures how severe the consequence of a software failure would be?'],
+          codeBefore: '',
+          codeAfter: ' = Safety Integrity Level',
+          answer: ['SIL'],
+          hint: 'Covered in Lesson 2.',
+          explanation: 'SIL sizes the standard\'s expectations to the consequence of failure.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Checkpoint 3 · Complete',
+          title: 'Here\'s where you stand',
+          bullets: [
+            'Implementation practices and testing levels — how the standard\'s expectations actually show up in day-to-day work.',
+            'Retake this any time — the score updates and nothing is held against you.'
+          ],
+          next: 'Next up: a project — planning a test strategy for a real scenario.'
+        }
+      ]
+    },
+    {
+      id: 'project-test-strategy',
+      title: 'Project: Plan a Test Strategy',
+      sub: 'Project · 8 steps',
+      kind: 'project',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Project · Brief',
+          title: 'The goal',
+          body: [
+            'You\'re planning the test strategy for a new SIL 2 module that talks to another team\'s existing component. Decide what level of testing catches what, and where defensive programming and independence come in.'
+          ]
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Project · Step 1',
+          title: 'Module A passes every unit test on its own, but the system misbehaves only when Module A hands data to Module B. Which level catches this?',
+          options: ['Integration testing', 'Component testing', 'Neither', 'A code review only'],
+          answer: 0,
+          explanation: 'This is exactly the kind of problem integration testing exists to catch — it only shows up when pieces interact.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Project · Step 2',
+          title: 'Documenting the test properly',
+          body: [
+            'Before running this integration test, the team writes down what\'s being tested and what result is expected — the test specification — so the pass/fail criteria exist independent of whoever runs it.'
+          ]
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Project · Step 3',
+          title: 'Name the deliverable',
+          body: [
+            'After the test actually runs, what document captures what happened — the specification\'s counterpart?'
+          ],
+          codeBefore: '',
+          codeAfter: ' — written after the test runs',
+          answer: ['report', 'test report'],
+          hint: 'Paired with "specification" throughout this module.',
+          explanation: 'A test report captures what actually happened, so the evidence exists independent of memory.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Project · Step 4',
+          title: 'At SIL 2, should the person testing Module B ideally be the same person who wrote it?',
+          options: ['No — some independence from the author is expected, increasing with SIL', 'Yes — the author always knows the code best', 'It doesn\'t matter at any SIL', 'Only the Project Manager decides, unrelated to SIL'],
+          answer: 0,
+          explanation: 'Independence between author and tester is expected, and the degree of independence required increases with SIL.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Project · Step 5',
+          title: 'Handling data from outside your own module',
+          body: [
+            'Since Module B receives data from Module A — a boundary it doesn\'t fully control — defensive programming (validating incoming data rather than assuming it\'s always well-formed) is exactly the kind of technique this situation calls for.'
+          ]
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Project · Step 6',
+          title: 'Why is defensive programming particularly relevant at this specific integration boundary?',
+          options: ['Module B is receiving data from outside its own direct control, and shouldn\'t assume it\'s always correct', 'It makes the code run faster', 'It\'s required only at Basic Integrity', 'It replaces the need for integration testing'],
+          answer: 0,
+          explanation: 'Defensive programming is most valuable exactly at boundaries where a module receives data or control from outside itself — validating rather than assuming correctness.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Project · Complete',
+          title: 'You planned a test strategy',
+          bullets: [
+            'A bug that only appears when two modules interact is exactly what integration testing — not component testing — is meant to catch.',
+            'Every test needs a specification (written before) and a report (written after) as independent evidence.',
+            'Independence between author and tester is expected, and increases with SIL.',
+            'Defensive programming is especially valuable at integration boundaries, where a module receives data it doesn\'t fully control.'
+          ],
+          next: 'Next up: assurance and independence — the SwA and ISA roles.'
+        }
+      ]
+    },
+    { id: 'more-soon', title: 'Assurance, independence & governance — coming soon', sub: 'coming soon', locked: true }
   ];
 
   var state = load();
