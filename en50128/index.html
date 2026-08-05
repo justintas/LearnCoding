@@ -909,11 +909,320 @@
             'Reusing a template, combining documents, or capturing evidence in an unconventional place can all be valid tailoring — if you can justify that it actually satisfies the standard.',
             'The recurring test throughout tailoring is always the same: can you explain why your approach satisfies the clause, not whether it matches a specific template.'
           ],
+          next: 'Next up: tool classification — why a compiler and a documentation editor don\'t carry the same risk.'
+        }
+      ]
+    },
+    {
+      id: 'tool-classification',
+      title: 'Tool classification',
+      sub: '6 steps · ~4 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 6 · Step 1',
+          title: 'Not every tool needs the same scrutiny',
+          body: [
+            'EN 50128 classifies tools by how much their output could hurt safety if the tool itself has a bug. A documentation editor and a compiler that generates safety-critical code don\'t carry the same risk.'
+          ]
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 6 · Step 2',
+          title: 'T1, T2, T3 — three classes of risk',
+          body: [
+            '<b>T1</b>: the tool can\'t directly introduce a fault into the safety-related software (a documentation editor, a requirements tracker). <b>T2</b>: the tool could fail to detect a fault (a static analyzer, a coverage tool) but doesn\'t generate the output. <b>T3</b>: the tool could directly introduce a fault into the executable software (a compiler, a code generator).'
+          ]
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 6 · Step 3',
+          title: 'Which tool class carries the most risk, and needs the most rigorous qualification?',
+          options: ['T3 — tools that could directly introduce a fault into the software', 'T1 — tools that only produce documentation', 'T2 — tools that only detect faults', 'All three classes carry identical risk'],
+          answer: 0,
+          explanation: 'T3 tools (like compilers or code generators) produce the actual executable output, so a bug in the tool becomes a bug in the product — that\'s why they need the most rigorous qualification.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 6 · Step 4',
+          title: 'Higher-risk tools need qualification evidence',
+          body: [
+            'A T3 tool (like a compiler) typically needs its own qualification evidence — a track record of correct use, certification, or independent validation — proportional to the SIL of the software it\'s producing.'
+          ]
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 6 · Step 5',
+          title: 'Name the class',
+          body: [
+            'Which tool class covers a static analyzer that might fail to flag a real defect, but doesn\'t generate the software itself?'
+          ],
+          codeBefore: 'T',
+          codeAfter: ' = could fail to detect a fault, but doesn\'t generate output',
+          answer: ['2'],
+          hint: 'Between the safest class and the riskiest.',
+          explanation: 'T2 tools could let a fault slip through undetected, but they don\'t generate the actual executable output the way a T3 tool does.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 6 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            'EN 50128 classifies tools by how much a bug in the tool could hurt safety: T1 (can\'t introduce a fault), T2 (could fail to detect one), T3 (could directly introduce one into the executable).',
+            'A compiler or code generator is a classic T3 tool — its output becomes part of the shipped product.',
+            'Higher tool classes need proportionally more qualification evidence before you can rely on them.',
+            'Classifying your toolchain early avoids discovering a qualification gap late in the project.'
+          ],
+          next: 'Next up: techniques and measures — how the standard actually recommends you build and check software.'
+        }
+      ]
+    },
+    {
+      id: 'techniques-measures',
+      title: 'Techniques & measures',
+      sub: '6 steps · ~4 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 7 · Step 1',
+          title: 'Annex A is a big menu of recommended techniques',
+          body: [
+            'For each phase and SIL, Annex A lists specific techniques — static analysis, defensive programming, boundary value testing, formal methods, and more — and rates each one Mandatory, Highly Recommended, Recommended, or Not Recommended.'
+          ]
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 7 · Step 2',
+          title: 'You don\'t need every technique — you need enough from the menu',
+          body: [
+            'Many Annex A tables offer several techniques that satisfy the same underlying objective. You typically choose a combination that covers what\'s needed, rather than being forced into one specific method.'
+          ]
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 7 · Step 3',
+          title: 'At SIL 4, a technique is rated "Mandatory." What does that mean for the project team?',
+          options: ['They must use it — there\'s no substitute', 'They should use it if convenient', 'It only applies at SIL 1', 'It\'s optional but nice to have'],
+          answer: 0,
+          explanation: 'Mandatory really means mandatory — unlike "Highly Recommended," there\'s no tailoring your way out of a Mandatory technique at that SIL.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 7 · Step 4',
+          title: 'Formal methods vs. simpler techniques',
+          body: [
+            'At higher SIL, techniques like formal methods (mathematically proving correctness) become more strongly recommended. At lower SIL, simpler techniques — structured programming, walkthroughs — are often sufficient.'
+          ]
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 7 · Step 5',
+          title: 'Complete the idea',
+          body: [
+            'A technique rated Mandatory at a given SIL cannot be skipped through ____ — the word from an earlier lesson about adapting the standard to your project.'
+          ],
+          codeBefore: '',
+          codeAfter: ' — Mandatory really means mandatory',
+          answer: ['tailoring'],
+          hint: 'The lesson title from Module 1.',
+          explanation: 'Tailoring lets you adapt structure and templates — but a Mandatory rating at a given SIL isn\'t something tailoring can remove.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 7 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            'Annex A rates specific techniques (static analysis, defensive programming, formal methods, and more) by SIL: Mandatory, Highly Recommended, Recommended, Not Recommended.',
+            'You typically pick a combination of techniques that satisfies the objective, not one single prescribed method.',
+            'Mandatory really means mandatory — tailoring can adapt structure and templates, but not skip a Mandatory technique.',
+            'Higher SIL tends to push toward more rigorous techniques, like formal methods, where lower SIL may only need simpler ones.'
+          ],
+          next: 'Next up: a checkpoint test on tool classification and techniques.'
+        }
+      ]
+    },
+    {
+      id: 'checkpoint-2',
+      title: 'Checkpoint: Tools & Techniques',
+      sub: 'Checkpoint · 8 questions',
+      isTest: true,
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Checkpoint 2 · Start',
+          title: 'Round two',
+          body: [
+            '8 questions on tool classification and techniques/measures, plus a few older concepts for review.'
+          ]
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint 2 · Question 1',
+          title: 'A compiler translates source code into the shipped executable. What tool class is it?',
+          options: ['T3', 'T1', 'T2', 'Tools aren\'t classified by risk'],
+          answer: 0,
+          explanation: 'A compiler produces the actual executable output, so a bug in it becomes a bug in the product — that\'s T3, the highest-risk class.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint 2 · Question 2',
+          title: 'Name the class',
+          body: ['A static analyzer might fail to flag a real defect, but doesn\'t generate the software itself.'],
+          codeBefore: 'T',
+          codeAfter: ' = could fail to detect a fault',
+          answer: ['2'],
+          hint: 'Between the safest and riskiest classes.',
+          explanation: 'T2 — could let a fault slip through, but doesn\'t generate the executable output.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint 2 · Question 3',
+          title: 'A technique is rated "Mandatory" at your project\'s SIL. What does that mean?',
+          options: ['It must be used — no substitute', 'Use it if convenient', 'It\'s automatically waived by tailoring', 'It only matters for T3 tools'],
+          answer: 0,
+          explanation: 'Mandatory means mandatory — tailoring adapts structure and templates, not Mandatory-rated techniques.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint 2 · Question 4',
+          title: 'Name the concept',
+          body: ['What\'s the general word for adapting the standard\'s generic requirements to your own project, without contradicting it?'],
+          codeBefore: '',
+          codeAfter: ' = adapting a generic standard to your specific project',
+          answer: ['tailoring'],
+          hint: 'Covered in Module 1.',
+          explanation: 'Tailoring — deciding your own structure that still satisfies the standard.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint 2 · Question 5',
+          title: 'Which needs more rigorous documentation — review',
+          body: ['A SIL 4 train protection function, or a SIL 1 passenger display?'],
+          options: ['The SIL 4 function', 'The SIL 1 display', 'Both need the same rigor', 'Neither needs formal documentation'],
+          answer: 0,
+          explanation: 'Higher SIL means more severe consequences of failure, so the standard expects more rigorous evidence.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint 2 · Question 6',
+          title: 'Name the annex — review',
+          body: ['Which annex defines roles and responsibilities?'],
+          codeBefore: 'Annex ',
+          codeAfter: ' = Key Roles and Responsibilities',
+          answer: ['B'],
+          hint: 'Covered in Lesson 1.',
+          explanation: 'Annex B defines every standard role and what each is responsible for.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint 2 · Question 7',
+          title: 'Checking that a design correctly implements its requirements is an example of — review',
+          options: ['Verification', 'Validation', 'Tailoring', 'Tool qualification'],
+          answer: 0,
+          explanation: 'Verification checks a phase\'s output against its own inputs — design against requirements, here.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint 2 · Question 8',
+          title: 'Name the role — review',
+          body: ['What three-letter acronym names the independent role who signs off before certification?'],
+          codeBefore: '',
+          codeAfter: ' = Independent Safety Assessor',
+          answer: ['ISA'],
+          hint: 'Covered in Lesson 3.',
+          explanation: 'ISA — Independent Safety Assessor.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Checkpoint 2 · Complete',
+          title: 'Here\'s where you stand',
+          bullets: [
+            'Tool classification and techniques/measures — the toolkit for actually executing a SIL project — plus review of Module 1.',
+            'Retake this any time — the score updates and nothing is held against you.'
+          ],
+          next: 'Next up: a project — classifying a toolchain for a real scenario.'
+        }
+      ]
+    },
+    {
+      id: 'project-toolchain',
+      title: 'Project: Classify a Toolchain',
+      sub: 'Project · 8 steps',
+      kind: 'project',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Project · Brief',
+          title: 'The goal',
+          body: [
+            'You\'re setting up the toolchain for a new SIL 2 embedded controller project. Classify each tool by risk, and decide how to cover a testing requirement without over-specifying your technique choices.'
+          ]
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Project · Step 1',
+          title: 'The team\'s compiler turns source code into the executable that ships on the device. What tool class?',
+          options: ['T3', 'T1', 'T2', 'Compilers aren\'t classified'],
+          answer: 0,
+          explanation: 'The compiler\'s output ships as part of the product — a compiler bug becomes a product bug. That\'s T3.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Project · Step 2',
+          title: 'A second tool: the static analyzer',
+          body: [
+            'The static analyzer flags potential defects in the source code, but doesn\'t produce the shipped executable itself.'
+          ]
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Project · Step 3',
+          title: 'Name the class',
+          body: ['What class does the static analyzer fall into?'],
+          codeBefore: 'T',
+          codeAfter: ' = could fail to detect a fault',
+          answer: ['2'],
+          hint: 'Same as Lesson 6\'s example.',
+          explanation: 'It could miss a real defect, but it doesn\'t generate the executable — that\'s T2.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Project · Step 4',
+          title: 'A third tool: a text-based requirements tracker that only stores and displays requirement text. What class?',
+          options: ['T1', 'T2', 'T3', 'It needs no classification since it\'s not code-related'],
+          answer: 0,
+          explanation: 'It can\'t introduce a fault into the software or fail to detect one in code — it\'s just storing text. That\'s T1.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Project · Step 5',
+          title: 'Now a technique decision',
+          body: [
+            'For SIL 2 requirements-based testing, Annex A lists both "boundary value analysis" and "equivalence classes" as Highly Recommended alternatives for the same objective — you don\'t need both.'
+          ]
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Project · Step 6',
+          title: 'Is it acceptable to use only boundary value analysis and skip equivalence classes here?',
+          options: ['Yes — picking one recommended alternative that meets the objective is normal', 'No — every listed technique must always be used', 'Only if the customer explicitly waives it', 'Never — Highly Recommended means mandatory'],
+          answer: 0,
+          explanation: 'When Annex A offers alternatives for the same objective, picking one that covers it is a normal, defensible choice — not a compliance gap.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Project · Complete',
+          title: 'You classified a toolchain',
+          bullets: [
+            'A compiler is T3 (its output ships), a static analyzer is T2 (it could miss a defect but doesn\'t generate output), and a requirements tracker is T1 (it can\'t affect the software either way).',
+            'Higher tool classes need proportionally more qualification evidence — classify your toolchain early.',
+            'When Annex A offers multiple techniques for the same objective, choosing one that covers it is normal — you don\'t need every option on the list.'
+          ],
           next: 'Next up: execution — implementation, testing, and V&V in practice.'
         }
       ]
     },
-    { id: 'more-soon', title: 'Execution, assurance & independence — coming soon', sub: 'coming soon', locked: true }
+    { id: 'more-soon', title: 'Implementation, testing, V&V & more — coming soon', sub: 'coming soon', locked: true }
   ];
 
   var state = load();
