@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>HTML & CSS — Practice Terminal</title>
+<style>
+  :root {
+    --bg: #F3F7F5;
+    --bg-raised: #FFFFFF;
+    --ink: #1B222A;
+    --ink-soft: #4E5860;
+    --line: rgba(27, 34, 42, 0.12);
+    --accent: #B96A1E;
+    --accent-ink: #7A4614;
+    --accent-soft: rgba(185, 106, 30, 0.12);
+    --success: #2F7D68;
+    --success-soft: rgba(47, 125, 104, 0.12);
+    --error: #B0402E;
+    --error-soft: rgba(176, 64, 46, 0.10);
+    --shadow: 0 1px 2px rgba(27,34,42,0.04), 0 8px 24px rgba(27,34,42,0.06);
+    --radius: 12px;
+
+    --font-display: ui-serif, Georgia, "Iowan Old Style", "Palatino Linotype", serif;
+    --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-mono: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #12161C;
+      --bg-raised: #1A2029;
+      --ink: #ECE7DC;
+      --ink-soft: #9BA3AC;
+      --line: rgba(236, 231, 220, 0.12);
+      --accent: #D89654;
+      --accent-ink: #F0C48F;
+      --accent-soft: rgba(216, 150, 84, 0.16);
+      --success: #63B39C;
+      --success-soft: rgba(99, 179, 156, 0.14);
+      --error: #E08670;
+      --error-soft: rgba(224, 134, 112, 0.14);
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 12px 32px rgba(0,0,0,0.35);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #12161C;
+    --bg-raised: #1A2029;
+    --ink: #ECE7DC;
+    --ink-soft: #9BA3AC;
+    --line: rgba(236, 231, 220, 0.12);
+    --accent: #D89654;
+    --accent-ink: #F0C48F;
+    --accent-soft: rgba(216, 150, 84, 0.16);
+    --success: #63B39C;
+    --success-soft: rgba(99, 179, 156, 0.14);
+    --error: #E08670;
+    --error-soft: rgba(224, 134, 112, 0.14);
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 12px 32px rgba(0,0,0,0.35);
+  }
+  :root[data-theme="light"] {
+    --bg: #F3F7F5;
+    --bg-raised: #FFFFFF;
+    --ink: #1B222A;
+    --ink-soft: #4E5860;
+    --line: rgba(27, 34, 42, 0.12);
+    --accent: #B96A1E;
+    --accent-ink: #7A4614;
+    --accent-soft: rgba(185, 106, 30, 0.12);
+    --success: #2F7D68;
+    --success-soft: rgba(47, 125, 104, 0.12);
+    --error: #B0402E;
+    --error-soft: rgba(176, 64, 46, 0.10);
+    --shadow: 0 1px 2px rgba(27,34,42,0.04), 0 8px 24px rgba(27,34,42,0.06);
+  }
+
+  * { box-sizing: border-box; }
+  body { background: var(--bg); }
+
+  .stage {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 48px 20px 80px;
+    color: var(--ink);
+    font-family: var(--font-body);
+  }
+
+  .frame {
+    width: 100%;
+    max-width: 640px;
+    background: var(--bg-raised);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+
+  .chrome {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--line);
+    font-family: var(--font-mono);
+  }
+  .chrome-path {
+    font-size: 12.5px;
+    letter-spacing: 0.04em;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .chrome-path b { color: var(--ink); font-weight: 600; }
+  .chrome-left { display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .hub-link {
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    text-decoration: none;
+    white-space: nowrap;
+    border-right: 1px solid var(--line);
+    padding-right: 10px;
+  }
+  .hub-link:hover { color: var(--accent); }
+  .streak {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    white-space: nowrap;
+  }
+  .streak b {
+    font-variant-numeric: tabular-nums;
+    color: var(--accent-ink);
+    font-size: 14px;
+  }
+
+  .progress-track {
+    display: flex;
+    gap: 4px;
+    padding: 10px 20px;
+    background: var(--bg);
+  }
+  .progress-seg {
+    flex: 1;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--line);
+    transition: background 0.3s ease;
+  }
+  .progress-seg.done { background: var(--accent); }
+  .progress-seg.current { background: var(--accent); opacity: 0.45; }
+
+  .panel {
+    padding: 32px 28px 28px;
+    min-height: 360px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent-ink);
+    margin: 0 0 10px;
+  }
+
+  h1.step-title {
+    font-family: var(--font-display);
+    font-size: 26px;
+    line-height: 1.25;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+    margin: 0 0 14px;
+    color: var(--ink);
+  }
+
+  .prose { font-size: 15.5px; line-height: 1.6; color: var(--ink); margin: 0 0 12px; }
+  .prose:last-child { margin-bottom: 0; }
+  .prose code { font-family: var(--font-mono); background: var(--accent-soft); padding: 0.05em 0.35em; border-radius: 4px; font-size: 0.9em; }
+
+  .code-block {
+    font-family: var(--font-mono);
+    font-size: 14.5px;
+    line-height: 1.7;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin: 14px 0;
+    white-space: pre;
+    overflow-x: auto;
+    color: var(--ink);
+  }
+  .code-block .blank {
+    display: inline-block;
+    min-width: 2.4em;
+    border-bottom: 2px solid var(--accent);
+    color: var(--accent-ink);
+    text-align: center;
+  }
+  .code-block .cmt { color: var(--ink-soft); }
+
+  .prompt-line {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-mono);
+    margin-top: 14px;
+  }
+  .prompt-line .chevron { color: var(--accent); font-weight: 700; }
+  .prompt-line input {
+    flex: 1;
+    font-family: var(--font-mono);
+    font-size: 15px;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--line);
+    color: var(--ink);
+    padding: 6px 2px;
+    outline: none;
+  }
+  .prompt-line input:focus { border-bottom-color: var(--accent); }
+  .cursor {
+    display: inline-block;
+    width: 8px;
+    height: 16px;
+    background: var(--accent);
+    margin-left: 2px;
+    animation: blink 1.1s steps(1) infinite;
+  }
+  @media (prefers-reduced-motion: reduce) { .cursor { animation: none; opacity: 1; } }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  .options { display: flex; flex-direction: column; gap: 8px; margin-top: 14px; }
+  .option {
+    font-family: var(--font-mono);
+    font-size: 14.5px;
+    text-align: left;
+    padding: 11px 14px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--bg-raised);
+    color: var(--ink);
+    cursor: pointer;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+  .option:hover { border-color: var(--accent); }
+  .option:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .option .idx { color: var(--ink-soft); margin-right: 8px; }
+  .option.correct { border-color: var(--success); background: var(--success-soft); }
+  .option.wrong { border-color: var(--error); background: var(--error-soft); }
+  .option.dim { opacity: 0.5; cursor: default; }
+
+  .feedback {
+    margin-top: 14px;
+    padding: 12px 14px;
+    border-radius: 8px;
+    font-size: 14px;
+    line-height: 1.55;
+    display: none;
+  }
+  .feedback.show { display: block; }
+  .feedback.ok { background: var(--success-soft); color: var(--success); }
+  .feedback.no { background: var(--error-soft); color: var(--error); }
+  .feedback b { color: var(--ink); }
+
+  .score-box {
+    display: flex; align-items: baseline; gap: 14px;
+    padding: 16px 18px; margin-bottom: 16px;
+    background: var(--accent-soft); border: 1px solid var(--line); border-radius: 8px;
+  }
+  .score-num {
+    font-family: var(--font-mono); font-variant-numeric: tabular-nums;
+    font-size: 28px; font-weight: 700; color: var(--accent-ink); line-height: 1;
+  }
+  .score-num .score-of { font-size: 16px; font-weight: 400; color: var(--ink-soft); }
+  .score-msg { font-size: 14px; color: var(--ink-soft); }
+
+  .recap-list { list-style: none; margin: 6px 0 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+  .recap-list li {
+    font-size: 14.5px; line-height: 1.55;
+    padding-left: 18px; position: relative; color: var(--ink);
+  }
+  .recap-list li::before {
+    content: "→"; position: absolute; left: 0; color: var(--accent);
+    font-family: var(--font-mono);
+  }
+
+  .footer {
+    margin-top: auto;
+    padding-top: 22px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+  }
+  .hint-btn {
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    padding: 6px 0;
+  }
+  .hint-btn:hover { color: var(--ink); }
+  .spacer { flex: 1; }
+
+  .btn {
+    font-family: var(--font-mono);
+    font-size: 13.5px;
+    letter-spacing: 0.01em;
+    padding: 11px 20px;
+    border-radius: 8px;
+    border: 1px solid var(--accent);
+    background: var(--accent);
+    color: #FFFDF9;
+    cursor: pointer;
+    transition: transform 0.1s ease, opacity 0.15s ease;
+  }
+  .btn:hover { opacity: 0.92; }
+  .btn:active { transform: translateY(1px); }
+  .btn:disabled { opacity: 0.35; cursor: not-allowed; }
+  .btn.ghost { background: transparent; color: var(--ink-soft); border-color: var(--line); }
+  .btn.ghost:hover { color: var(--ink); border-color: var(--ink-soft); }
+
+  /* menu screen */
+  .menu-list { display: flex; flex-direction: column; gap: 10px; margin-top: 18px; }
+  .menu-item {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 16px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--bg-raised);
+    cursor: pointer;
+    text-align: left;
+  }
+  .menu-item.locked { cursor: default; opacity: 0.5; }
+  .menu-item:not(.locked):hover { border-color: var(--accent); }
+  .menu-num {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--accent-ink);
+    background: var(--accent-soft);
+    border-radius: 6px;
+    padding: 4px 7px;
+    flex-shrink: 0;
+  }
+  .menu-text { flex: 1; }
+  .menu-title { font-size: 15px; font-weight: 600; }
+  .menu-sub { font-size: 12.5px; color: var(--ink-soft); margin-top: 2px; }
+  .menu-status { font-family: var(--font-mono); font-size: 11.5px; color: var(--ink-soft); }
+
+  .intro-copy { font-size: 14.5px; line-height: 1.6; color: var(--ink-soft); margin-top: 4px; }
+
+  .fade { animation: fadeIn 0.28s ease; }
+  @media (prefers-reduced-motion: reduce) { .fade { animation: none; } }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+</style>
+</head>
+<body>
+
+<div class="stage">
+  <div class="frame">
+    <div class="chrome">
+      <div class="chrome-left">
+        <a class="hub-link" href="../">‹ hub</a>
+        <div class="chrome-path" id="chromePath">~/<b>html-css</b></div>
+      </div>
+      <div class="streak" id="streakBox">streak · <b id="streakNum">0</b>d</div>
+    </div>
+    <div class="progress-track" id="progressTrack"></div>
+    <div class="panel" id="panel"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var STORAGE_KEY = 'htmlcss_progress_v1';
+
+  var lessons = [
+    {
+      id: 'html-structure',
+      title: 'HTML document structure',
+      sub: '7 steps · ~5 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 01 · Step 1',
+          title: 'HTML structures a page with tags',
+          body: [
+            'HTML (HyperText Markup Language) uses tags to define the pieces of a page — headings, paragraphs, links, images. Most tags come in pairs: an opening tag and a matching closing tag with a slash.'
+          ],
+          code: '<p>This is a paragraph.</p>'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 01 · Step 2',
+          title: 'Every HTML page starts with the same skeleton',
+          body: [
+            '<code>&lt;!DOCTYPE html&gt;</code> tells the browser this is HTML5. <code>&lt;html&gt;</code> wraps everything; <code>&lt;head&gt;</code> holds page metadata (like the title); <code>&lt;body&gt;</code> holds everything the visitor actually sees.'
+          ],
+          code: '<!DOCTYPE html>\n<html>\n<head>\n  <title>My Page</title>\n</head>\n<body>\n  <p>Hello, world!</p>\n</body>\n</html>'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 01 · Step 3',
+          title: 'Which part would the visitor actually see?',
+          code: '<head>\n  <title>My Page</title>\n</head>\n<body>\n  <p>Hello, world!</p>\n</body>',
+          options: ['"Hello, world!"', '"My Page"', 'Both', 'Neither'],
+          answer: 0,
+          explanation: '<code>&lt;body&gt;</code> holds visible content. <code>&lt;title&gt;</code> only shows in the browser tab, not on the page itself.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 01 · Step 4',
+          title: 'Headings and paragraphs',
+          body: [
+            '<code>&lt;h1&gt;</code> through <code>&lt;h6&gt;</code> create headings (h1 biggest/most important, h6 smallest). <code>&lt;p&gt;</code> creates a paragraph of text.'
+          ],
+          code: '<h1>Welcome</h1>\n<p>This is my first page.</p>'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 01 · Step 5',
+          title: 'Which is the biggest heading?',
+          code: '<h1>Title</h1>\n<h3>Subtitle</h3>\n<h6>Fine print</h6>',
+          options: ['<h1>', '<h3>', '<h6>', 'They\'re all the same size'],
+          answer: 0,
+          explanation: '<code>h1</code> is the largest, most important heading level — the numbers count down in size from there.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 01 · Step 6',
+          title: 'Complete the tag',
+          body: [
+            'Finish the opening tag so this creates a level-2 heading.'
+          ],
+          codeBefore: '<',
+          codeAfter: '>Section Title</h2>',
+          answer: ['h2'],
+          hint: 'Matches the closing tag already shown.',
+          explanation: '<code>&lt;h2&gt;</code> opens a level-2 heading, matching the <code>&lt;/h2&gt;</code> closing tag.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 01 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            'HTML uses tags — usually a pair, like <code>&lt;p&gt;</code> and <code>&lt;/p&gt;</code> — to define pieces of a page.',
+            'Every page starts with <code>&lt;!DOCTYPE html&gt;</code>, <code>&lt;html&gt;</code>, <code>&lt;head&gt;</code> (metadata), and <code>&lt;body&gt;</code> (visible content).',
+            '<code>&lt;title&gt;</code> shows in the browser tab; content inside <code>&lt;body&gt;</code> is what visitors actually see.',
+            '<code>&lt;h1&gt;</code> through <code>&lt;h6&gt;</code> create headings, largest to smallest; <code>&lt;p&gt;</code> creates a paragraph.'
+          ],
+          next: 'Next up: links, images, and lists — the other core building blocks of a page.'
+        }
+      ]
+    },
+    {
+      id: 'links-images-lists',
+      title: 'Links, images & lists',
+      sub: '8 steps · ~6 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 02 · Step 1',
+          title: 'Attributes add extra information to a tag',
+          body: [
+            'An attribute goes inside the opening tag as <code>name="value"</code>. <code>&lt;a&gt;</code> (anchor) needs an <code>href</code> attribute to say where it links to.'
+          ],
+          code: '<a href="https://example.com">Visit Example</a>'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 02 · Step 2',
+          title: 'What happens with this link?',
+          code: '<a href="https://example.com">Click here</a>',
+          options: ['"Click here" becomes clickable, linking to example.com', '"https://example.com" is shown as the text', 'Nothing is clickable', 'Error'],
+          answer: 0,
+          explanation: 'The text between the tags ("Click here") is what displays and becomes clickable; <code>href</code> says where it goes.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 02 · Step 3',
+          title: 'Images use a self-closing tag',
+          body: [
+            '<code>&lt;img&gt;</code> has no closing tag — it\'s self-closing. It needs <code>src</code> (the image file) and should have <code>alt</code> (a text description, for accessibility and when the image fails to load).'
+          ],
+          code: '<img src="cat.jpg" alt="A sleeping cat" />'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 02 · Step 4',
+          title: 'What does alt do here?',
+          code: '<img src="logo.png" alt="Company logo" />',
+          options: ['Describes the image for screen readers, and shows if it fails to load', 'Changes the image\'s size', 'Makes the image clickable', 'Does nothing'],
+          answer: 0,
+          explanation: '<code>alt</code> provides a text alternative — read aloud by screen readers, and shown if the image can\'t load.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 02 · Step 5',
+          title: 'Lists group related items',
+          body: [
+            '<code>&lt;ul&gt;</code> makes an unordered (bulleted) list; <code>&lt;ol&gt;</code> makes an ordered (numbered) list. Each item goes inside <code>&lt;li&gt;</code>.'
+          ],
+          code: '<ul>\n  <li>Milk</li>\n  <li>Eggs</li>\n  <li>Bread</li>\n</ul>'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 02 · Step 6',
+          title: 'What does this render as?',
+          code: '<ol>\n  <li>Wake up</li>\n  <li>Make coffee</li>\n</ol>',
+          options: ['A numbered list: "1. Wake up  2. Make coffee"', 'A bulleted list', 'Two separate paragraphs', 'Error'],
+          answer: 0,
+          explanation: '<code>&lt;ol&gt;</code> numbers its items automatically — an ordered list.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 02 · Step 7',
+          title: 'Complete the link',
+          body: [
+            'Finish the attribute so this link goes to https://example.com.'
+          ],
+          codeBefore: '<a ',
+          codeAfter: '="https://example.com">Visit</a>',
+          answer: ['href'],
+          hint: 'The attribute name that specifies a link\'s destination.',
+          explanation: '<code>href="https://example.com"</code> tells the browser where the link should go.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 02 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            'Attributes add info inside an opening tag: <code>name="value"</code>.',
+            '<code>&lt;a href="..."&gt;text&lt;/a&gt;</code> creates a hyperlink; the visible text sits between the tags.',
+            '<code>&lt;img src="..." alt="..." /&gt;</code> embeds an image — it\'s self-closing, no separate closing tag.',
+            '<code>&lt;ul&gt;</code> makes a bulleted list, <code>&lt;ol&gt;</code> a numbered one; each item is an <code>&lt;li&gt;</code>.'
+          ],
+          next: 'Next up: CSS — how to style everything you\'ve just structured.'
+        }
+      ]
+    },
+    {
+      id: 'intro-css',
+      title: 'Intro to CSS',
+      sub: '8 steps · ~6 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 03 · Step 1',
+          title: 'CSS styles what HTML structures',
+          body: [
+            'CSS (Cascading Style Sheets) controls how HTML looks — color, size, spacing, layout. A CSS rule targets a selector and sets one or more properties.'
+          ],
+          code: 'p {\n  color: blue;\n}'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 03 · Step 2',
+          title: 'What does this rule do?',
+          code: 'h1 {\n  color: red;\n}',
+          options: ['Every <h1> on the page turns red text', 'Only the first <h1> turns red', 'Every element turns red', 'Nothing happens without a class'],
+          answer: 0,
+          explanation: 'The selector <code>h1</code> targets every <code>&lt;h1&gt;</code> element on the page.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 03 · Step 3',
+          title: 'Three ways to add CSS',
+          body: [
+            'Inline (a <code>style</code> attribute on one tag), internal (a <code>&lt;style&gt;</code> block in <code>&lt;head&gt;</code>), or external (a separate .css file linked in). External is standard for real projects — one stylesheet, many pages.'
+          ],
+          code: '<link rel="stylesheet" href="styles.css" />'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 03 · Step 4',
+          title: 'What does this inline style affect?',
+          code: '<p style="color: green;">Hello</p>',
+          options: ['Just this one paragraph turns green', 'Every paragraph on the page turns green', 'Nothing happens', 'Error'],
+          answer: 0,
+          explanation: 'An inline <code>style</code> attribute only affects that single element.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 03 · Step 5',
+          title: 'Classes let you target specific elements',
+          body: [
+            'Add <code>class="name"</code> to any tag, then target it in CSS with a dot: <code>.name</code>. Unlike an element selector, a class only applies to elements you\'ve tagged with it.'
+          ],
+          code: '<p class="highlight">Important!</p>\n\n.highlight {\n  color: orange;\n}'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 03 · Step 6',
+          title: 'What does this style?',
+          code: '<p class="warning">Careful</p>\n<p>Normal text</p>\n\n.warning {\n  color: red;\n}',
+          options: ['Only "Careful" turns red', 'Both paragraphs turn red', 'Neither turns red', 'Error'],
+          answer: 0,
+          explanation: 'The <code>.warning</code> class selector only matches elements with <code>class="warning"</code> — just the first paragraph.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 03 · Step 7',
+          title: 'Complete the selector',
+          body: [
+            'Finish the CSS selector so it targets every element with <code>class="card"</code>.'
+          ],
+          codeBefore: '',
+          codeAfter: ' {\n  border: 1px solid gray;\n}',
+          answer: ['.card'],
+          hint: 'Class selectors start with a dot.',
+          explanation: '<code>.card</code> matches every element with <code>class="card"</code> — the dot means "class", not "element named card".'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 03 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            'CSS rules pair a selector with properties: <code>selector { property: value; }</code>.',
+            'Inline, internal (<code>&lt;style&gt;</code>), or external (.css file) — external is standard practice.',
+            'An element selector (like <code>p</code>) targets every matching tag; a class selector (<code>.name</code>) only targets tagged elements.',
+            '<code>class="name"</code> on a tag + <code>.name {...}</code> in CSS is how you style specific elements without affecting everything.'
+          ],
+          next: 'Next up: a checkpoint test on HTML structure, elements, and CSS basics.'
+        }
+      ]
+    },
+    {
+      id: 'checkpoint-1',
+      title: 'Checkpoint: HTML & CSS Basics',
+      sub: 'Checkpoint · 8 questions',
+      isTest: true,
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Checkpoint · Start',
+          title: 'Time to check what stuck',
+          body: [
+            '8 quick questions pulling from HTML structure, elements, and CSS basics — no new concepts, just practice recalling what you\'ve already learned.'
+          ]
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 1',
+          title: 'Which tag holds the content visitors actually see?',
+          options: ['<body>', '<head>', '<title>', '<html>'],
+          answer: 0,
+          explanation: '<code>&lt;body&gt;</code> holds everything visible on the page.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint · Question 2',
+          title: 'Complete the link',
+          body: ['Finish the attribute so this link goes to mimo.org.'],
+          codeBefore: '<a ',
+          codeAfter: '="https://mimo.org">Learn</a>',
+          answer: ['href'],
+          hint: 'The attribute that specifies a link\'s destination.',
+          explanation: '<code>href</code> is the attribute that tells the browser where a link points.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 3',
+          title: 'What does alt do here?',
+          code: '<img src="dog.png" alt="A dog" />',
+          options: ['Describes the image for accessibility', 'Sets the image size', 'Is the filename', 'Does nothing'],
+          answer: 0,
+          explanation: '<code>alt</code> gives a text description for screen readers and for when the image fails to load.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 4',
+          title: 'What does this render as?',
+          code: '<ul>\n  <li>A</li>\n  <li>B</li>\n</ul>',
+          options: ['A bulleted list', 'A numbered list', 'Two paragraphs', 'Error'],
+          answer: 0,
+          explanation: '<code>&lt;ul&gt;</code> creates an unordered, bulleted list.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint · Question 5',
+          title: 'Complete the CSS property',
+          body: ['Finish the rule so it sets the text color.'],
+          codeBefore: 'p {\n  ',
+          codeAfter: ': blue;\n}',
+          answer: ['color'],
+          hint: 'The CSS property that sets text color.',
+          explanation: '<code>color</code> is the property that controls text color.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 6',
+          title: 'What does this inline style affect?',
+          code: '<p style="color: green;">Hi</p>\n<p>Bye</p>',
+          options: ['Only "Hi" is green', 'Both are green', 'Neither is green', 'Error'],
+          answer: 0,
+          explanation: 'Inline styles only apply to the single element they\'re written on.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 7',
+          title: 'What does this selector target?',
+          code: '.highlight {\n  color: orange;\n}',
+          options: ['Every element with class="highlight"', 'Every <highlight> tag', 'Only the first paragraph', 'Error'],
+          answer: 0,
+          explanation: 'A dot selector (<code>.highlight</code>) matches every element carrying that class, regardless of tag type.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint · Question 8',
+          title: 'Write the selector',
+          body: ['Write the selector for every element with class="price".'],
+          codeBefore: '',
+          codeAfter: ' {\n  font-weight: bold;\n}',
+          answer: ['.price'],
+          hint: 'Class selectors start with a dot.',
+          explanation: '<code>.price</code> targets every element carrying <code>class="price"</code>.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Checkpoint · Complete',
+          title: 'Here\'s where you stand',
+          bullets: [
+            'HTML structure, common elements, and CSS basics — that\'s the foundation for everything else in this course.',
+            'If anything felt shaky, the matching lesson is one tap away in the menu — and you can retake this checkpoint any time.'
+          ],
+          next: 'Next up: a project — build a simple personal profile page.'
+        }
+      ]
+    },
+    {
+      id: 'project-profile-page',
+      title: 'Project: Personal Profile Page',
+      sub: 'Project · 9 steps',
+      kind: 'project',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Project · Brief',
+          title: 'The goal',
+          body: [
+            'Build a small personal profile page: a heading, a photo, a short bio, a list of skills, and a styled "card" container around it — combining every tag and CSS concept from this module.'
+          ]
+        },
+        {
+          type: 'info',
+          eyebrow: 'Project · Step 1',
+          title: 'Start with the page skeleton',
+          body: [
+            'Every page starts the same way — the doctype, then html/head/body.'
+          ],
+          code: '<!DOCTYPE html>\n<html>\n<head>\n  <title>My Profile</title>\n</head>\n<body>\n\n</body>\n</html>'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Project · Step 2',
+          title: 'Add your name as the main heading',
+          body: [
+            'Complete the tag so "Ada Lovelace" becomes the page\'s top-level heading.'
+          ],
+          codeBefore: '<',
+          codeAfter: '>Ada Lovelace</h1>',
+          answer: ['h1'],
+          hint: 'The largest, most important heading level.',
+          explanation: '<code>&lt;h1&gt;</code> is the right choice for a page\'s single main heading.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Project · Step 3',
+          title: 'Add a profile photo',
+          body: [
+            'Every image needs an alt description — here, describing who\'s in the photo.'
+          ],
+          code: '<img src="profile.jpg" alt="Ada Lovelace" />'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Project · Step 4',
+          title: 'Add a short bio',
+          body: [
+            'Complete the tag so this text renders as a paragraph.'
+          ],
+          codeBefore: '<',
+          codeAfter: '>Mathematician and writer, known for work on the Analytical Engine.</p>',
+          answer: ['p'],
+          hint: 'The tag for a block of body text.',
+          explanation: '<code>&lt;p&gt;</code> wraps a paragraph of text.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Project · Step 5',
+          title: 'List your skills',
+          body: [
+            'A bulleted list is the natural fit for a short list of skills.'
+          ],
+          code: '<ul>\n  <li>Mathematics</li>\n  <li>Technical writing</li>\n  <li>Analytical thinking</li>\n</ul>'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Project · Step 6',
+          title: 'Add a link to learn more',
+          body: [
+            'Finish the attribute so this points to a biography page.'
+          ],
+          codeBefore: '<a ',
+          codeAfter: '="https://en.wikipedia.org/wiki/Ada_Lovelace">Read more</a>',
+          answer: ['href'],
+          hint: 'The attribute that specifies a link\'s destination.',
+          explanation: '<code>href</code> tells the browser where "Read more" should lead.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Project · Step 7',
+          title: 'Wrap it all in a styled card',
+          body: [
+            'Give the whole profile a <code>class="card"</code>, then style that class with CSS — a border, padding, and rounded corners.'
+          ],
+          code: '<div class="card">\n  <h1>Ada Lovelace</h1>\n  ...\n</div>\n\n.card {\n  border: 1px solid gray;\n  padding: 16px;\n  border-radius: 8px;\n}'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Project · Step 8',
+          title: 'Complete the class selector',
+          body: [
+            'Finish the CSS so it targets the card container.'
+          ],
+          codeBefore: '',
+          codeAfter: ' {\n  border: 1px solid gray;\n  padding: 16px;\n  border-radius: 8px;\n}',
+          answer: ['.card'],
+          hint: 'Class selectors start with a dot, matching the class name used in the HTML.',
+          explanation: '<code>.card</code> targets every element with <code>class="card"</code> — here, just the profile container.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Project · Complete',
+          title: 'You built a profile page',
+          code: '<!DOCTYPE html>\n<html>\n<head>\n  <title>My Profile</title>\n  <style>\n    .card {\n      border: 1px solid gray;\n      padding: 16px;\n      border-radius: 8px;\n    }\n  </style>\n</head>\n<body>\n\n<div class="card">\n  <h1>Ada Lovelace</h1>\n  <img src="profile.jpg" alt="Ada Lovelace" />\n  <p>Mathematician and writer, known for work on the Analytical Engine.</p>\n  <ul>\n    <li>Mathematics</li>\n    <li>Technical writing</li>\n    <li>Analytical thinking</li>\n  </ul>\n  <a href="https://en.wikipedia.org/wiki/Ada_Lovelace">Read more</a>\n</div>\n\n</body>\n</html>',
+          bullets: [
+            'Every tag from this module — heading, image, paragraph, list, link — combined into one real page.',
+            'A single class (<code>.card</code>) styled the whole container, showing how far one CSS rule can reach.',
+            'This is the actual shape of a real (tiny) web page — the rest of the course adds layout, more elements, and interactivity on top of this same foundation.'
+          ],
+          next: 'More lessons — the box model, Flexbox, Grid, and semantic HTML — are on the way.'
+        }
+      ]
+    },
+    { id: 'more-soon', title: 'Box model, Flexbox, Grid & more', sub: 'coming soon', locked: true }
+  ];
+
+  var state = load();
+  if (!state.testScores) state.testScores = {};
+  var view = { screen: 'menu', lessonId: null, stepIndex: 0, checked: false, firstTry: {} };
+
+  function load() {
+    try {
+      var raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) return JSON.parse(raw);
+    } catch (e) {}
+    return { streak: 0, lastCompleteDate: null, completedLessons: {}, testScores: {} };
+  }
+  function save() {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
+  }
+  function todayStr() {
+    var d = new Date();
+    return d.getFullYear() + '-' + (d.getMonth()+1) + '-' + d.getDate();
+  }
+  function bumpStreak() {
+    var today = todayStr();
+    if (state.lastCompleteDate === today) return;
+    var y = new Date(); y.setDate(y.getDate() - 1);
+    var yesterday = y.getFullYear() + '-' + (y.getMonth()+1) + '-' + y.getDate();
+    state.streak = (state.lastCompleteDate === yesterday) ? state.streak + 1 : 1;
+    state.lastCompleteDate = today;
+    save();
+  }
+
+  function esc(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  function renderChrome() {
+    document.getElementById('streakNum').textContent = state.streak;
+    var path = view.screen === 'menu' ? '~/<b>html-css</b>'
+      : '~/html-css/<b>' + view.lessonId + '</b>';
+    document.getElementById('chromePath').innerHTML = path;
+  }
+
+  function renderProgress() {
+    var track = document.getElementById('progressTrack');
+    track.innerHTML = '';
+    if (view.screen !== 'lesson') { track.style.display = 'none'; return; }
+    track.style.display = 'flex';
+    var lesson = lessons.filter(function(l){return l.id === view.lessonId;})[0];
+    lesson.steps.forEach(function(_, i) {
+      var seg = document.createElement('div');
+      seg.className = 'progress-seg' + (i < view.stepIndex ? ' done' : i === view.stepIndex ? ' current' : '');
+      track.appendChild(seg);
+    });
+  }
+
+  function renderMenu() {
+    var panel = document.getElementById('panel');
+    var html = '';
+    html += '<p class="eyebrow">Practice terminal</p>';
+    html += '<h1 class="step-title">HTML &amp; CSS, one sitting at a time</h1>';
+    html += '<p class="intro-copy">Short, self-contained lessons on structuring and styling a web page — the first stop on the road to full-stack.</p>';
+    html += '<div class="menu-list">';
+    lessons.forEach(function(l, i) {
+      var done = state.completedLessons[l.id];
+      var testScore = state.testScores[l.id];
+      var statusLabel = l.locked ? l.sub
+        : testScore ? (testScore.score + '/' + testScore.total)
+        : done ? 'complete' : (l.sub || 'start');
+      html += '<div class="menu-item' + (l.locked ? ' locked' : '') + '" data-lesson="' + l.id + '" tabindex="' + (l.locked ? '-1' : '0') + '">';
+      html += '<div class="menu-num">' + String(i+1).padStart(2,'0') + '</div>';
+      html += '<div class="menu-text"><div class="menu-title">' + esc(l.title) + '</div><div class="menu-sub">' + esc(l.locked ? l.sub : (l.sub || '')) + '</div></div>';
+      html += '<div class="menu-status">' + esc(statusLabel) + '</div>';
+      html += '</div>';
+    });
+    html += '</div>';
+    panel.innerHTML = html;
+    panel.className = 'panel fade';
+    Array.prototype.forEach.call(panel.querySelectorAll('.menu-item:not(.locked)'), function(el) {
+      el.addEventListener('click', function() { openLesson(el.getAttribute('data-lesson')); });
+      el.addEventListener('keydown', function(e) { if (e.key === 'Enter') openLesson(el.getAttribute('data-lesson')); });
+    });
+  }
+
+  function openLesson(id) {
+    view.screen = 'lesson';
+    view.lessonId = id;
+    view.stepIndex = 0;
+    view.checked = false;
+    view.firstTry = {};
+    renderAll();
+  }
+
+  function backToMenu() {
+    view.screen = 'menu';
+    view.lessonId = null;
+    renderAll();
+  }
+
+  function currentLesson() {
+    return lessons.filter(function(l){ return l.id === view.lessonId; })[0];
+  }
+  function currentStep() {
+    return currentLesson().steps[view.stepIndex];
+  }
+
+  function renderStep() {
+    var step = currentStep();
+    var panel = document.getElementById('panel');
+    var html = '<p class="eyebrow">' + esc(step.eyebrow) + '</p>';
+    html += '<h1 class="step-title">' + esc(step.title) + '</h1>';
+
+    if (step.type === 'info') {
+      step.body.forEach(function(p){ html += '<p class="prose">' + p + '</p>'; });
+      if (step.code) html += '<div class="code-block">' + esc(step.code) + '</div>';
+      html += '<div class="footer"><div class="spacer"></div><button class="btn" id="primaryBtn">continue →</button></div>';
+      panel.innerHTML = html;
+      panel.className = 'panel fade';
+      document.getElementById('primaryBtn').addEventListener('click', nextStep);
+      return;
+    }
+
+    if (step.type === 'predict') {
+      if (step.body) step.body.forEach(function(p){ html += '<p class="prose">' + p + '</p>'; });
+      if (step.code) html += '<div class="code-block">' + esc(step.code) + '</div>';
+      html += '<div class="options" id="optionsBox">';
+      step.options.forEach(function(opt, i) {
+        html += '<button class="option" data-idx="' + i + '"><span class="idx">' + (i+1) + '</span>' + esc(opt) + '</button>';
+      });
+      html += '</div>';
+      html += '<div class="feedback" id="feedbackBox"></div>';
+      html += '<div class="footer"><div class="spacer"></div><button class="btn" id="primaryBtn" disabled>continue →</button></div>';
+      panel.innerHTML = html;
+      panel.className = 'panel fade';
+      wireChoice(step);
+      return;
+    }
+
+    if (step.type === 'fill') {
+      step.body.forEach(function(p){ html += '<p class="prose">' + p + '</p>'; });
+      html += '<div class="code-block">' + esc(step.codeBefore) + '<span class="blank" id="blankPreview">___</span>' + esc(step.codeAfter) + '</div>';
+      html += '<div class="prompt-line"><span class="chevron">&gt;&gt;&gt;</span><input id="fillInput" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="type here" /><span class="cursor"></span></div>';
+      html += '<div class="feedback" id="feedbackBox"></div>';
+      html += '<div class="footer"><button class="hint-btn" id="hintBtn">need a hint?</button><div class="spacer"></div><button class="btn" id="checkBtn">check</button></div>';
+      panel.innerHTML = html;
+      panel.className = 'panel fade';
+      wireFill(step);
+      return;
+    }
+
+    if (step.type === 'recap') {
+      var lesson = currentLesson();
+      var scoreResult = lesson.isTest ? computeScore(lesson) : null;
+      if (scoreResult) {
+        html += '<div class="score-box"><div class="score-num">' + scoreResult.score + '<span class="score-of">/' + scoreResult.total + '</span></div>'
+          + '<div class="score-msg">' + esc(scoreResult.message) + '</div></div>';
+      }
+      if (step.code) html += '<div class="code-block">' + esc(step.code) + '</div>';
+      html += '<ul class="recap-list">';
+      step.bullets.forEach(function(b){ html += '<li>' + b + '</li>'; });
+      html += '</ul>';
+      html += '<p class="prose" style="margin-top:16px; color:var(--ink-soft);">' + esc(step.next) + '</p>';
+      html += '<div class="footer"><button class="btn ghost" id="menuBtn">back to lessons</button><div class="spacer"></div></div>';
+      panel.innerHTML = html;
+      panel.className = 'panel fade';
+      document.getElementById('menuBtn').addEventListener('click', function() {
+        state.completedLessons[view.lessonId] = true;
+        if (scoreResult) state.testScores[view.lessonId] = { score: scoreResult.score, total: scoreResult.total, date: todayStr() };
+        bumpStreak();
+        backToMenu();
+      });
+      return;
+    }
+  }
+
+  function computeScore(lesson) {
+    var total = 0, score = 0;
+    lesson.steps.forEach(function(s, i) {
+      if (s.type === 'predict' || s.type === 'fill') {
+        total += 1;
+        if (view.firstTry[i]) score += 1;
+      }
+    });
+    var pct = total ? score / total : 0;
+    var message = pct >= 0.9 ? 'Nailed it — that stuck.'
+      : pct >= 0.7 ? 'Solid. A couple of spots to revisit.'
+      : 'Good practice — worth another pass on the lessons above.';
+    return { score: score, total: total, message: message };
+  }
+
+  function wireChoice(step) {
+    var box = document.getElementById('optionsBox');
+    var fb = document.getElementById('feedbackBox');
+    var primary = document.getElementById('primaryBtn');
+    var answered = false;
+    primary.addEventListener('click', nextStep);
+    Array.prototype.forEach.call(box.querySelectorAll('.option'), function(btn) {
+      btn.addEventListener('click', function() {
+        if (answered) return;
+        answered = true;
+        var idx = parseInt(btn.getAttribute('data-idx'), 10);
+        view.firstTry[view.stepIndex] = (idx === step.answer);
+        Array.prototype.forEach.call(box.querySelectorAll('.option'), function(b, i) {
+          if (i === step.answer) b.classList.add('correct');
+          else if (b === btn) b.classList.add('wrong');
+          else b.classList.add('dim');
+        });
+        fb.className = 'feedback show ' + (idx === step.answer ? 'ok' : 'no');
+        fb.innerHTML = (idx === step.answer ? '<b>Correct.</b> ' : '<b>Not quite.</b> ') + step.explanation;
+        primary.disabled = false;
+      });
+    });
+  }
+
+  function wireFill(step) {
+    var input = document.getElementById('fillInput');
+    var fb = document.getElementById('feedbackBox');
+    var checkBtn = document.getElementById('checkBtn');
+    var hintBtn = document.getElementById('hintBtn');
+    var solved = false;
+
+    function doCheck() {
+      if (solved) { nextStep(); return; }
+      var val = input.value.trim().toLowerCase();
+      var ok = step.answer.some(function(a){ return a.toLowerCase() === val; });
+      if (!(view.stepIndex in view.firstTry)) view.firstTry[view.stepIndex] = ok;
+      fb.className = 'feedback show ' + (ok ? 'ok' : 'no');
+      fb.innerHTML = (ok ? '<b>Correct.</b> ' : '<b>Not quite.</b> ') + step.explanation;
+      if (ok) {
+        solved = true;
+        document.getElementById('blankPreview').textContent = step.answer[0];
+        input.disabled = true;
+        checkBtn.textContent = 'continue →';
+      }
+    }
+    checkBtn.addEventListener('click', doCheck);
+    input.addEventListener('keydown', function(e){ if (e.key === 'Enter') doCheck(); });
+    hintBtn.addEventListener('click', function() {
+      fb.className = 'feedback show ok';
+      fb.innerHTML = '<b>Hint.</b> ' + step.hint;
+    });
+  }
+
+  function nextStep() {
+    var lesson = currentLesson();
+    if (view.stepIndex < lesson.steps.length - 1) {
+      view.stepIndex += 1;
+      renderAll();
+    }
+  }
+
+  function renderAll() {
+    renderChrome();
+    renderProgress();
+    if (view.screen === 'menu') renderMenu();
+    else renderStep();
+  }
+
+  renderAll();
+})();
+</script>
+</body>
+</html>
