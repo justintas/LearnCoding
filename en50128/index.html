@@ -1533,7 +1533,318 @@
         }
       ]
     },
-    { id: 'more-soon', title: 'Assurance, independence & governance — coming soon', sub: 'coming soon', locked: true }
+    {
+      id: 'swa-role',
+      title: 'The Software Assurance (SwA) role',
+      sub: '6 steps · ~4 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 10 · Step 1',
+          title: 'SwA advises, but doesn\'t do the work itself',
+          body: [
+            'Software Assurance is a role that monitors and advises on the project\'s compliance with its plans and the standard — without doing the actual requirements, design, coding, or testing work itself.'
+          ]
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 10 · Step 2',
+          title: 'SwA reports outside the direct project chain of command',
+          body: [
+            'For SwA\'s advice to mean anything, it can\'t be quietly overridden by schedule pressure. That\'s why SwA typically has a reporting line that isn\'t purely "answer to the Project Manager who needs to ship on time."'
+          ]
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 10 · Step 3',
+          title: 'Why does SwA typically report outside the direct project delivery chain?',
+          options: ['So schedule/budget pressure can\'t simply override its findings', 'Because SwA doesn\'t need to understand the project', 'Because it\'s cheaper to organize that way', 'It\'s just a historical convention with no real reason'],
+          answer: 0,
+          explanation: 'If SwA answered only to someone whose job is hitting the deadline, its findings could get quietly deprioritized whenever they\'re inconvenient — the separate reporting line protects its independence.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 10 · Step 4',
+          title: 'SwA is internal; the ISA is external',
+          body: [
+            'SwA sits inside the organisation doing the work, advising as the project goes. The Independent Safety Assessor (ISA) — introduced earlier — is a separate, more independent check, often required to have no involvement in the project\'s actual development.'
+          ]
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 10 · Step 5',
+          title: 'Name the role',
+          body: [
+            'What\'s the short name for the role that advises on compliance throughout the project, without doing the development work itself?'
+          ],
+          codeBefore: '',
+          codeAfter: ' = Software Assurance',
+          answer: ['SwA'],
+          hint: 'Introduced at the top of this lesson.',
+          explanation: 'SwA advises and monitors compliance, but doesn\'t do the requirements/design/coding/testing work itself.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 10 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            'Software Assurance (SwA) monitors and advises on compliance, without doing the actual development work.',
+            'SwA typically reports outside the direct project delivery chain, so schedule pressure can\'t simply override its findings.',
+            'SwA is internal to the organisation; the ISA is a separate, more independent, often external check.',
+            'Both roles exist because a project constantly focused on shipping benefits from someone whose job is specifically to ask "are we actually compliant."'
+          ],
+          next: 'Next up: the Independent Safety Assessor, and what "independence" actually requires at different SIL levels.'
+        }
+      ]
+    },
+    {
+      id: 'isa-independence',
+      title: 'The ISA and levels of independence',
+      sub: '6 steps · ~4 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 11 · Step 1',
+          title: 'The ISA gives the final compliance opinion',
+          body: [
+            'The Independent Safety Assessor reviews the whole safety case — the evidence, the process, the product — and forms an independent opinion on whether it\'s actually compliant. Certification typically can\'t happen without ISA sign-off.'
+          ]
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 11 · Step 2',
+          title: 'Independence isn\'t all-or-nothing — it scales with SIL',
+          body: [
+            'At lower SIL, a suitably independent person within the same organisation might be acceptable. At higher SIL, the standard expects greater independence — potentially organisational (a different reporting line), or even a fully separate company.'
+          ]
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 11 · Step 3',
+          title: 'At the highest SIL levels, why might the standard require the assessor to be from a completely separate organisation, not just a different team?',
+          options: ['Even good-faith internal pressures (schedule, budget, reputation) could subtly bias someone still inside the same company', 'Internal assessors are always less competent', 'It\'s a legal requirement with no safety rationale', 'External assessors are always cheaper'],
+          answer: 0,
+          explanation: 'The concern isn\'t competence — it\'s that shared incentives (the same company\'s schedule, budget, and reputation) can subtly bias judgment even with the best intentions, which is exactly what full organisational separation removes.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 11 · Step 4',
+          title: 'The ISA reviews evidence, not just documents',
+          body: [
+            'The ISA isn\'t just checking whether documents exist — it reviews whether the evidence inside them actually demonstrates the required activity happened, tracing back to the same "can you explain it" test from tailoring.'
+          ]
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 11 · Step 5',
+          title: 'Name the acronym',
+          body: [
+            'What\'s the acronym for the role that gives the final independent compliance opinion before certification?'
+          ],
+          codeBefore: '',
+          codeAfter: ' = Independent Safety Assessor',
+          answer: ['ISA'],
+          hint: 'Introduced back in the getting-oriented lesson.',
+          explanation: 'ISA — Independent Safety Assessor — reviews the whole safety case and forms the independent opinion needed for certification.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 11 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            'The ISA reviews the whole safety case and forms an independent compliance opinion — certification typically requires ISA sign-off.',
+            'Independence isn\'t all-or-nothing: it scales with SIL, from a suitably independent internal person up to a fully separate organisation.',
+            'Full organisational separation at high SIL exists to remove even good-faith bias from shared schedule/budget/reputation incentives, not because internal reviewers are less competent.',
+            'The ISA checks whether evidence actually demonstrates compliance, not just whether documents exist — the same test introduced in the tailoring lesson.'
+          ],
+          next: 'Next up: a checkpoint test on the SwA and ISA roles.'
+        }
+      ]
+    },
+    {
+      id: 'checkpoint-4',
+      title: 'Checkpoint: Assurance & Independence',
+      sub: 'Checkpoint · 8 questions',
+      isTest: true,
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Checkpoint 4 · Start',
+          title: 'Round four',
+          body: [
+            '8 questions on the SwA and ISA roles, plus a few older concepts for review.'
+          ]
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint 4 · Question 1',
+          title: 'Why does SwA typically report outside the direct project delivery chain?',
+          options: ['So schedule/budget pressure can\'t simply override its findings', 'Because SwA doesn\'t need to understand the project', 'Because it\'s cheaper to organize that way', 'It\'s just a historical convention'],
+          answer: 0,
+          explanation: 'A separate reporting line protects SwA\'s findings from being quietly deprioritized under schedule pressure.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint 4 · Question 2',
+          title: 'Name the role',
+          body: ['What\'s the short name for the internal role that advises on compliance without doing the development work itself?'],
+          codeBefore: '',
+          codeAfter: ' = Software Assurance',
+          answer: ['SwA'],
+          hint: 'Covered in Lesson 10.',
+          explanation: 'SwA — Software Assurance.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint 4 · Question 3',
+          title: 'At the highest SIL levels, why might the assessor need to be from a completely separate organisation?',
+          options: ['Even good-faith internal pressures could subtly bias someone still inside the same company', 'Internal assessors are always less competent', 'It\'s a legal requirement with no safety rationale', 'External assessors are always cheaper'],
+          answer: 0,
+          explanation: 'Full organisational separation removes shared incentives (schedule, budget, reputation) that could bias judgment even with good intentions.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint 4 · Question 4',
+          title: 'Name the role',
+          body: ['What\'s the acronym for the role giving the final independent compliance opinion before certification?'],
+          codeBefore: '',
+          codeAfter: ' = Independent Safety Assessor',
+          answer: ['ISA'],
+          hint: 'Covered in Lesson 3 and Lesson 11.',
+          explanation: 'ISA — Independent Safety Assessor.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint 4 · Question 5',
+          title: 'A component passes its own tests, but the system misbehaves only when two modules interact — review',
+          options: ['Integration testing catches this', 'Component testing catches this', 'Neither catches this', 'Only a code review catches this'],
+          answer: 0,
+          explanation: 'This is exactly what integration testing targets — problems that only appear when pieces interact.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint 4 · Question 6',
+          title: 'Name the concept — review',
+          body: ['What\'s the word for verification done by someone other than the artifact\'s author?'],
+          codeBefore: '',
+          codeAfter: ' — increases at higher SIL',
+          answer: ['independence'],
+          hint: 'Covered in Lesson 9.',
+          explanation: 'Independence — someone other than the author checking the work.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint 4 · Question 7',
+          title: 'A technique is rated "Mandatory" at your project\'s SIL — review',
+          options: ['It must be used — no substitute', 'Use it if convenient', 'It\'s automatically waived by tailoring', 'It only matters for T3 tools'],
+          answer: 0,
+          explanation: 'Mandatory means mandatory — tailoring adapts structure and templates, not Mandatory-rated techniques.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint 4 · Question 8',
+          title: 'Name the concept — review',
+          body: ['What\'s the general word for adapting the standard\'s generic requirements to your own project, without contradicting it?'],
+          codeBefore: '',
+          codeAfter: ' = adapting a generic standard to your specific project',
+          answer: ['tailoring'],
+          hint: 'Covered in Lesson 5.',
+          explanation: 'Tailoring — deciding your own structure that still satisfies the standard.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Checkpoint 4 · Complete',
+          title: 'Here\'s where you stand',
+          bullets: [
+            'The SwA and ISA roles — internal advisor vs. independent final opinion — plus review of earlier modules.',
+            'Retake this any time — the score updates and nothing is held against you.'
+          ],
+          next: 'Next up: a project — deciding how much independence a real scenario actually needs.'
+        }
+      ]
+    },
+    {
+      id: 'project-independence',
+      title: 'Project: Decide the Right Level of Independence',
+      sub: 'Project · 8 steps',
+      kind: 'project',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Project · Brief',
+          title: 'The goal',
+          body: [
+            'You\'re structuring the assurance approach for a SIL 3 signalling module. Decide how independent each role — verifier, ISA, and SwA — actually needs to be, and what happens when independence and schedule pressure collide.'
+          ]
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Project · Step 1',
+          title: 'For the person verifying design against requirements at SIL 3, is a different team within the same company likely sufficient?',
+          options: ['Yes — a different team/reporting line within the same company can be sufficient; full separate-company independence is reserved for the highest levels', 'No — it always requires a separate company regardless of SIL', 'Independence doesn\'t matter for verification, only for the ISA', 'SIL 3 requires no independence at all'],
+          answer: 0,
+          explanation: 'Independence scales with SIL — a different team\'s reporting line is often enough at SIL 3, without needing full organisational separation.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Project · Step 2',
+          title: 'The ISA is a different question from the verifier',
+          body: [
+            'Even with a well-independent internal verifier, the ISA giving final sign-off is typically expected to be more independent still — because it\'s forming the overall compliance opinion, not just checking one artifact.'
+          ]
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Project · Step 3',
+          title: 'Should the ISA be someone who already worked as a verifier on this same project?',
+          options: ['No — reusing the same person blurs the fresh, independent perspective the assessment is meant to provide', 'Yes, since they already know the project well', 'It doesn\'t matter as long as they\'re competent', 'Only relevant at Basic Integrity'],
+          answer: 0,
+          explanation: 'Even a highly competent verifier already has a stake in "their own" review being seen as sufficient — reusing them as the ISA undermines the independent perspective the assessment exists to provide.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Project · Step 4',
+          title: 'Complete the principle',
+          body: [
+            'The recurring rule across this module: the more consequential the check, the more ____ is expected of who performs it.'
+          ],
+          codeBefore: '',
+          codeAfter: ' is expected of who performs it',
+          answer: ['independence'],
+          hint: 'The concept this whole module has been about.',
+          explanation: 'Independence scales with how consequential the check is — from a differently-assigned team member up to a fully separate organisation for the final assessment.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Project · Step 5',
+          title: 'Now a schedule-pressure scenario',
+          body: [
+            'Partway through the project, the SwA advisor raises a compliance concern that would delay the release. The Project Manager wants to ship on schedule.'
+          ]
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Project · Step 6',
+          title: 'What should happen next?',
+          options: ['SwA\'s concern should be evaluated on its merits through its independent reporting line, not simply overridden by schedule pressure', 'The Project Manager\'s schedule always wins, since they\'re accountable for delivery', 'SwA should stay silent once development is underway', 'Only the ISA\'s opinion matters — SwA can be ignored'],
+          answer: 0,
+          explanation: 'This is exactly why SwA\'s reporting line exists — so a legitimate compliance concern gets evaluated on its merits instead of quietly overridden by schedule pressure.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Project · Complete',
+          title: 'You structured an assurance approach',
+          bullets: [
+            'Verification independence at SIL 3 can often be satisfied within the same company, on a different team — full organisational separation is reserved for the highest-consequence checks.',
+            'The ISA\'s final compliance opinion is typically expected to carry more independence than an individual verifier, since it covers the whole safety case.',
+            'The recurring principle: the more consequential the check, the more independence is expected of who performs it.',
+            'SwA\'s reporting line exists precisely so a legitimate compliance concern can\'t simply be overridden by schedule pressure.'
+          ],
+          next: 'Next up: governance — phase assessments, internal audits, and change control.'
+        }
+      ]
+    },
+    { id: 'more-soon', title: 'Governance & closeout — coming soon', sub: 'coming soon', locked: true }
   ];
 
   var state = load();
