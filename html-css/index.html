@@ -1275,7 +1275,340 @@
         }
       ]
     },
-    { id: 'more-soon-2', title: 'Semantic HTML & Accessibility', sub: 'coming soon', locked: true }
+    {
+      id: 'semantic-html',
+      title: 'Semantic HTML',
+      sub: '6 steps · ~4 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 07 · Step 1',
+          title: 'Semantic tags describe meaning, not just appearance',
+          body: [
+            '<code>&lt;div&gt;</code> and <code>&lt;span&gt;</code> say nothing about what\'s inside them. Semantic tags like <code>&lt;header&gt;</code>, <code>&lt;nav&gt;</code>, <code>&lt;main&gt;</code>, <code>&lt;article&gt;</code>, and <code>&lt;footer&gt;</code> describe the actual role of that section of the page.'
+          ]
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 07 · Step 2',
+          title: 'Why it matters beyond just looking the same',
+          body: [
+            'A <code>&lt;div&gt;</code> and a <code>&lt;nav&gt;</code> can look identical after styling — but screen readers, search engines, and browsers all use semantic tags to understand a page\'s structure, not just its visual layout.'
+          ]
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 07 · Step 3',
+          title: 'Two developers build the same-looking nav bar — one with <nav>, one with a styled <div>. Visually identical. What\'s the real difference?',
+          options: ['Screen readers and search engines can identify the <nav> as navigation; the <div> gives them no such signal', 'There is no real difference — they always behave identically', '<div> renders faster', '<nav> requires JavaScript to work'],
+          answer: 0,
+          explanation: 'Visual appearance comes from CSS, but meaning comes from the tag itself — a screen reader can jump straight to "navigation" with <nav>, but has no way to identify a generic <div> as navigation.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 07 · Step 4',
+          title: 'Common semantic elements and their roles',
+          body: [
+            '<code>&lt;header&gt;</code> — introductory content, often a page or section\'s top. <code>&lt;nav&gt;</code> — navigation links. <code>&lt;main&gt;</code> — the page\'s primary content (one per page). <code>&lt;article&gt;</code> — a self-contained piece of content. <code>&lt;footer&gt;</code> — closing content, often at the bottom.'
+          ],
+          code: '<header>...</header>\n<nav>...</nav>\n<main>\n  <article>...</article>\n</main>\n<footer>...</footer>'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 07 · Step 5',
+          title: 'Complete the tag',
+          body: [
+            'Finish the tag so this wraps the page\'s single, primary content area.'
+          ],
+          codeBefore: '<',
+          codeAfter: '>\n  <article>...</article>\n</main>',
+          answer: ['main'],
+          hint: 'Matches the closing </main> already shown.',
+          explanation: '<code>&lt;main&gt;</code> wraps a page\'s primary content — there should only be one per page.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 07 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            'Semantic tags (<code>&lt;header&gt;</code>, <code>&lt;nav&gt;</code>, <code>&lt;main&gt;</code>, <code>&lt;article&gt;</code>, <code>&lt;footer&gt;</code>) describe a section\'s role, not just its appearance.',
+            'A <code>&lt;div&gt;</code> and a semantic tag can look identical after CSS — the difference is in the meaning conveyed to screen readers, search engines, and browsers.',
+            '<code>&lt;main&gt;</code> wraps a page\'s single primary content area; <code>&lt;article&gt;</code> wraps a self-contained piece of content.',
+            'Choosing semantic tags over generic <code>&lt;div&gt;</code>s costs nothing visually, but adds real meaning.'
+          ],
+          next: 'Next up: accessibility — writing markup that actually works for everyone.'
+        }
+      ]
+    },
+    {
+      id: 'accessibility',
+      title: 'Accessibility basics',
+      sub: '6 steps · ~4 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 08 · Step 1',
+          title: 'Accessibility means the page works without assumptions',
+          body: [
+            'Not every visitor experiences a page the way you designed it — some use a screen reader, some navigate by keyboard only, some have low vision. Accessible markup makes the page work across all of these, not just for a mouse and a monitor.'
+          ]
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 08 · Step 2',
+          title: 'Every image needs meaningful alt text',
+          body: [
+            'You\'ve already seen <code>alt</code> on <code>&lt;img&gt;</code> — for accessibility, the key is making it meaningful. <code>alt="image1.jpg"</code> tells a screen reader nothing useful; a real description actually helps.'
+          ],
+          code: '<img src="dog.jpg" alt="A golden retriever catching a frisbee" />'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 08 · Step 3',
+          title: 'Which alt text is actually useful to someone using a screen reader?',
+          options: ['alt="A golden retriever catching a frisbee"', 'alt="IMG_4521.jpg"', 'alt="" (for a meaningful photo)', 'Skipping alt entirely'],
+          answer: 0,
+          explanation: 'Good alt text describes what the image actually shows — a filename or empty alt on a meaningful image gives a screen reader user nothing to work with.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 08 · Step 4',
+          title: 'Forms need labels connected to their inputs',
+          body: [
+            'A <code>&lt;label&gt;</code> linked to an <code>&lt;input&gt;</code> (via matching <code>for</code> and <code>id</code>) means a screen reader announces what the field is for, and clicking the label focuses the input — a functional connection, not just decoration.'
+          ],
+          code: '<label for="email">Email</label>\n<input id="email" type="email" />'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 08 · Step 5',
+          title: 'Complete the attribute',
+          body: [
+            'Finish the attribute so this label is correctly linked to the input below it.'
+          ],
+          codeBefore: '<label ',
+          codeAfter: '="email">Email</label>\n<input id="email" type="email" />',
+          answer: ['for'],
+          hint: 'Must match the input\'s id attribute.',
+          explanation: '<code>for="email"</code> matches the input\'s <code>id="email"</code>, creating a real functional connection — not just visual proximity.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 08 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            'Accessible markup works for people using screen readers, keyboard-only navigation, or low vision — not just a mouse and monitor.',
+            '<code>alt</code> text should describe what an image actually shows, not just satisfy the requirement of having an alt attribute.',
+            '<code>&lt;label for="..."&gt;</code> linked to an input\'s matching <code>id</code> creates a real functional connection, not just visual placement.',
+            'None of this costs visual design anything — it\'s markup discipline, not a design tradeoff.'
+          ],
+          next: 'Next up: a final checkpoint, then a capstone project bringing HTML, CSS, layout, and accessibility together.'
+        }
+      ]
+    },
+    {
+      id: 'checkpoint-3',
+      title: 'Checkpoint: Semantic HTML & Accessibility',
+      sub: 'Checkpoint · 10 questions',
+      isTest: true,
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Checkpoint · Start',
+          title: 'The final round',
+          body: [
+            '10 questions: semantic HTML and accessibility, plus a broad review across the whole course. This is the last checkpoint before the capstone.'
+          ]
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 1',
+          title: 'A <nav> and a styled <div> look identical. What\'s the real difference?',
+          options: ['Screen readers and search engines can identify <nav> as navigation; the <div> gives no such signal', 'No real difference', '<div> renders faster', '<nav> requires JavaScript'],
+          answer: 0,
+          explanation: 'Meaning comes from the tag itself, not just its visual styling.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint · Question 2',
+          title: 'Complete the tag',
+          body: ['Finish the tag so this wraps the page\'s single, primary content area.'],
+          codeBefore: '<',
+          codeAfter: '>\n  <article>...</article>\n</main>',
+          answer: ['main'],
+          hint: 'One per page.',
+          explanation: '<main> wraps a page\'s primary content.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 3',
+          title: 'Which alt text is actually useful to a screen reader user?',
+          options: ['alt="A golden retriever catching a frisbee"', 'alt="IMG_4521.jpg"', 'alt="" on a meaningful photo', 'Skipping alt entirely'],
+          answer: 0,
+          explanation: 'Good alt text describes what the image actually shows.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint · Question 4',
+          title: 'Complete the attribute',
+          body: ['Finish the attribute so this label is linked to the email input.'],
+          codeBefore: '<label ',
+          codeAfter: '="email">Email</label>\n<input id="email" type="email" />',
+          answer: ['for'],
+          hint: 'Must match the input\'s id.',
+          explanation: 'for="email" links the label to the input with a matching id.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 5',
+          title: 'A box has width: 200px, padding: 20px, box-sizing: border-box — review',
+          options: ['200px total — padding is included inside that width', '240px — padding is added on top', '220px', 'It depends on the border color'],
+          answer: 0,
+          explanation: 'border-box makes width the box\'s total width, padding included.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint · Question 6',
+          title: 'Complete the property — review',
+          body: ['Finish the property so this container becomes a flex layout.'],
+          codeBefore: '.row {\n  ',
+          codeAfter: ': flex;\n}',
+          answer: ['display'],
+          hint: 'Activates flexbox.',
+          explanation: 'display: flex turns a container\'s children into flex items.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 7',
+          title: 'A grid has grid-template-columns: 1fr 1fr 1fr; and six items — review',
+          options: ['Three equal columns, wrapping into two rows of three', 'All six items in one row', 'One column, six rows', 'The items overlap'],
+          answer: 0,
+          explanation: 'Items wrap into a new row once a row\'s columns fill up.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint · Question 8',
+          title: 'Complete the property — review',
+          body: ['Finish the property so this grid has three equal columns.'],
+          codeBefore: '.gallery {\n  display: grid;\n  ',
+          codeAfter: ': 1fr 1fr 1fr;\n}',
+          answer: ['grid-template-columns'],
+          hint: 'Defines column sizes.',
+          explanation: 'grid-template-columns: 1fr 1fr 1fr creates three equal-width columns.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 9',
+          title: 'Which property adds space between two neighboring boxes without changing either box\'s own size — review',
+          options: ['margin', 'padding', 'border', 'width'],
+          answer: 0,
+          explanation: 'margin sits outside the border and pushes neighboring elements away.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint · Question 10',
+          title: 'Complete the property — review',
+          body: ['Finish the property so this grid has 16px of spacing between all items.'],
+          codeBefore: '.gallery {\n  display: grid;\n  grid-template-columns: 1fr 1fr;\n  ',
+          codeAfter: ': 16px;\n}',
+          answer: ['gap'],
+          hint: 'Spaces items apart, in both directions.',
+          explanation: 'gap spaces grid items apart without margin\'s outer-edge side effect.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Checkpoint · Complete',
+          title: 'Here\'s where you stand',
+          bullets: [
+            'Semantic HTML, accessibility, and a full review — checkpoint to checkpoint, that\'s the whole course.',
+            'Retake this any time — the score updates and nothing is held against you.'
+          ],
+          next: 'Next up: the capstone project — making the card gallery semantic and accessible.'
+        }
+      ]
+    },
+    {
+      id: 'capstone-gallery',
+      title: 'Capstone: Accessible Card Gallery',
+      sub: 'Project · 8 steps',
+      kind: 'project',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Capstone · Brief',
+          title: 'The goal',
+          body: [
+            'Take the card gallery from the layout project and make it semantic and accessible — the final step before HTML & CSS is complete.'
+          ]
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Capstone · Step 1',
+          title: 'The gallery currently sits inside a generic <div class="gallery">. Should this become a semantic tag?',
+          options: ['Yes — <section> or <main> (if it\'s the page\'s primary content) conveys real meaning a <div> doesn\'t', 'No — divs are always the right choice for layout containers', 'Only if it also uses Flexbox', 'Semantic tags can\'t be styled with Grid'],
+          answer: 0,
+          explanation: 'A meaningful section of content is exactly what semantic tags exist for — a layout-only div and a <section>/<main> can look identical, but only one tells a screen reader what it actually is.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Capstone · Step 2',
+          title: 'Each card gets a real image with meaningful alt text',
+          body: [
+            'Describing what the product photo actually shows.'
+          ],
+          code: '<img src="product1.jpg" alt="Blue ceramic coffee mug with a wooden handle" />'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Capstone · Step 3',
+          title: 'Complete the attribute',
+          body: [
+            'Finish the attribute so this second product image has meaningful alt text.'
+          ],
+          codeBefore: '<img src="product2.jpg" ',
+          codeAfter: '="Red canvas tote bag" />',
+          answer: ['alt'],
+          hint: 'The attribute that provides a text description of an image.',
+          explanation: '<code>alt</code> describes what the image shows — essential for screen readers and for when the image fails to load.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Capstone · Step 4',
+          title: 'The gallery keeps every layout decision from before',
+          body: [
+            'Grid still arranges the three columns, <code>gap</code> still spaces them, Flexbox still centers each card\'s internal content, and <code>box-sizing: border-box</code> still keeps widths predictable — semantic tags and accessibility are additions, not replacements.'
+          ]
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Capstone · Step 5',
+          title: 'Does switching <div class="gallery"> to <section class="gallery"> require any changes to the CSS?',
+          options: ['No — CSS selectors like .gallery still work identically regardless of the tag they\'re on', 'Yes — Grid only works on <div>', 'Yes — all class names must change too', 'Yes — Flexbox stops working on semantic tags'],
+          answer: 0,
+          explanation: 'CSS targets classes and properties, not specific tag names — switching the tag from <div> to <section> changes its meaning, not its styling.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Capstone · Step 6',
+          title: 'Each card has a "View Details" control, currently a styled <div> with a click handler. Should it be a real <button> instead?',
+          options: ['Yes — a real <button> gets keyboard focus and screen reader recognition for free; a styled <div> does not', 'No — divs are simpler to style', 'Only if using Flexbox', 'It doesn\'t matter without JavaScript'],
+          answer: 0,
+          explanation: 'Native interactive elements (<button>, <a>) are keyboard-focusable and understood by assistive tech automatically — a div styled to look like a button doesn\'t get any of that without extra work.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Capstone · Complete',
+          title: 'You built an accessible card gallery',
+          bullets: [
+            'Semantic tags (<code>&lt;section&gt;</code>, <code>&lt;main&gt;</code>, <code>&lt;article&gt;</code>) and accessible markup (meaningful alt text, real interactive elements) layer on top of existing CSS without breaking it.',
+            'CSS selectors like <code>.gallery</code> work identically regardless of whether the underlying tag is a <code>&lt;div&gt;</code> or a semantic element.',
+            'Every layout decision from the whole course — Grid, Flexbox, the box model — still applies; semantics and accessibility are additions.',
+            'That\'s the full HTML & CSS course: structure, links/images/lists, CSS basics, layout, and now semantic, accessible markup.'
+          ],
+          next: 'That\'s HTML & CSS complete. JavaScript is next on the full-stack path.'
+        }
+      ]
+    }
   ];
 
   var state = load();
