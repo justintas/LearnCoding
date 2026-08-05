@@ -854,11 +854,428 @@
             'A single class (<code>.card</code>) styled the whole container, showing how far one CSS rule can reach.',
             'This is the actual shape of a real (tiny) web page — the rest of the course adds layout, more elements, and interactivity on top of this same foundation.'
           ],
-          next: 'More lessons — the box model, Flexbox, Grid, and semantic HTML — are on the way.'
+          next: 'Next up: the box model — how every element\'s spacing actually works.'
         }
       ]
     },
-    { id: 'more-soon', title: 'Box model, Flexbox, Grid & more', sub: 'coming soon', locked: true }
+    {
+      id: 'box-model',
+      title: 'The box model',
+      sub: '7 steps · ~5 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 04 · Step 1',
+          title: 'Every element is a box',
+          body: [
+            'Every HTML element renders as a rectangular box, made of four layers from the inside out: content, padding, border, and margin.'
+          ]
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 04 · Step 2',
+          title: 'Padding, border, and margin do different jobs',
+          body: [
+            '<code>padding</code> adds space inside the border, around the content. <code>border</code> draws a visible line around the padding. <code>margin</code> adds space outside the border, between this box and its neighbors.'
+          ],
+          code: 'div {\n  padding: 16px;\n  border: 2px solid black;\n  margin: 24px;\n}'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 04 · Step 3',
+          title: 'Which property adds space between two boxes sitting next to each other, without changing either box\'s own visible size?',
+          options: ['margin', 'padding', 'border', 'width'],
+          answer: 0,
+          explanation: '<code>margin</code> sits outside the border and pushes neighboring elements away, without affecting the box\'s own content or border size.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 04 · Step 4',
+          title: 'box-sizing changes how width is calculated',
+          body: [
+            'By default, <code>width</code> applies to content only — padding and border are added on top, making the box bigger than the width you set. <code>box-sizing: border-box</code> changes this so width includes padding and border, which is why most real projects set it globally.'
+          ],
+          code: '* {\n  box-sizing: border-box;\n}'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 04 · Step 5',
+          title: 'A box has width: 200px, padding: 20px, and box-sizing: border-box. How wide does it actually render?',
+          options: ['200px total — padding is included inside that width', '240px — padding is added on top of the width', '220px', 'It depends on the border color'],
+          answer: 0,
+          explanation: '<code>border-box</code> makes width the box\'s total width — padding and border are squeezed inside it, not added on top.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 04 · Step 6',
+          title: 'Complete the rule',
+          body: [
+            'Finish the property so every element on the page uses border-box sizing.'
+          ],
+          codeBefore: '* {\n  ',
+          codeAfter: ': border-box;\n}',
+          answer: ['box-sizing'],
+          hint: 'The property name introduced in this lesson.',
+          explanation: '<code>box-sizing: border-box</code> is close to universal in real projects — it makes width behave predictably.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 04 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            'Every element renders as a box: content, padding, border, margin — inside out.',
+            '<code>padding</code> adds space inside the border; <code>margin</code> adds space outside it, between neighboring boxes.',
+            'By default, <code>width</code> only sets the content area — padding and border add to the total size.',
+            '<code>box-sizing: border-box</code> makes width include padding and border, so the number you set is the actual total size.'
+          ],
+          next: 'Next up: Flexbox — arranging boxes in a row or column without fighting the default layout.'
+        }
+      ]
+    },
+    {
+      id: 'flexbox',
+      title: 'Flexbox',
+      sub: '7 steps · ~5 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 05 · Step 1',
+          title: 'display: flex turns on flexible layout',
+          body: [
+            'Apply <code>display: flex</code> to a container, and its direct children become flex items you can arrange in a row or column, with easy control over spacing and alignment.'
+          ],
+          code: '.container {\n  display: flex;\n}'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 05 · Step 2',
+          title: 'justify-content controls the main axis',
+          body: [
+            'By default flex items sit in a row. <code>justify-content</code> controls how they\'re spaced along that row — <code>flex-start</code>, <code>center</code>, <code>space-between</code>, and more.'
+          ],
+          code: '.container {\n  display: flex;\n  justify-content: space-between;\n}'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 05 · Step 3',
+          title: 'A flex container has three child boxes and justify-content: center. Where do the boxes end up?',
+          options: ['Grouped together in the middle of the container', 'Spread evenly with equal gaps', 'Pushed to the left edge', 'Stacked vertically'],
+          answer: 0,
+          explanation: '<code>center</code> groups the items together and centers that group within the container — unlike <code>space-between</code>, which spreads them apart.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 05 · Step 4',
+          title: 'align-items controls the cross axis',
+          body: [
+            'While <code>justify-content</code> works along the row, <code>align-items</code> controls vertical position within that row — <code>flex-start</code> (top), <code>center</code>, <code>flex-end</code> (bottom), or <code>stretch</code> (the default, filling the height).'
+          ],
+          code: '.container {\n  display: flex;\n  align-items: center;\n}'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 05 · Step 5',
+          title: 'Predict the effect',
+          code: '.nav {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n}',
+          options: ['Items spread across the row with equal gaps, vertically centered — a classic navbar layout', 'Items stacked in a single column', 'Items all pushed to one corner', 'No visible effect without a width set'],
+          answer: 0,
+          explanation: 'This exact combination — <code>space-between</code> plus <code>align-items: center</code> — is the standard pattern for a navbar: logo on one side, links on the other, everything vertically aligned.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 05 · Step 6',
+          title: 'Complete the property',
+          body: [
+            'Finish the property so the container becomes a flex layout.'
+          ],
+          codeBefore: '.row {\n  ',
+          codeAfter: ': flex;\n}',
+          answer: ['display'],
+          hint: 'The property that turns a normal container into a flex container.',
+          explanation: '<code>display: flex</code> is what activates flexbox on a container in the first place.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 05 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            '<code>display: flex</code> turns a container\'s direct children into flex items, arranged in a row by default.',
+            '<code>justify-content</code> controls spacing along the main axis (the row): <code>flex-start</code>, <code>center</code>, <code>space-between</code>, and more.',
+            '<code>align-items</code> controls position on the cross axis (vertically, for a row): <code>flex-start</code>, <code>center</code>, <code>flex-end</code>, <code>stretch</code>.',
+            '<code>justify-content: space-between</code> + <code>align-items: center</code> is the classic navbar pattern.'
+          ],
+          next: 'Next up: Grid — laying elements out in rows AND columns at once.'
+        }
+      ]
+    },
+    {
+      id: 'grid',
+      title: 'Grid',
+      sub: '7 steps · ~5 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 06 · Step 1',
+          title: 'display: grid arranges items in rows and columns at once',
+          body: [
+            'Where Flexbox is naturally one-dimensional (a row or a column), Grid handles both at the same time — ideal for page layouts and card grids.'
+          ],
+          code: '.gallery {\n  display: grid;\n}'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 06 · Step 2',
+          title: 'grid-template-columns defines the columns',
+          body: [
+            'List sizes separated by spaces to define columns. <code>fr</code> is a flexible unit meaning "a fraction of the remaining space" — three equal columns is as simple as <code>1fr 1fr 1fr</code>.'
+          ],
+          code: '.gallery {\n  display: grid;\n  grid-template-columns: 1fr 1fr 1fr;\n}'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 06 · Step 3',
+          title: 'A grid has grid-template-columns: 1fr 1fr 1fr; and six child items. How do they arrange?',
+          options: ['Three equal-width columns, wrapping into two rows of three', 'All six items squeezed into one row', 'One column, six rows', 'The items overlap each other'],
+          answer: 0,
+          explanation: 'Grid automatically wraps items into new rows once a row\'s columns are filled — six items across three columns makes two rows.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 06 · Step 4',
+          title: 'gap adds space between grid items, in both directions',
+          body: [
+            '<code>gap</code> sets spacing between rows and columns at once, without needing margin on individual items (and without margin\'s neighboring-element quirks).'
+          ],
+          code: '.gallery {\n  display: grid;\n  grid-template-columns: 1fr 1fr 1fr;\n  gap: 16px;\n}'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 06 · Step 5',
+          title: 'Why is gap generally preferred over margin for spacing grid items apart?',
+          options: ['gap only affects space between items, without adding unwanted space around the whole grid\'s outer edge', 'gap is the only property that works inside a grid', 'margin doesn\'t work at all in a grid layout', 'gap is required by the CSS spec'],
+          answer: 0,
+          explanation: 'margin on individual items also pushes against the grid\'s outer edges; <code>gap</code> cleanly spaces items apart from each other without that side effect.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 06 · Step 6',
+          title: 'Complete the property',
+          body: [
+            'Finish the property so this grid has three equal columns.'
+          ],
+          codeBefore: '.gallery {\n  display: grid;\n  ',
+          codeAfter: ': 1fr 1fr 1fr;\n}',
+          answer: ['grid-template-columns'],
+          hint: 'The property introduced earlier in this lesson.',
+          explanation: '<code>grid-template-columns: 1fr 1fr 1fr</code> creates three equal-width columns.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 06 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            '<code>display: grid</code> arranges items in rows and columns simultaneously — Flexbox is one-dimensional, Grid is two.',
+            '<code>grid-template-columns</code> defines column sizes; <code>fr</code> means a flexible fraction of the remaining space.',
+            'Items automatically wrap into new rows once a row\'s columns fill up.',
+            '<code>gap</code> spaces items apart in both directions, without margin\'s side effect of pushing against the grid\'s outer edge.'
+          ],
+          next: 'Next up: a checkpoint test on the box model, Flexbox, and Grid.'
+        }
+      ]
+    },
+    {
+      id: 'checkpoint-2',
+      title: 'Checkpoint: Layout',
+      sub: 'Checkpoint · 8 questions',
+      isTest: true,
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Checkpoint · Start',
+          title: 'Time to check what stuck',
+          body: [
+            '8 questions on the box model, Flexbox, and Grid, plus a couple of older concepts for review.'
+          ]
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 1',
+          title: 'Which property adds space between two neighboring boxes, without changing either box\'s own size?',
+          options: ['margin', 'padding', 'border', 'width'],
+          answer: 0,
+          explanation: 'margin sits outside the border and pushes neighboring elements away.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint · Question 2',
+          title: 'Complete the rule',
+          body: ['Finish the property so this element includes padding and border inside its set width.'],
+          codeBefore: 'div {\n  width: 200px;\n  ',
+          codeAfter: ': border-box;\n}',
+          answer: ['box-sizing'],
+          hint: 'The property that changes how width is calculated.',
+          explanation: 'box-sizing: border-box makes width the total size, including padding and border.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 3',
+          title: 'A flex container has justify-content: center. What happens to its items?',
+          options: ['They group together in the middle of the container', 'They spread out with equal gaps', 'They align to the left edge', 'They stack vertically'],
+          answer: 0,
+          explanation: 'center groups items together and centers that group.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint · Question 4',
+          title: 'Complete the property',
+          body: ['Finish the property so this container becomes a flex layout.'],
+          codeBefore: '.row {\n  ',
+          codeAfter: ': flex;\n}',
+          answer: ['display'],
+          hint: 'The property that activates flexbox.',
+          explanation: 'display: flex turns a container\'s children into flex items.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 5',
+          title: 'A grid has grid-template-columns: 1fr 1fr; and four child items. How do they arrange?',
+          options: ['Two columns, wrapping into two rows of two', 'All four items in one row', 'One column, four rows', 'They overlap'],
+          answer: 0,
+          explanation: 'Items wrap into a new row once a row\'s columns fill up — four items across two columns makes two rows.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint · Question 6',
+          title: 'Complete the property',
+          body: ['Finish the property so this grid has two equal columns.'],
+          codeBefore: '.gallery {\n  display: grid;\n  ',
+          codeAfter: ': 1fr 1fr;\n}',
+          answer: ['grid-template-columns'],
+          hint: 'The property that defines column sizes.',
+          explanation: 'grid-template-columns: 1fr 1fr creates two equal-width columns.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 7',
+          title: 'What does alt do on an image — review',
+          code: '<img src="dog.png" alt="A dog" />',
+          options: ['Describes the image for accessibility', 'Sets the image size', 'Is the filename', 'Does nothing'],
+          answer: 0,
+          explanation: 'alt gives a text description for screen readers and for when the image fails to load.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint · Question 8',
+          title: 'Complete the link — review',
+          body: ['Finish the attribute so this link goes to mimo.org.'],
+          codeBefore: '<a ',
+          codeAfter: '="https://mimo.org">Learn</a>',
+          answer: ['href'],
+          hint: 'The attribute that specifies a link\'s destination.',
+          explanation: 'href tells the browser where a link points.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Checkpoint · Complete',
+          title: 'Here\'s where you stand',
+          bullets: [
+            'The box model, Flexbox, and Grid — the core layout toolkit for everything you\'ll build from here.',
+            'If anything felt shaky, the matching lesson is one tap away in the menu — and you can retake this checkpoint any time.'
+          ],
+          next: 'Next up: a project — building a card gallery with Grid, Flexbox, and the box model together.'
+        }
+      ]
+    },
+    {
+      id: 'project-card-gallery',
+      title: 'Project: Build a Card Gallery',
+      sub: 'Project · 8 steps',
+      kind: 'project',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Project · Brief',
+          title: 'The goal',
+          body: [
+            'Build a gallery of three product cards laid out in a grid, each styled with consistent spacing using the box model, with Flexbox arranging the content inside each card.'
+          ]
+        },
+        {
+          type: 'info',
+          eyebrow: 'Project · Step 1',
+          title: 'Start with the grid container',
+          body: [
+            'Three cards, ready to be arranged.'
+          ],
+          code: '<div class="gallery">\n  <div class="card">Card 1</div>\n  <div class="card">Card 2</div>\n  <div class="card">Card 3</div>\n</div>'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Project · Step 2',
+          title: 'Complete the grid CSS',
+          body: [
+            'Finish the property so the gallery has spacing between its three columns.'
+          ],
+          codeBefore: '.gallery {\n  display: grid;\n  grid-template-columns: 1fr 1fr 1fr;\n  ',
+          codeAfter: ': 16px;\n}',
+          answer: ['gap'],
+          hint: 'Spaces grid items apart, in both directions.',
+          explanation: 'gap: 16px spaces the three cards apart cleanly, without margin\'s outer-edge side effect.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Project · Step 3',
+          title: 'Style each card with the box model',
+          body: [
+            'Consistent padding and a visible border, with predictable sizing.'
+          ],
+          code: '.card {\n  padding: 16px;\n  border: 1px solid gray;\n  box-sizing: border-box;\n}'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Project · Step 4',
+          title: 'Without box-sizing: border-box, what happens to a card set to width: 100% inside its grid column, once padding and border are added?',
+          options: ['It becomes slightly wider than the column, potentially breaking the grid layout', 'Nothing changes — box-sizing has no effect here', 'The card disappears', 'The grid ignores width entirely'],
+          answer: 0,
+          explanation: 'Without border-box, padding and border add to the 100% width, pushing the card wider than its column — exactly why border-box is set globally in most real projects.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Project · Step 5',
+          title: 'Arrange content inside each card with Flexbox',
+          body: [
+            'Nesting a flex container inside a grid item is completely normal — Grid handles the outer gallery layout, Flexbox handles each card\'s internal content.'
+          ],
+          code: '.card {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Project · Step 6',
+          title: 'Complete the flex property',
+          body: [
+            'Finish the property so items inside .card stack vertically instead of the flex default (row).'
+          ],
+          codeBefore: '.card {\n  display: flex;\n  ',
+          codeAfter: ': column;\n}',
+          answer: ['flex-direction'],
+          hint: 'The property that changes a flex container\'s main axis from row to column.',
+          explanation: 'flex-direction: column switches the main axis to vertical, stacking items top to bottom instead of left to right.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Project · Complete',
+          title: 'You built a card gallery',
+          bullets: [
+            'Grid handled the outer three-column gallery layout; Flexbox handled each card\'s internal content — nesting layout systems is normal.',
+            'gap spaced the cards apart cleanly, without margin\'s outer-edge side effect.',
+            'box-sizing: border-box kept each card\'s actual width predictable once padding and border were added.',
+            'flex-direction: column switched a card\'s internal layout from Flexbox\'s row default to a vertical stack.'
+          ],
+          next: 'Next up: semantic HTML and accessibility — writing markup that means something, not just looks right.'
+        }
+      ]
+    },
+    { id: 'more-soon-2', title: 'Semantic HTML & Accessibility', sub: 'coming soon', locked: true }
   ];
 
   var state = load();
