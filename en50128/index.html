@@ -2155,7 +2155,345 @@
         }
       ]
     },
-    { id: 'more-soon', title: 'Maintenance & certification — coming soon', sub: 'coming soon', locked: true }
+    {
+      id: 'maintenance',
+      title: 'Maintenance after deployment',
+      sub: '6 steps · ~4 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 14 · Step 1',
+          title: 'The standard doesn\'t stop at deployment',
+          body: [
+            'Once software ships, it enters a maintenance phase — the same rigor around change control, verification, and evidence applies to a bug fix six months after release as it did during original development.'
+          ]
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 14 · Step 2',
+          title: 'Every post-release change is still a change request',
+          body: [
+            'A field-reported defect doesn\'t get a quick patch outside the process. It goes through the same change request, impact analysis, and re-verification loop from the governance module — the safety case has to stay accurate for the software\'s entire life, not just up to release.'
+          ]
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 14 · Step 3',
+          title: 'A minor bug fix is deployed six months after launch, skipping formal change control because "it\'s just a small fix." What\'s the risk?',
+          options: ['The safety case may no longer accurately reflect what\'s actually running, even for a small change', 'There\'s no risk — small fixes are always safe', 'This is only a problem at SIL 4', 'Skipping process is fine as long as the fix works'],
+          answer: 0,
+          explanation: 'Even a small, well-intentioned fix that bypasses change control breaks the traceable link between the safety case and what\'s actually deployed — "small" and "safe to skip process" aren\'t the same thing.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 14 · Step 4',
+          title: 'Maintenance records close the loop',
+          body: [
+            'Every maintenance action — what changed, why, what was re-verified — gets recorded, the same way development activity was recorded during the original project. This is what lets a future audit reconstruct the software\'s full history.'
+          ]
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 14 · Step 5',
+          title: 'Complete the idea',
+          body: [
+            'A defect found after deployment still goes through a formal change ____ — the exact same discipline as any change made during original development.'
+          ],
+          codeBefore: '',
+          codeAfter: ' — the same discipline as during original development',
+          answer: ['request'],
+          hint: 'The two-word process name from the governance module, minus the first word.',
+          explanation: 'Change request — the process doesn\'t relax after deployment; the safety case has to stay accurate for the software\'s entire life.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 14 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            'EN 50128\'s rigor doesn\'t stop at deployment — maintenance is a formal phase with the same expectations as development.',
+            'A post-release defect fix goes through the same change request, impact analysis, and re-verification loop as any other change.',
+            'Skipping process for a "small" fix breaks the traceable link between the safety case and what\'s actually running.',
+            'Maintenance records document every post-release change, letting a future audit reconstruct the software\'s full history.'
+          ],
+          next: 'Next up: final assessment and certification — closing out the project.'
+        }
+      ]
+    },
+    {
+      id: 'final-certification',
+      title: 'Final assessment & certification',
+      sub: '6 steps · ~4 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 15 · Step 1',
+          title: 'Certification is the end of a long chain of evidence',
+          body: [
+            'By the time a project reaches final certification, every phase has already produced its own evidence — plans, specs, reviews, test reports, phase assessments. Certification doesn\'t create new trust from nothing; it\'s the point where all of that evidence gets pulled together and judged as a whole.'
+          ]
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 15 · Step 2',
+          title: 'The ISA\'s opinion feeds a broader safety case',
+          body: [
+            'EN 50128 covers software specifically. The ISA\'s assessment of the software feeds into a larger system-level safety case — alongside hardware, operational procedures, and other elements — which is what a certification body or safety authority ultimately approves.'
+          ]
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 15 · Step 3',
+          title: 'If every individual document passed its own phase assessment, does that guarantee the overall project is ready for certification?',
+          options: ['Not automatically — final assessment looks at the evidence as a coherent whole, not just phase by phase', 'Yes, passing every phase assessment is definitionally the same as being certifiable', 'No individual phase assessment matters if the ISA is involved', 'Certification only checks the SQAP'],
+          answer: 0,
+          explanation: 'Final assessment considers whether everything fits together as a coherent, complete safety case — passing each phase individually doesn\'t automatically mean the whole adds up.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 15 · Step 4',
+          title: 'Certification isn\'t necessarily forever',
+          body: [
+            'Depending on the certification scheme and any later changes to the software, certification may need to be revisited — exactly why the maintenance-phase change control from the previous lesson matters so much: an uncontrolled change can quietly invalidate an existing certification.'
+          ]
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 15 · Step 5',
+          title: 'Complete the idea',
+          body: [
+            'An uncontrolled post-release change can quietly ____ an existing certification, which is why maintenance-phase change control matters so much.'
+          ],
+          codeBefore: '',
+          codeAfter: ' an existing certification',
+          answer: ['invalidate'],
+          hint: 'The opposite of "preserve" or "protect."',
+          explanation: 'Certification reflects the evidence at a point in time — an uncontrolled change can break the link between what was certified and what\'s actually running.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 15 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            'Final certification pulls together evidence from every phase — plans, specs, reviews, test reports, assessments — rather than creating trust from nothing.',
+            'The ISA\'s software assessment feeds into a broader system-level safety case alongside hardware and operational elements.',
+            'Passing every individual phase assessment doesn\'t automatically mean the whole project is ready — final assessment judges the evidence as a coherent whole.',
+            'Certification isn\'t necessarily permanent — uncontrolled changes during maintenance can invalidate it, which is exactly why change control matters after deployment too.'
+          ],
+          next: 'Next up: the final checkpoint and capstone project — bringing every module together.'
+        }
+      ]
+    },
+    {
+      id: 'checkpoint-6',
+      title: 'Checkpoint: Maintenance & Certification',
+      sub: 'Checkpoint · 10 questions',
+      isTest: true,
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Checkpoint 6 · Start',
+          title: 'The final round',
+          body: [
+            '10 questions: maintenance and certification, plus a broad review pulling from across the whole course. This is the last checkpoint before the capstone.'
+          ]
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint 6 · Question 1',
+          title: 'A minor bug fix skips change control post-release because "it\'s just a small fix." What\'s the risk?',
+          options: ['The safety case may no longer accurately reflect what\'s actually running', 'There\'s no risk — small fixes are always safe', 'This only matters at SIL 4', 'Skipping process is fine as long as the fix works'],
+          answer: 0,
+          explanation: 'Even a small fix that bypasses change control breaks the traceable link between the safety case and what\'s actually deployed.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint 6 · Question 2',
+          title: 'Complete the idea',
+          body: ['A post-release defect still goes through a formal change ____.'],
+          codeBefore: '',
+          codeAfter: ' — same discipline as original development',
+          answer: ['request'],
+          hint: 'Covered in Lesson 14.',
+          explanation: 'Change request — the process doesn\'t relax after deployment.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint 6 · Question 3',
+          title: 'Every document passed its own phase assessment. Does that guarantee certification readiness?',
+          options: ['Not automatically — final assessment looks at the evidence as a coherent whole', 'Yes, that\'s definitionally certifiable', 'No phase assessment matters if the ISA is involved', 'Certification only checks the SQAP'],
+          answer: 0,
+          explanation: 'Final assessment judges whether everything fits together as a whole, not just phase by phase.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint 6 · Question 4',
+          title: 'Complete the idea',
+          body: ['An uncontrolled post-release change can quietly ____ an existing certification.'],
+          codeBefore: '',
+          codeAfter: ' an existing certification',
+          answer: ['invalidate'],
+          hint: 'Covered in Lesson 15.',
+          explanation: 'Certification reflects evidence at a point in time — an uncontrolled change can break that link.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint 6 · Question 5',
+          title: 'A compiler translates source code into the shipped executable — review',
+          options: ['T3', 'T1', 'T2', 'Tools aren\'t classified'],
+          answer: 0,
+          explanation: 'A compiler\'s output ships as part of the product — the highest-risk class, T3.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint 6 · Question 6',
+          title: 'Name the annex — review',
+          body: ['Which annex defines roles and responsibilities?'],
+          codeBefore: 'Annex ',
+          codeAfter: ' = Key Roles and Responsibilities',
+          answer: ['B'],
+          hint: 'Covered in Lesson 1.',
+          explanation: 'Annex B defines every standard role.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint 6 · Question 7',
+          title: 'A technique is rated "Mandatory" at your project\'s SIL — review',
+          options: ['It must be used — no substitute', 'Use it if convenient', 'It\'s automatically waived by tailoring', 'It only matters for T3 tools'],
+          answer: 0,
+          explanation: 'Mandatory means mandatory — tailoring adapts structure and templates, not Mandatory-rated techniques.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint 6 · Question 8',
+          title: 'Name the role — review',
+          body: ['What\'s the short name for the internal role that advises on compliance without doing the development work?'],
+          codeBefore: '',
+          codeAfter: ' = Software Assurance',
+          answer: ['SwA'],
+          hint: 'Covered in Lesson 10.',
+          explanation: 'SwA — Software Assurance.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint 6 · Question 9',
+          title: 'A component passes its own tests, but the system misbehaves only when two modules interact — review',
+          options: ['Integration testing catches this', 'Component testing catches this', 'Neither catches this', 'Only a code review catches this'],
+          answer: 0,
+          explanation: 'This is exactly what integration testing targets.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint 6 · Question 10',
+          title: 'Name the concept — review',
+          body: ['What\'s the general word for adapting the standard\'s generic requirements to your own project, without contradicting it?'],
+          codeBefore: '',
+          codeAfter: ' = adapting a generic standard to your specific project',
+          answer: ['tailoring'],
+          hint: 'Covered in Lesson 5.',
+          explanation: 'Tailoring — deciding your own structure that still satisfies the standard.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Checkpoint 6 · Complete',
+          title: 'Here\'s where you stand',
+          bullets: [
+            'Maintenance, certification, and a review across the whole course — checkpoint to checkpoint, that\'s the full lifecycle.',
+            'Retake this any time — the score updates and nothing is held against you.'
+          ],
+          next: 'Next up: the capstone project — walking a product through the entire lifecycle, start to finish.'
+        }
+      ]
+    },
+    {
+      id: 'capstone-lifecycle',
+      title: 'Capstone: Full Lifecycle Walkthrough',
+      sub: 'Project · 9 steps',
+      kind: 'project',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Capstone · Brief',
+          title: 'The goal',
+          body: [
+            'Take a SIL 2 module from kickoff to a post-release fix, one decision at a time — pulling together tailoring, tool classification, testing, independence, and change control from across the whole course.'
+          ]
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Capstone · Step 1',
+          title: 'Your company reuses a merged verification-and-validation plan template from a prior project. Compliant?',
+          options: ['Yes, as long as the combined document still covers what both clauses require', 'No, they must always be two separate documents', 'Only at Basic Integrity', 'Only with special permission from CENELEC'],
+          answer: 0,
+          explanation: 'Tailoring cares about content and outcome, not document boundaries — reusing and merging templates is normal, if justified.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Capstone · Step 2',
+          title: 'The compiler used to build the shipped executable — what tool class?',
+          options: ['T3', 'T1', 'T2', 'Compilers aren\'t classified'],
+          answer: 0,
+          explanation: 'The compiler\'s output ships as part of the product — a bug in it becomes a bug in the product. T3.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Capstone · Step 3',
+          title: 'A bug only appears when two modules exchange data, even though each passed its own tests. Which level catches it?',
+          options: ['Integration testing', 'Component testing', 'Neither', 'Only a code review'],
+          answer: 0,
+          explanation: 'This is exactly what integration testing exists to catch — problems that only appear when pieces interact.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Capstone · Step 4',
+          title: 'Should the ISA also have worked as a verifier on this same project?',
+          options: ['No — reusing the same person blurs the independent perspective the assessment is meant to provide', 'Yes, since they already know the project well', 'It doesn\'t matter as long as they\'re competent', 'Only relevant at Basic Integrity'],
+          answer: 0,
+          explanation: 'Even a highly competent verifier already has a stake in their own review — reusing them as the ISA undermines the fresh, independent perspective the assessment exists to provide.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Capstone · Step 5',
+          title: 'The module ships',
+          body: [
+            'Final assessment pulls together every phase\'s evidence, the ISA signs off, and the module is certified and deployed.'
+          ]
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Capstone · Step 6',
+          title: 'Six months later, a small bug is found. Can it skip change control since it\'s minor?',
+          options: ['No — every post-release change goes through the same change request and re-verification loop', 'Yes, if the fix is obviously correct', 'Yes, as long as the ISA is informed afterward', 'Only large changes need change control'],
+          answer: 0,
+          explanation: 'Maintenance carries the same discipline as original development — "small" doesn\'t mean "safe to skip process."'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Capstone · Step 7',
+          title: 'Complete the idea',
+          body: [
+            'The thread running through this entire course: the safety case must stay ____ for the software\'s entire life, not just up to release.'
+          ],
+          codeBefore: '',
+          codeAfter: ' for the software\'s entire life',
+          answer: ['accurate'],
+          hint: 'What every phase assessment, verification, and change request has ultimately been protecting.',
+          explanation: 'Every mechanism in this course — tailoring, independence, testing levels, change control — exists to keep the safety case an accurate reflection of what\'s actually built and running.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Capstone · Complete',
+          title: 'You walked the full lifecycle',
+          bullets: [
+            'Tailoring let a reused template satisfy the standard without matching anyone else\'s exact format.',
+            'Tool classification (T3) and test levels (integration) caught risk exactly where each is designed to.',
+            'Independence — keeping the ISA separate from the verifier — protected the credibility of the final compliance opinion.',
+            'Change control carried the same discipline from first requirement to a bug fix six months after certification.',
+            'That\'s the full course — six modules, from what the standard is to closing out a certified, maintained project.'
+          ],
+          next: 'That\'s the EN 50128 course complete. Full-stack path next, starting with HTML & CSS.'
+        }
+      ]
+    }
   ];
 
   var state = load();
