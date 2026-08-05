@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>JavaScript — Practice Terminal</title>
+<style>
+  :root {
+    --bg: #F3F7F5;
+    --bg-raised: #FFFFFF;
+    --ink: #1B222A;
+    --ink-soft: #4E5860;
+    --line: rgba(27, 34, 42, 0.12);
+    --accent: #B96A1E;
+    --accent-ink: #7A4614;
+    --accent-soft: rgba(185, 106, 30, 0.12);
+    --success: #2F7D68;
+    --success-soft: rgba(47, 125, 104, 0.12);
+    --error: #B0402E;
+    --error-soft: rgba(176, 64, 46, 0.10);
+    --shadow: 0 1px 2px rgba(27,34,42,0.04), 0 8px 24px rgba(27,34,42,0.06);
+    --radius: 12px;
+
+    --font-display: ui-serif, Georgia, "Iowan Old Style", "Palatino Linotype", serif;
+    --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-mono: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #12161C;
+      --bg-raised: #1A2029;
+      --ink: #ECE7DC;
+      --ink-soft: #9BA3AC;
+      --line: rgba(236, 231, 220, 0.12);
+      --accent: #D89654;
+      --accent-ink: #F0C48F;
+      --accent-soft: rgba(216, 150, 84, 0.16);
+      --success: #63B39C;
+      --success-soft: rgba(99, 179, 156, 0.14);
+      --error: #E08670;
+      --error-soft: rgba(224, 134, 112, 0.14);
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 12px 32px rgba(0,0,0,0.35);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #12161C;
+    --bg-raised: #1A2029;
+    --ink: #ECE7DC;
+    --ink-soft: #9BA3AC;
+    --line: rgba(236, 231, 220, 0.12);
+    --accent: #D89654;
+    --accent-ink: #F0C48F;
+    --accent-soft: rgba(216, 150, 84, 0.16);
+    --success: #63B39C;
+    --success-soft: rgba(99, 179, 156, 0.14);
+    --error: #E08670;
+    --error-soft: rgba(224, 134, 112, 0.14);
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 12px 32px rgba(0,0,0,0.35);
+  }
+  :root[data-theme="light"] {
+    --bg: #F3F7F5;
+    --bg-raised: #FFFFFF;
+    --ink: #1B222A;
+    --ink-soft: #4E5860;
+    --line: rgba(27, 34, 42, 0.12);
+    --accent: #B96A1E;
+    --accent-ink: #7A4614;
+    --accent-soft: rgba(185, 106, 30, 0.12);
+    --success: #2F7D68;
+    --success-soft: rgba(47, 125, 104, 0.12);
+    --error: #B0402E;
+    --error-soft: rgba(176, 64, 46, 0.10);
+    --shadow: 0 1px 2px rgba(27,34,42,0.04), 0 8px 24px rgba(27,34,42,0.06);
+  }
+
+  * { box-sizing: border-box; }
+  body { background: var(--bg); }
+
+  .stage {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 48px 20px 80px;
+    color: var(--ink);
+    font-family: var(--font-body);
+  }
+
+  .frame {
+    width: 100%;
+    max-width: 640px;
+    background: var(--bg-raised);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+
+  .chrome {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--line);
+    font-family: var(--font-mono);
+  }
+  .chrome-path {
+    font-size: 12.5px;
+    letter-spacing: 0.04em;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .chrome-path b { color: var(--ink); font-weight: 600; }
+  .chrome-left { display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .hub-link {
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    text-decoration: none;
+    white-space: nowrap;
+    border-right: 1px solid var(--line);
+    padding-right: 10px;
+  }
+  .hub-link:hover { color: var(--accent); }
+  .streak {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    white-space: nowrap;
+  }
+  .streak b {
+    font-variant-numeric: tabular-nums;
+    color: var(--accent-ink);
+    font-size: 14px;
+  }
+
+  .progress-track {
+    display: flex;
+    gap: 4px;
+    padding: 10px 20px;
+    background: var(--bg);
+  }
+  .progress-seg {
+    flex: 1;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--line);
+    transition: background 0.3s ease;
+  }
+  .progress-seg.done { background: var(--accent); }
+  .progress-seg.current { background: var(--accent); opacity: 0.45; }
+
+  .panel {
+    padding: 32px 28px 28px;
+    min-height: 360px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent-ink);
+    margin: 0 0 10px;
+  }
+
+  h1.step-title {
+    font-family: var(--font-display);
+    font-size: 26px;
+    line-height: 1.25;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+    margin: 0 0 14px;
+    color: var(--ink);
+  }
+
+  .prose { font-size: 15.5px; line-height: 1.6; color: var(--ink); margin: 0 0 12px; }
+  .prose:last-child { margin-bottom: 0; }
+  .prose code { font-family: var(--font-mono); background: var(--accent-soft); padding: 0.05em 0.35em; border-radius: 4px; font-size: 0.9em; }
+
+  .code-block {
+    font-family: var(--font-mono);
+    font-size: 14.5px;
+    line-height: 1.7;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin: 14px 0;
+    white-space: pre;
+    overflow-x: auto;
+    color: var(--ink);
+  }
+  .code-block .blank {
+    display: inline-block;
+    min-width: 2.4em;
+    border-bottom: 2px solid var(--accent);
+    color: var(--accent-ink);
+    text-align: center;
+  }
+  .code-block .cmt { color: var(--ink-soft); }
+
+  .prompt-line {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-mono);
+    margin-top: 14px;
+  }
+  .prompt-line .chevron { color: var(--accent); font-weight: 700; }
+  .prompt-line input {
+    flex: 1;
+    font-family: var(--font-mono);
+    font-size: 15px;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--line);
+    color: var(--ink);
+    padding: 6px 2px;
+    outline: none;
+  }
+  .prompt-line input:focus { border-bottom-color: var(--accent); }
+  .cursor {
+    display: inline-block;
+    width: 8px;
+    height: 16px;
+    background: var(--accent);
+    margin-left: 2px;
+    animation: blink 1.1s steps(1) infinite;
+  }
+  @media (prefers-reduced-motion: reduce) { .cursor { animation: none; opacity: 1; } }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  .options { display: flex; flex-direction: column; gap: 8px; margin-top: 14px; }
+  .option {
+    font-family: var(--font-mono);
+    font-size: 14.5px;
+    text-align: left;
+    padding: 11px 14px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--bg-raised);
+    color: var(--ink);
+    cursor: pointer;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+  .option:hover { border-color: var(--accent); }
+  .option:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .option .idx { color: var(--ink-soft); margin-right: 8px; }
+  .option.correct { border-color: var(--success); background: var(--success-soft); }
+  .option.wrong { border-color: var(--error); background: var(--error-soft); }
+  .option.dim { opacity: 0.5; cursor: default; }
+
+  .feedback {
+    margin-top: 14px;
+    padding: 12px 14px;
+    border-radius: 8px;
+    font-size: 14px;
+    line-height: 1.55;
+    display: none;
+  }
+  .feedback.show { display: block; }
+  .feedback.ok { background: var(--success-soft); color: var(--success); }
+  .feedback.no { background: var(--error-soft); color: var(--error); }
+  .feedback b { color: var(--ink); }
+
+  .score-box {
+    display: flex; align-items: baseline; gap: 14px;
+    padding: 16px 18px; margin-bottom: 16px;
+    background: var(--accent-soft); border: 1px solid var(--line); border-radius: 8px;
+  }
+  .score-num {
+    font-family: var(--font-mono); font-variant-numeric: tabular-nums;
+    font-size: 28px; font-weight: 700; color: var(--accent-ink); line-height: 1;
+  }
+  .score-num .score-of { font-size: 16px; font-weight: 400; color: var(--ink-soft); }
+  .score-msg { font-size: 14px; color: var(--ink-soft); }
+
+  .recap-list { list-style: none; margin: 6px 0 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+  .recap-list li {
+    font-size: 14.5px; line-height: 1.55;
+    padding-left: 18px; position: relative; color: var(--ink);
+  }
+  .recap-list li::before {
+    content: "→"; position: absolute; left: 0; color: var(--accent);
+    font-family: var(--font-mono);
+  }
+
+  .footer {
+    margin-top: auto;
+    padding-top: 22px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+  }
+  .hint-btn {
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    padding: 6px 0;
+  }
+  .hint-btn:hover { color: var(--ink); }
+  .spacer { flex: 1; }
+
+  .btn {
+    font-family: var(--font-mono);
+    font-size: 13.5px;
+    letter-spacing: 0.01em;
+    padding: 11px 20px;
+    border-radius: 8px;
+    border: 1px solid var(--accent);
+    background: var(--accent);
+    color: #FFFDF9;
+    cursor: pointer;
+    transition: transform 0.1s ease, opacity 0.15s ease;
+  }
+  .btn:hover { opacity: 0.92; }
+  .btn:active { transform: translateY(1px); }
+  .btn:disabled { opacity: 0.35; cursor: not-allowed; }
+  .btn.ghost { background: transparent; color: var(--ink-soft); border-color: var(--line); }
+  .btn.ghost:hover { color: var(--ink); border-color: var(--ink-soft); }
+
+  /* menu screen */
+  .menu-list { display: flex; flex-direction: column; gap: 10px; margin-top: 18px; }
+  .menu-item {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 16px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--bg-raised);
+    cursor: pointer;
+    text-align: left;
+  }
+  .menu-item.locked { cursor: default; opacity: 0.5; }
+  .menu-item:not(.locked):hover { border-color: var(--accent); }
+  .menu-num {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--accent-ink);
+    background: var(--accent-soft);
+    border-radius: 6px;
+    padding: 4px 7px;
+    flex-shrink: 0;
+  }
+  .menu-text { flex: 1; }
+  .menu-title { font-size: 15px; font-weight: 600; }
+  .menu-sub { font-size: 12.5px; color: var(--ink-soft); margin-top: 2px; }
+  .menu-status { font-family: var(--font-mono); font-size: 11.5px; color: var(--ink-soft); }
+
+  .intro-copy { font-size: 14.5px; line-height: 1.6; color: var(--ink-soft); margin-top: 4px; }
+
+  .fade { animation: fadeIn 0.28s ease; }
+  @media (prefers-reduced-motion: reduce) { .fade { animation: none; } }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+</style>
+</head>
+<body>
+
+<div class="stage">
+  <div class="frame">
+    <div class="chrome">
+      <div class="chrome-left">
+        <a class="hub-link" href="../">‹ hub</a>
+        <div class="chrome-path" id="chromePath">~/<b>javascript</b></div>
+      </div>
+      <div class="streak" id="streakBox">streak · <b id="streakNum">0</b>d</div>
+    </div>
+    <div class="progress-track" id="progressTrack"></div>
+    <div class="panel" id="panel"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var STORAGE_KEY = 'js_progress_v1';
+
+  var lessons = [
+    {
+      id: 'variables-types',
+      title: 'Variables & types',
+      sub: '7 steps · ~5 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 01 · Step 1',
+          title: 'let and const declare variables',
+          body: [
+            'JavaScript uses <code>let</code> for variables that can change, and <code>const</code> for variables that shouldn\'t be reassigned. Prefer <code>const</code> by default — reach for <code>let</code> only when you actually need to reassign.'
+          ],
+          code: 'let age = 25;\nconst name = "Ada";\nconsole.log(name, age);\n\n// output:\nAda 25'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 01 · Step 2',
+          title: 'console.log prints to the console',
+          body: [
+            '<code>console.log()</code> is JavaScript\'s print statement — it writes values to the browser or Node console, and can take multiple values separated by commas.'
+          ],
+          code: 'console.log("Hello, world!");'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 01 · Step 3',
+          title: 'Predict the output',
+          code: 'let score = 10;\nscore = score + 5;\nconsole.log(score);',
+          options: ['15', '10', '"10+5"', 'Error'],
+          answer: 0,
+          explanation: '<code>score</code> is reassigned to 10+5=15, since <code>let</code> allows reassignment.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 01 · Step 4',
+          title: 'JavaScript has a few core types',
+          body: [
+            'Numbers (no separate int/float), strings, booleans (<code>true</code>/<code>false</code>), and a couple of special values: <code>undefined</code> (a variable with no value yet) and <code>null</code> (an intentional absence of value).'
+          ],
+          code: 'let count = 5;          // number\nlet label = "Total";    // string\nlet isDone = false;     // boolean'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 01 · Step 5',
+          title: 'What type does this report?',
+          code: 'let result = 3.14;\nconsole.log(typeof result);',
+          options: ['"number"', '"float"', '"string"', 'Error'],
+          answer: 0,
+          explanation: 'JavaScript has just one numeric type — <code>number</code> — covering both whole numbers and decimals; <code>typeof</code> reports <code>"number"</code> either way.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 01 · Step 6',
+          title: 'Complete the declaration',
+          body: [
+            'Finish the keyword so this variable can never be reassigned.'
+          ],
+          codeBefore: '',
+          codeAfter: ' name = "Ada";',
+          answer: ['const'],
+          hint: 'The keyword for a variable that shouldn\'t change.',
+          explanation: '<code>const</code> declares a variable that can\'t be reassigned after its initial value.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 01 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            '<code>let</code> declares a reassignable variable; <code>const</code> declares one that can\'t be reassigned — prefer <code>const</code> by default.',
+            '<code>console.log()</code> prints values to the console, and can take multiple comma-separated values.',
+            'JavaScript has one numeric type (<code>number</code>), plus <code>string</code>, <code>boolean</code>, <code>undefined</code>, and <code>null</code>.',
+            '<code>typeof</code> reports a value\'s type as a string, like <code>"number"</code> or <code>"string"</code>.'
+          ],
+          next: 'Next up: comparisons and conditionals — making decisions in JavaScript.'
+        }
+      ]
+    },
+    {
+      id: 'comparisons-conditionals',
+      title: 'Comparisons & conditionals',
+      sub: '7 steps · ~5 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 02 · Step 1',
+          title: '=== compares value AND type',
+          body: [
+            'JavaScript has two equality operators: <code>==</code> (loose, converts types before comparing) and <code>===</code> (strict, no conversion). Always prefer <code>===</code> — <code>==</code> can produce surprising results.'
+          ],
+          code: 'console.log(5 === 5);\nconsole.log("5" === 5);\n\n// output:\ntrue\nfalse'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 02 · Step 2',
+          title: 'Predict the output',
+          code: 'console.log("5" == 5);\nconsole.log("5" === 5);',
+          options: ['true, then false', 'false, then false', 'true, then true', 'false, then true'],
+          answer: 0,
+          explanation: '<code>==</code> converts "5" to a number before comparing (true); <code>===</code> requires matching types too, and string isn\'t number (false).'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 02 · Step 3',
+          title: 'if/else runs code based on a condition',
+          body: [
+            'Same shape as most languages: <code>if (condition) { ... } else { ... }</code>. Curly braces mark the block.'
+          ],
+          code: 'let age = 20;\nif (age >= 18) {\n  console.log("Adult");\n} else {\n  console.log("Minor");\n}'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 02 · Step 4',
+          title: 'Predict the output',
+          code: 'let temp = 15;\nif (temp > 20) {\n  console.log("Warm");\n} else {\n  console.log("Cool");\n}',
+          options: ['Cool', 'Warm', 'Error', 'Nothing prints'],
+          answer: 0,
+          explanation: '15 is not greater than 20, so the <code>else</code> branch runs.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 02 · Step 5',
+          title: '&& and || combine conditions',
+          body: [
+            '<code>&amp;&amp;</code> (and) requires both sides true; <code>||</code> (or) needs just one. Same logic as many languages\' <code>and</code>/<code>or</code>, different symbols.'
+          ],
+          code: 'let hasTicket = true;\nlet age = 20;\nif (age >= 18 && hasTicket) {\n  console.log("Welcome in");\n}'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 02 · Step 6',
+          title: 'Complete the operator',
+          body: [
+            'Finish the operator so this only lets someone in if they\'re 18+ AND have a ticket.'
+          ],
+          codeBefore: 'if (age >= 18 ',
+          codeAfter: ' hasTicket) {',
+          answer: ['&&'],
+          hint: 'Requires both sides to be true.',
+          explanation: '<code>&amp;&amp;</code> requires both conditions — age and ticket — to be true.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 02 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            '<code>===</code> compares value and type; <code>==</code> converts types first and can surprise you — prefer <code>===</code> always.',
+            '<code>if (condition) { } else { }</code> runs code based on a true/false condition.',
+            '<code>&amp;&amp;</code> requires both sides true; <code>||</code> needs just one.',
+            'Curly braces <code>{}</code> mark the block of code that runs under each condition.'
+          ],
+          next: 'Next up: loops — repeating code in JavaScript.'
+        }
+      ]
+    },
+    {
+      id: 'loops',
+      title: 'Loops',
+      sub: '7 steps · ~5 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 03 · Step 1',
+          title: 'for loops repeat a fixed number of times',
+          body: [
+            '<code>for (start; condition; step) { }</code> — initialize a counter, check a condition each time, and update the counter after each pass.'
+          ],
+          code: 'for (let i = 0; i < 3; i++) {\n  console.log(i);\n}\n\n// output:\n0\n1\n2'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 03 · Step 2',
+          title: 'Predict the output',
+          code: 'for (let i = 1; i <= 3; i++) {\n  console.log(i * 2);\n}',
+          options: ['2 4 6', '1 2 3', '0 2 4', 'Error'],
+          answer: 0,
+          explanation: '<code>i</code> goes 1, 2, 3; each doubled prints 2, 4, 6.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 03 · Step 3',
+          title: 'while loops repeat based on a condition',
+          body: [
+            '<code>while (condition) { }</code> repeats as long as the condition stays true — useful when you don\'t know the count in advance.'
+          ],
+          code: 'let n = 3;\nwhile (n > 0) {\n  console.log(n);\n  n--;\n}\n\n// output:\n3\n2\n1'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 03 · Step 4',
+          title: 'Predict the output',
+          code: 'let total = 0;\nlet n = 1;\nwhile (n <= 4) {\n  total += n;\n  n++;\n}\nconsole.log(total);',
+          options: ['10', '4', '1234', 'Error'],
+          answer: 0,
+          explanation: 'Adds 1+2+3+4 = <b>10</b>, then stops once <code>n</code> passes 4.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 03 · Step 5',
+          title: 'Arrays can be looped with for...of',
+          body: [
+            '<code>for (const item of array) { }</code> visits every item in an array, without manual indexing — the modern, preferred way to loop over a collection.'
+          ],
+          code: 'const fruits = ["apple", "banana"];\nfor (const fruit of fruits) {\n  console.log(fruit);\n}\n\n// output:\napple\nbanana'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 03 · Step 6',
+          title: 'Complete the loop',
+          body: [
+            'Finish the loop so it prints every color in the array.'
+          ],
+          codeBefore: 'const colors = ["red", "blue"];\nfor (const c of ',
+          codeAfter: ') {\n  console.log(c);\n}',
+          answer: ['colors'],
+          hint: 'The array being looped over.',
+          explanation: '<code>for (const c of colors)</code> visits each item in the <code>colors</code> array.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 03 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            '<code>for (start; condition; step) { }</code> repeats a fixed number of times, controlled by a counter.',
+            '<code>while (condition) { }</code> repeats as long as the condition stays true.',
+            '<code>i++</code> and <code>n--</code> are shorthand for incrementing/decrementing by 1.',
+            '<code>for (const item of array) { }</code> is the modern way to loop over every item in an array.'
+          ],
+          next: 'Next up: a checkpoint test on variables, conditionals, and loops.'
+        }
+      ]
+    },
+    {
+      id: 'checkpoint-1',
+      title: 'Checkpoint: JS Foundations',
+      sub: 'Checkpoint · 8 questions',
+      isTest: true,
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Checkpoint · Start',
+          title: 'Time to check what stuck',
+          body: [
+            '8 quick questions pulling from variables, comparisons, conditionals, and loops.'
+          ]
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 1',
+          title: 'Predict the output',
+          code: 'console.log("5" === 5);',
+          options: ['false', 'true', 'Error', '"5"'],
+          answer: 0,
+          explanation: '=== requires matching types — a string and a number never match, even with equal-looking values.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint · Question 2',
+          title: 'Complete the declaration',
+          body: ['Finish the keyword so this variable can never be reassigned.'],
+          codeBefore: '',
+          codeAfter: ' name = "Ada";',
+          answer: ['const'],
+          hint: 'The keyword for a variable that shouldn\'t change.',
+          explanation: 'const declares a variable that can\'t be reassigned.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 3',
+          title: 'Predict the output',
+          code: 'let temp = 15;\nif (temp > 20) {\n  console.log("Warm");\n} else {\n  console.log("Cool");\n}',
+          options: ['Cool', 'Warm', 'Error', 'Nothing prints'],
+          answer: 0,
+          explanation: '15 is not greater than 20, so the else branch runs.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint · Question 4',
+          title: 'Complete the operator',
+          body: ['Finish the operator so this only lets someone in if age is 18+ AND they have a ticket.'],
+          codeBefore: 'if (age >= 18 ',
+          codeAfter: ' hasTicket) {',
+          answer: ['&&'],
+          hint: 'Requires both sides to be true.',
+          explanation: '&& requires both conditions to be true.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 5',
+          title: 'Predict the output',
+          code: 'for (let i = 1; i <= 3; i++) {\n  console.log(i * 2);\n}',
+          options: ['2 4 6', '1 2 3', '0 2 4', 'Error'],
+          answer: 0,
+          explanation: 'i goes 1, 2, 3; each doubled prints 2, 4, 6.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint · Question 6',
+          title: 'Complete the loop',
+          body: ['Finish the loop so it prints every color in the array.'],
+          codeBefore: 'const colors = ["red", "blue"];\nfor (const c of ',
+          codeAfter: ') {\n  console.log(c);\n}',
+          answer: ['colors'],
+          hint: 'The array being looped over.',
+          explanation: 'for (const c of colors) visits each item in colors.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 7',
+          title: 'Predict the output',
+          code: 'let total = 0;\nlet n = 1;\nwhile (n <= 4) {\n  total += n;\n  n++;\n}\nconsole.log(total);',
+          options: ['10', '4', '1234', 'Error'],
+          answer: 0,
+          explanation: 'Adds 1+2+3+4 = 10, then stops.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 8',
+          title: 'Predict the output',
+          code: 'let result = 3.14;\nconsole.log(typeof result);',
+          options: ['"number"', '"float"', '"string"', 'Error'],
+          answer: 0,
+          explanation: 'JavaScript has one numeric type — number — for both whole numbers and decimals.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Checkpoint · Complete',
+          title: 'Here\'s where you stand',
+          bullets: [
+            'Variables, comparisons, conditionals, and loops — the foundation for everything else in this course.',
+            'If anything felt shaky, the matching lesson is one tap away in the menu — and you can retake this checkpoint any time.'
+          ],
+          next: 'Next up: a project — building a grade calculator using everything so far.'
+        }
+      ]
+    },
+    {
+      id: 'project-grades',
+      title: 'Project: Grade Calculator',
+      sub: 'Project · 8 steps',
+      kind: 'project',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Project · Brief',
+          title: 'The goal',
+          body: [
+            'Loop over a list of scores, classify each with a letter grade, and calculate the class average — combining variables, conditionals, and loops.'
+          ]
+        },
+        {
+          type: 'info',
+          eyebrow: 'Project · Step 1',
+          title: 'Start with the data',
+          body: [
+            'An array of four scores to process.'
+          ],
+          code: 'const scores = [95, 72, 58, 88];'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Project · Step 2',
+          title: 'Complete the loop',
+          body: [
+            'Finish the loop so it visits every score in the array.'
+          ],
+          codeBefore: 'for (const score of ',
+          codeAfter: ') {\n  // ...\n}',
+          answer: ['scores'],
+          hint: 'The array defined in the step above.',
+          explanation: 'for (const score of scores) loops over every score in the array.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Project · Step 3',
+          title: 'Classify each score',
+          body: [
+            'Inside the loop, an if/else if/else chain assigns a letter grade.'
+          ],
+          code: 'for (const score of scores) {\n  if (score >= 90) {\n    console.log(score, "A");\n  } else if (score >= 70) {\n    console.log(score, "B");\n  } else {\n    console.log(score, "C");\n  }\n}'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Project · Step 4',
+          title: 'What does this print for a score of 58?',
+          code: 'let score = 58;\nif (score >= 90) {\n  console.log(score, "A");\n} else if (score >= 70) {\n  console.log(score, "B");\n} else {\n  console.log(score, "C");\n}',
+          options: ['58 C', '58 A', '58 B', 'Nothing prints'],
+          answer: 0,
+          explanation: '58 fails both the >= 90 and >= 70 checks, so it falls through to the else branch — a C.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Project · Step 5',
+          title: 'Accumulate a total',
+          body: [
+            'A second loop adds up every score.'
+          ],
+          code: 'let total = 0;\nfor (const score of scores) {\n  total += score;\n}\nconsole.log(total);\n\n// output:\n313'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Project · Step 6',
+          title: 'Complete the average',
+          body: [
+            'Finish the calculation so it divides the total by the number of scores.'
+          ],
+          codeBefore: 'const average = total / ',
+          codeAfter: '.length;',
+          answer: ['scores'],
+          hint: 'The array whose length you need.',
+          explanation: 'scores.length gives the count of scores, so total / scores.length computes the average.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Project · Complete',
+          title: 'You built a grade calculator',
+          code: 'const scores = [95, 72, 58, 88];\n\nfor (const score of scores) {\n  if (score >= 90) {\n    console.log(score, "A");\n  } else if (score >= 70) {\n    console.log(score, "B");\n  } else {\n    console.log(score, "C");\n  }\n}\n\nlet total = 0;\nfor (const score of scores) {\n  total += score;\n}\nconst average = total / scores.length;\nconsole.log("Average:", average);',
+          bullets: [
+            'A for...of loop visited every score without manual indexing.',
+            'An if/else if/else chain classified each score into a letter grade.',
+            'A second loop accumulated a running total, then scores.length gave the count needed for the average.',
+            'This is the same shape you\'ll reuse constantly: loop, decide, accumulate.'
+          ],
+          next: 'More lessons — arrays and functions, objects, the DOM, and async — are on the way.'
+        }
+      ]
+    },
+    { id: 'more-soon', title: 'Arrays, functions & objects', sub: 'coming soon', locked: true }
+  ];
+
+  var state = load();
+  if (!state.testScores) state.testScores = {};
+  var view = { screen: 'menu', lessonId: null, stepIndex: 0, checked: false, firstTry: {} };
+
+  function load() {
+    try {
+      var raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) return JSON.parse(raw);
+    } catch (e) {}
+    return { streak: 0, lastCompleteDate: null, completedLessons: {}, testScores: {} };
+  }
+  function save() {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
+  }
+  function todayStr() {
+    var d = new Date();
+    return d.getFullYear() + '-' + (d.getMonth()+1) + '-' + d.getDate();
+  }
+  function bumpStreak() {
+    var today = todayStr();
+    if (state.lastCompleteDate === today) return;
+    var y = new Date(); y.setDate(y.getDate() - 1);
+    var yesterday = y.getFullYear() + '-' + (y.getMonth()+1) + '-' + y.getDate();
+    state.streak = (state.lastCompleteDate === yesterday) ? state.streak + 1 : 1;
+    state.lastCompleteDate = today;
+    save();
+  }
+
+  function esc(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  function renderChrome() {
+    document.getElementById('streakNum').textContent = state.streak;
+    var path = view.screen === 'menu' ? '~/<b>javascript</b>'
+      : '~/javascript/<b>' + view.lessonId + '</b>';
+    document.getElementById('chromePath').innerHTML = path;
+  }
+
+  function renderProgress() {
+    var track = document.getElementById('progressTrack');
+    track.innerHTML = '';
+    if (view.screen !== 'lesson') { track.style.display = 'none'; return; }
+    track.style.display = 'flex';
+    var lesson = lessons.filter(function(l){return l.id === view.lessonId;})[0];
+    lesson.steps.forEach(function(_, i) {
+      var seg = document.createElement('div');
+      seg.className = 'progress-seg' + (i < view.stepIndex ? ' done' : i === view.stepIndex ? ' current' : '');
+      track.appendChild(seg);
+    });
+  }
+
+  function renderMenu() {
+    var panel = document.getElementById('panel');
+    var html = '';
+    html += '<p class="eyebrow">Practice terminal</p>';
+    html += '<h1 class="step-title">JavaScript, one sitting at a time</h1>';
+    html += '<p class="intro-copy">Short, self-contained lessons on the language that runs in the browser — variables, logic, and loops through to the DOM and async. Second stop on the full-stack path.</p>';
+    html += '<div class="menu-list">';
+    lessons.forEach(function(l, i) {
+      var done = state.completedLessons[l.id];
+      var testScore = state.testScores[l.id];
+      var statusLabel = l.locked ? l.sub
+        : testScore ? (testScore.score + '/' + testScore.total)
+        : done ? 'complete' : (l.sub || 'start');
+      html += '<div class="menu-item' + (l.locked ? ' locked' : '') + '" data-lesson="' + l.id + '" tabindex="' + (l.locked ? '-1' : '0') + '">';
+      html += '<div class="menu-num">' + String(i+1).padStart(2,'0') + '</div>';
+      html += '<div class="menu-text"><div class="menu-title">' + esc(l.title) + '</div><div class="menu-sub">' + esc(l.locked ? l.sub : (l.sub || '')) + '</div></div>';
+      html += '<div class="menu-status">' + esc(statusLabel) + '</div>';
+      html += '</div>';
+    });
+    html += '</div>';
+    panel.innerHTML = html;
+    panel.className = 'panel fade';
+    Array.prototype.forEach.call(panel.querySelectorAll('.menu-item:not(.locked)'), function(el) {
+      el.addEventListener('click', function() { openLesson(el.getAttribute('data-lesson')); });
+      el.addEventListener('keydown', function(e) { if (e.key === 'Enter') openLesson(el.getAttribute('data-lesson')); });
+    });
+  }
+
+  function openLesson(id) {
+    view.screen = 'lesson';
+    view.lessonId = id;
+    view.stepIndex = 0;
+    view.checked = false;
+    view.firstTry = {};
+    renderAll();
+  }
+
+  function backToMenu() {
+    view.screen = 'menu';
+    view.lessonId = null;
+    renderAll();
+  }
+
+  function currentLesson() {
+    return lessons.filter(function(l){ return l.id === view.lessonId; })[0];
+  }
+  function currentStep() {
+    return currentLesson().steps[view.stepIndex];
+  }
+
+  function renderStep() {
+    var step = currentStep();
+    var panel = document.getElementById('panel');
+    var html = '<p class="eyebrow">' + esc(step.eyebrow) + '</p>';
+    html += '<h1 class="step-title">' + esc(step.title) + '</h1>';
+
+    if (step.type === 'info') {
+      step.body.forEach(function(p){ html += '<p class="prose">' + p + '</p>'; });
+      if (step.code) html += '<div class="code-block">' + esc(step.code) + '</div>';
+      html += '<div class="footer"><div class="spacer"></div><button class="btn" id="primaryBtn">continue →</button></div>';
+      panel.innerHTML = html;
+      panel.className = 'panel fade';
+      document.getElementById('primaryBtn').addEventListener('click', nextStep);
+      return;
+    }
+
+    if (step.type === 'predict') {
+      html += '<div class="code-block">' + esc(step.code) + '</div>';
+      html += '<div class="options" id="optionsBox">';
+      step.options.forEach(function(opt, i) {
+        html += '<button class="option" data-idx="' + i + '"><span class="idx">' + (i+1) + '</span>' + esc(opt) + '</button>';
+      });
+      html += '</div>';
+      html += '<div class="feedback" id="feedbackBox"></div>';
+      html += '<div class="footer"><div class="spacer"></div><button class="btn" id="primaryBtn" disabled>continue →</button></div>';
+      panel.innerHTML = html;
+      panel.className = 'panel fade';
+      wireChoice(step);
+      return;
+    }
+
+    if (step.type === 'fill') {
+      step.body.forEach(function(p){ html += '<p class="prose">' + p + '</p>'; });
+      html += '<div class="code-block">' + esc(step.codeBefore) + '<span class="blank" id="blankPreview">___</span>' + esc(step.codeAfter) + '</div>';
+      html += '<div class="prompt-line"><span class="chevron">&gt;&gt;&gt;</span><input id="fillInput" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="type here" /><span class="cursor"></span></div>';
+      html += '<div class="feedback" id="feedbackBox"></div>';
+      html += '<div class="footer"><button class="hint-btn" id="hintBtn">need a hint?</button><div class="spacer"></div><button class="btn" id="checkBtn">check</button></div>';
+      panel.innerHTML = html;
+      panel.className = 'panel fade';
+      wireFill(step);
+      return;
+    }
+
+    if (step.type === 'recap') {
+      var lesson = currentLesson();
+      var scoreResult = lesson.isTest ? computeScore(lesson) : null;
+      if (scoreResult) {
+        html += '<div class="score-box"><div class="score-num">' + scoreResult.score + '<span class="score-of">/' + scoreResult.total + '</span></div>'
+          + '<div class="score-msg">' + esc(scoreResult.message) + '</div></div>';
+      }
+      if (step.code) html += '<div class="code-block">' + esc(step.code) + '</div>';
+      html += '<ul class="recap-list">';
+      step.bullets.forEach(function(b){ html += '<li>' + b + '</li>'; });
+      html += '</ul>';
+      html += '<p class="prose" style="margin-top:16px; color:var(--ink-soft);">' + esc(step.next) + '</p>';
+      html += '<div class="footer"><button class="btn ghost" id="menuBtn">back to lessons</button><div class="spacer"></div></div>';
+      panel.innerHTML = html;
+      panel.className = 'panel fade';
+      document.getElementById('menuBtn').addEventListener('click', function() {
+        state.completedLessons[view.lessonId] = true;
+        if (scoreResult) state.testScores[view.lessonId] = { score: scoreResult.score, total: scoreResult.total, date: todayStr() };
+        bumpStreak();
+        backToMenu();
+      });
+      return;
+    }
+  }
+
+  function computeScore(lesson) {
+    var total = 0, score = 0;
+    lesson.steps.forEach(function(s, i) {
+      if (s.type === 'predict' || s.type === 'fill') {
+        total += 1;
+        if (view.firstTry[i]) score += 1;
+      }
+    });
+    var pct = total ? score / total : 0;
+    var message = pct >= 0.9 ? 'Nailed it — that stuck.'
+      : pct >= 0.7 ? 'Solid. A couple of spots to revisit.'
+      : 'Good practice — worth another pass on the lessons above.';
+    return { score: score, total: total, message: message };
+  }
+
+  function wireChoice(step) {
+    var box = document.getElementById('optionsBox');
+    var fb = document.getElementById('feedbackBox');
+    var primary = document.getElementById('primaryBtn');
+    var answered = false;
+    primary.addEventListener('click', nextStep);
+    Array.prototype.forEach.call(box.querySelectorAll('.option'), function(btn) {
+      btn.addEventListener('click', function() {
+        if (answered) return;
+        answered = true;
+        var idx = parseInt(btn.getAttribute('data-idx'), 10);
+        view.firstTry[view.stepIndex] = (idx === step.answer);
+        Array.prototype.forEach.call(box.querySelectorAll('.option'), function(b, i) {
+          if (i === step.answer) b.classList.add('correct');
+          else if (b === btn) b.classList.add('wrong');
+          else b.classList.add('dim');
+        });
+        fb.className = 'feedback show ' + (idx === step.answer ? 'ok' : 'no');
+        fb.innerHTML = (idx === step.answer ? '<b>Correct.</b> ' : '<b>Not quite.</b> ') + step.explanation;
+        primary.disabled = false;
+      });
+    });
+  }
+
+  function wireFill(step) {
+    var input = document.getElementById('fillInput');
+    var fb = document.getElementById('feedbackBox');
+    var checkBtn = document.getElementById('checkBtn');
+    var hintBtn = document.getElementById('hintBtn');
+    var solved = false;
+
+    function doCheck() {
+      if (solved) { nextStep(); return; }
+      var val = input.value.trim().toLowerCase();
+      var ok = step.answer.some(function(a){ return a.toLowerCase() === val; });
+      if (!(view.stepIndex in view.firstTry)) view.firstTry[view.stepIndex] = ok;
+      fb.className = 'feedback show ' + (ok ? 'ok' : 'no');
+      fb.innerHTML = (ok ? '<b>Correct.</b> ' : '<b>Not quite.</b> ') + step.explanation;
+      if (ok) {
+        solved = true;
+        document.getElementById('blankPreview').textContent = step.answer[0];
+        input.disabled = true;
+        checkBtn.textContent = 'continue →';
+      }
+    }
+    checkBtn.addEventListener('click', doCheck);
+    input.addEventListener('keydown', function(e){ if (e.key === 'Enter') doCheck(); });
+    hintBtn.addEventListener('click', function() {
+      fb.className = 'feedback show ok';
+      fb.innerHTML = '<b>Hint.</b> ' + step.hint;
+    });
+  }
+
+  function nextStep() {
+    var lesson = currentLesson();
+    if (view.stepIndex < lesson.steps.length - 1) {
+      view.stepIndex += 1;
+      renderAll();
+    }
+  }
+
+  function renderAll() {
+    renderChrome();
+    renderProgress();
+    if (view.screen === 'menu') renderMenu();
+    else renderStep();
+  }
+
+  renderAll();
+})();
+</script>
+</body>
+</html>
