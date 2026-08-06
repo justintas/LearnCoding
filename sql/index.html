@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SQL — Practice Terminal</title>
+<style>
+  :root {
+    --bg: #F3F7F5;
+    --bg-raised: #FFFFFF;
+    --ink: #1B222A;
+    --ink-soft: #4E5860;
+    --line: rgba(27, 34, 42, 0.12);
+    --accent: #B96A1E;
+    --accent-ink: #7A4614;
+    --accent-soft: rgba(185, 106, 30, 0.12);
+    --success: #2F7D68;
+    --success-soft: rgba(47, 125, 104, 0.12);
+    --error: #B0402E;
+    --error-soft: rgba(176, 64, 46, 0.10);
+    --shadow: 0 1px 2px rgba(27,34,42,0.04), 0 8px 24px rgba(27,34,42,0.06);
+    --radius: 12px;
+
+    --font-display: ui-serif, Georgia, "Iowan Old Style", "Palatino Linotype", serif;
+    --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-mono: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #12161C;
+      --bg-raised: #1A2029;
+      --ink: #ECE7DC;
+      --ink-soft: #9BA3AC;
+      --line: rgba(236, 231, 220, 0.12);
+      --accent: #D89654;
+      --accent-ink: #F0C48F;
+      --accent-soft: rgba(216, 150, 84, 0.16);
+      --success: #63B39C;
+      --success-soft: rgba(99, 179, 156, 0.14);
+      --error: #E08670;
+      --error-soft: rgba(224, 134, 112, 0.14);
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 12px 32px rgba(0,0,0,0.35);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #12161C;
+    --bg-raised: #1A2029;
+    --ink: #ECE7DC;
+    --ink-soft: #9BA3AC;
+    --line: rgba(236, 231, 220, 0.12);
+    --accent: #D89654;
+    --accent-ink: #F0C48F;
+    --accent-soft: rgba(216, 150, 84, 0.16);
+    --success: #63B39C;
+    --success-soft: rgba(99, 179, 156, 0.14);
+    --error: #E08670;
+    --error-soft: rgba(224, 134, 112, 0.14);
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 12px 32px rgba(0,0,0,0.35);
+  }
+  :root[data-theme="light"] {
+    --bg: #F3F7F5;
+    --bg-raised: #FFFFFF;
+    --ink: #1B222A;
+    --ink-soft: #4E5860;
+    --line: rgba(27, 34, 42, 0.12);
+    --accent: #B96A1E;
+    --accent-ink: #7A4614;
+    --accent-soft: rgba(185, 106, 30, 0.12);
+    --success: #2F7D68;
+    --success-soft: rgba(47, 125, 104, 0.12);
+    --error: #B0402E;
+    --error-soft: rgba(176, 64, 46, 0.10);
+    --shadow: 0 1px 2px rgba(27,34,42,0.04), 0 8px 24px rgba(27,34,42,0.06);
+  }
+
+  * { box-sizing: border-box; }
+  body { background: var(--bg); }
+
+  .stage {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 48px 20px 80px;
+    color: var(--ink);
+    font-family: var(--font-body);
+  }
+
+  .frame {
+    width: 100%;
+    max-width: 640px;
+    background: var(--bg-raised);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+
+  .chrome {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--line);
+    font-family: var(--font-mono);
+  }
+  .chrome-path {
+    font-size: 12.5px;
+    letter-spacing: 0.04em;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .chrome-path b { color: var(--ink); font-weight: 600; }
+  .chrome-left { display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .hub-link {
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    text-decoration: none;
+    white-space: nowrap;
+    border-right: 1px solid var(--line);
+    padding-right: 10px;
+  }
+  .hub-link:hover { color: var(--accent); }
+  .streak {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    white-space: nowrap;
+  }
+  .streak b {
+    font-variant-numeric: tabular-nums;
+    color: var(--accent-ink);
+    font-size: 14px;
+  }
+
+  .progress-track {
+    display: flex;
+    gap: 4px;
+    padding: 10px 20px;
+    background: var(--bg);
+  }
+  .progress-seg {
+    flex: 1;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--line);
+    transition: background 0.3s ease;
+  }
+  .progress-seg.done { background: var(--accent); }
+  .progress-seg.current { background: var(--accent); opacity: 0.45; }
+
+  .panel {
+    padding: 32px 28px 28px;
+    min-height: 360px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent-ink);
+    margin: 0 0 10px;
+  }
+
+  h1.step-title {
+    font-family: var(--font-display);
+    font-size: 26px;
+    line-height: 1.25;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+    margin: 0 0 14px;
+    color: var(--ink);
+  }
+
+  .prose { font-size: 15.5px; line-height: 1.6; color: var(--ink); margin: 0 0 12px; }
+  .prose:last-child { margin-bottom: 0; }
+  .prose code { font-family: var(--font-mono); background: var(--accent-soft); padding: 0.05em 0.35em; border-radius: 4px; font-size: 0.9em; }
+
+  .code-block {
+    font-family: var(--font-mono);
+    font-size: 14.5px;
+    line-height: 1.7;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin: 14px 0;
+    white-space: pre;
+    overflow-x: auto;
+    color: var(--ink);
+  }
+  .code-block .blank {
+    display: inline-block;
+    min-width: 2.4em;
+    border-bottom: 2px solid var(--accent);
+    color: var(--accent-ink);
+    text-align: center;
+  }
+  .code-block .cmt { color: var(--ink-soft); }
+
+  .prompt-line {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-mono);
+    margin-top: 14px;
+  }
+  .prompt-line .chevron { color: var(--accent); font-weight: 700; }
+  .prompt-line input {
+    flex: 1;
+    font-family: var(--font-mono);
+    font-size: 15px;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--line);
+    color: var(--ink);
+    padding: 6px 2px;
+    outline: none;
+  }
+  .prompt-line input:focus { border-bottom-color: var(--accent); }
+  .cursor {
+    display: inline-block;
+    width: 8px;
+    height: 16px;
+    background: var(--accent);
+    margin-left: 2px;
+    animation: blink 1.1s steps(1) infinite;
+  }
+  @media (prefers-reduced-motion: reduce) { .cursor { animation: none; opacity: 1; } }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  .options { display: flex; flex-direction: column; gap: 8px; margin-top: 14px; }
+  .option {
+    font-family: var(--font-mono);
+    font-size: 14.5px;
+    text-align: left;
+    padding: 11px 14px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--bg-raised);
+    color: var(--ink);
+    cursor: pointer;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+  .option:hover { border-color: var(--accent); }
+  .option:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .option .idx { color: var(--ink-soft); margin-right: 8px; }
+  .option.correct { border-color: var(--success); background: var(--success-soft); }
+  .option.wrong { border-color: var(--error); background: var(--error-soft); }
+  .option.dim { opacity: 0.5; cursor: default; }
+
+  .feedback {
+    margin-top: 14px;
+    padding: 12px 14px;
+    border-radius: 8px;
+    font-size: 14px;
+    line-height: 1.55;
+    display: none;
+  }
+  .feedback.show { display: block; }
+  .feedback.ok { background: var(--success-soft); color: var(--success); }
+  .feedback.no { background: var(--error-soft); color: var(--error); }
+  .feedback b { color: var(--ink); }
+
+  .score-box {
+    display: flex; align-items: baseline; gap: 14px;
+    padding: 16px 18px; margin-bottom: 16px;
+    background: var(--accent-soft); border: 1px solid var(--line); border-radius: 8px;
+  }
+  .score-num {
+    font-family: var(--font-mono); font-variant-numeric: tabular-nums;
+    font-size: 28px; font-weight: 700; color: var(--accent-ink); line-height: 1;
+  }
+  .score-num .score-of { font-size: 16px; font-weight: 400; color: var(--ink-soft); }
+  .score-msg { font-size: 14px; color: var(--ink-soft); }
+
+  .recap-list { list-style: none; margin: 6px 0 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+  .recap-list li {
+    font-size: 14.5px; line-height: 1.55;
+    padding-left: 18px; position: relative; color: var(--ink);
+  }
+  .recap-list li::before {
+    content: "→"; position: absolute; left: 0; color: var(--accent);
+    font-family: var(--font-mono);
+  }
+
+  .footer {
+    margin-top: auto;
+    padding-top: 22px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+  }
+  .hint-btn {
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    padding: 6px 0;
+  }
+  .hint-btn:hover { color: var(--ink); }
+  .spacer { flex: 1; }
+
+  .btn {
+    font-family: var(--font-mono);
+    font-size: 13.5px;
+    letter-spacing: 0.01em;
+    padding: 11px 20px;
+    border-radius: 8px;
+    border: 1px solid var(--accent);
+    background: var(--accent);
+    color: #FFFDF9;
+    cursor: pointer;
+    transition: transform 0.1s ease, opacity 0.15s ease;
+  }
+  .btn:hover { opacity: 0.92; }
+  .btn:active { transform: translateY(1px); }
+  .btn:disabled { opacity: 0.35; cursor: not-allowed; }
+  .btn.ghost { background: transparent; color: var(--ink-soft); border-color: var(--line); }
+  .btn.ghost:hover { color: var(--ink); border-color: var(--ink-soft); }
+
+  /* menu screen */
+  .menu-list { display: flex; flex-direction: column; gap: 10px; margin-top: 18px; }
+  .menu-item {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 16px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--bg-raised);
+    cursor: pointer;
+    text-align: left;
+  }
+  .menu-item.locked { cursor: default; opacity: 0.5; }
+  .menu-item:not(.locked):hover { border-color: var(--accent); }
+  .menu-num {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--accent-ink);
+    background: var(--accent-soft);
+    border-radius: 6px;
+    padding: 4px 7px;
+    flex-shrink: 0;
+  }
+  .menu-text { flex: 1; }
+  .menu-title { font-size: 15px; font-weight: 600; }
+  .menu-sub { font-size: 12.5px; color: var(--ink-soft); margin-top: 2px; }
+  .menu-status { font-family: var(--font-mono); font-size: 11.5px; color: var(--ink-soft); }
+
+  .intro-copy { font-size: 14.5px; line-height: 1.6; color: var(--ink-soft); margin-top: 4px; }
+
+  .fade { animation: fadeIn 0.28s ease; }
+  @media (prefers-reduced-motion: reduce) { .fade { animation: none; } }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+</style>
+</head>
+<body>
+
+<div class="stage">
+  <div class="frame">
+    <div class="chrome">
+      <div class="chrome-left">
+        <a class="hub-link" href="../">‹ hub</a>
+        <div class="chrome-path" id="chromePath">~/<b>sql</b></div>
+      </div>
+      <div class="streak" id="streakBox">streak · <b id="streakNum">0</b>d</div>
+    </div>
+    <div class="progress-track" id="progressTrack"></div>
+    <div class="panel" id="panel"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var STORAGE_KEY = 'sql_progress_v1';
+
+  var lessons = [
+    {
+      id: 'select-where',
+      title: 'SELECT & WHERE',
+      sub: '7 steps · ~5 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 01 · Step 1',
+          title: 'SELECT chooses which columns to see',
+          body: [
+            'Every SQL query starts with <code>SELECT</code>, naming the columns you want, then <code>FROM</code>, naming the table to pull them from.'
+          ],
+          code: 'SELECT name, price\nFROM products;\n\n-- returns:\nname       | price\n-----------|------\nWidget     | 9.99\nGadget     | 19.99'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 01 · Step 2',
+          title: 'Predict the result',
+          body: [
+            'Assume a table <code>users</code> with columns <code>name</code> and <code>age</code>.'
+          ],
+          code: 'SELECT name\nFROM users;',
+          options: ['Every name in the users table', 'Every column in the users table', 'Just the first row', 'Error'],
+          answer: 0,
+          explanation: '<code>SELECT name</code> only returns the <code>name</code> column, for every row in the table.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 01 · Step 3',
+          title: '* selects every column',
+          body: [
+            '<code>SELECT * FROM table</code> returns every column, in the order they\'re defined — useful for exploring a table you don\'t know yet, but wasteful in real queries where you should name exactly what you need.'
+          ],
+          code: 'SELECT *\nFROM products;\n\n-- returns every column: id, name, price, in_stock...'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 01 · Step 4',
+          title: 'Predict the result',
+          body: [
+            'Assume products has rows: Widget/9.99, Gadget/19.99, Gizmo/24.99.'
+          ],
+          code: 'SELECT *\nFROM products\nWHERE price > 15;',
+          options: ['Gadget and Gizmo', 'Widget only', 'All three products', 'Error'],
+          answer: 0,
+          explanation: '<code>WHERE price &gt; 15</code> filters rows before they\'re returned, keeping only Gadget (19.99) and Gizmo (24.99).'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 01 · Step 5',
+          title: 'WHERE filters rows before they\'re returned',
+          body: [
+            '<code>WHERE</code> comes after <code>FROM</code> and narrows which rows are included, using comparisons like <code>=</code>, <code>&gt;</code>, <code>&lt;</code>, and <code>!=</code>.'
+          ],
+          code: 'SELECT name\nFROM products\nWHERE in_stock = true;\n\n-- only returns products currently in stock'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 01 · Step 6',
+          title: 'Complete the query',
+          body: [
+            'Finish the query so it only returns users older than 18.'
+          ],
+          codeBefore: 'SELECT name\nFROM users\nWHERE ',
+          codeAfter: ' > 18;',
+          answer: ['age'],
+          hint: 'The column being compared.',
+          explanation: '<code>WHERE age &gt; 18</code> filters out any row where age is 18 or less.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 01 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            '<code>SELECT</code> names the columns you want; <code>FROM</code> names the table.',
+            '<code>SELECT *</code> returns every column — useful for exploring, wasteful in real queries.',
+            '<code>WHERE</code> filters rows before they\'re returned, using comparisons like <code>=</code>, <code>&gt;</code>, <code>&lt;</code>, and <code>!=</code>.',
+            'Every SQL query reads top to bottom: <code>SELECT</code>, <code>FROM</code>, <code>WHERE</code>, in that order.'
+          ],
+          next: 'Next up: sorting and limiting results, plus aggregate functions like COUNT and AVG.'
+        }
+      ]
+    },
+    {
+      id: 'order-limit-aggregate',
+      title: 'ORDER BY, LIMIT & aggregates',
+      sub: '7 steps · ~5 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 02 · Step 1',
+          title: 'ORDER BY sorts the results',
+          body: [
+            '<code>ORDER BY column</code> sorts ascending by default; add <code>DESC</code> to reverse it.'
+          ],
+          code: 'SELECT name, price\nFROM products\nORDER BY price DESC;\n\n-- most expensive product first'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 02 · Step 2',
+          title: 'Predict the result',
+          body: [
+            'Assume products has: Widget/9.99, Gadget/19.99, Gizmo/24.99.'
+          ],
+          code: 'SELECT name, price\nFROM products\nORDER BY price ASC;',
+          options: ['Widget, Gadget, Gizmo', 'Gizmo, Gadget, Widget', 'Random order', 'Error'],
+          answer: 0,
+          explanation: '<code>ASC</code> (ascending, the default) sorts from lowest to highest price — Widget first.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 02 · Step 3',
+          title: 'LIMIT caps how many rows come back',
+          body: [
+            '<code>LIMIT n</code> restricts the result to the first n rows — usually combined with <code>ORDER BY</code> to get something like "top 5 highest prices."'
+          ],
+          code: 'SELECT name, price\nFROM products\nORDER BY price DESC\nLIMIT 2;\n\n-- returns only the 2 most expensive products'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 02 · Step 4',
+          title: 'Predict the result',
+          body: [
+            'Assume products has: Widget/9.99, Gadget/19.99, Gizmo/24.99.'
+          ],
+          code: 'SELECT name\nFROM products\nORDER BY price DESC\nLIMIT 1;',
+          options: ['Gizmo', 'Widget', 'All three names', 'Error'],
+          answer: 0,
+          explanation: 'Sorted highest to lowest, Gizmo (24.99) comes first, and <code>LIMIT 1</code> keeps only that row.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 02 · Step 5',
+          title: 'Aggregate functions summarize a whole column',
+          body: [
+            '<code>COUNT(*)</code>, <code>SUM(column)</code>, <code>AVG(column)</code>, <code>MIN(column)</code>, and <code>MAX(column)</code> collapse many rows into a single summary value.'
+          ],
+          code: 'SELECT COUNT(*)\nFROM products;\n\n-- returns:\ncount\n-----\n3\n\nSELECT AVG(price)\nFROM products;\n\n-- returns:\navg\n-----\n18.32'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 02 · Step 6',
+          title: 'Complete the query',
+          body: [
+            'Finish the query so it returns the total number of rows in the orders table.'
+          ],
+          codeBefore: 'SELECT ',
+          codeAfter: '(*)\nFROM orders;',
+          answer: ['COUNT'],
+          hint: 'The aggregate function that counts rows.',
+          explanation: '<code>COUNT(*)</code> counts every row in the table.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 02 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            '<code>ORDER BY</code> sorts results — ascending (<code>ASC</code>) by default, or <code>DESC</code> for descending.',
+            '<code>LIMIT n</code> caps the number of rows returned, often paired with <code>ORDER BY</code> for "top N" queries.',
+            'Aggregate functions (<code>COUNT</code>, <code>SUM</code>, <code>AVG</code>, <code>MIN</code>, <code>MAX</code>) collapse a column into a single summary value.',
+            'Order matters: <code>SELECT</code>, <code>FROM</code>, <code>WHERE</code>, <code>ORDER BY</code>, <code>LIMIT</code> — always in that sequence.'
+          ],
+          next: 'Next up: GROUP BY — aggregating data per category instead of across the whole table.'
+        }
+      ]
+    },
+    {
+      id: 'group-by-having',
+      title: 'GROUP BY & HAVING',
+      sub: '7 steps · ~5 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 03 · Step 1',
+          title: 'GROUP BY aggregates per category, not the whole table',
+          body: [
+            '<code>GROUP BY column</code> groups rows sharing the same value, then any aggregate function in the <code>SELECT</code> runs separately for each group.'
+          ],
+          code: 'SELECT category, COUNT(*)\nFROM products\nGROUP BY category;\n\n-- returns:\ncategory   | count\n-----------|------\nElectronics| 2\nHome       | 1'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 03 · Step 2',
+          title: 'Predict the result',
+          body: [
+            'Assume orders has rows: customer A/$50, customer A/$30, customer B/$20.'
+          ],
+          code: 'SELECT customer, SUM(amount)\nFROM orders\nGROUP BY customer;',
+          options: ['A: 80, B: 20', 'A: 50, B: 20 (only first row per customer)', 'A single total of 100', 'Error'],
+          answer: 0,
+          explanation: '<code>GROUP BY customer</code> sums <code>amount</code> separately for each customer — A\'s two orders (50+30) combine to 80.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 03 · Step 3',
+          title: 'Every non-aggregated column in SELECT must be in GROUP BY',
+          body: [
+            'If you <code>SELECT</code> a column that isn\'t wrapped in an aggregate function, it has to appear in <code>GROUP BY</code> too — otherwise the database doesn\'t know which row\'s value to show for a group with many rows.'
+          ],
+          code: '-- valid:\nSELECT category, COUNT(*)\nFROM products\nGROUP BY category;\n\n-- invalid: name isn\'t aggregated or grouped\nSELECT category, name, COUNT(*)\nFROM products\nGROUP BY category;'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 03 · Step 4',
+          title: 'Predict the result',
+          body: [
+            'Assume employees has: Eng/$90k, Eng/$110k, Sales/$70k.'
+          ],
+          code: 'SELECT department, AVG(salary)\nFROM employees\nGROUP BY department;',
+          options: ['Eng: 100k, Sales: 70k', 'A single average of all employees', 'Eng: 90k, Sales: 70k', 'Error'],
+          answer: 0,
+          explanation: '<code>AVG(salary)</code> is calculated separately per department — Eng\'s two salaries average to 100k.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 03 · Step 5',
+          title: 'HAVING filters groups, after they\'re aggregated',
+          body: [
+            '<code>WHERE</code> filters individual rows before grouping; <code>HAVING</code> filters entire groups after aggregation — used when your filter condition involves an aggregate function like <code>COUNT</code> or <code>SUM</code>.'
+          ],
+          code: 'SELECT department, COUNT(*)\nFROM employees\nGROUP BY department\nHAVING COUNT(*) > 5;\n\n-- only departments with more than 5 employees'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 03 · Step 6',
+          title: 'Complete the query',
+          body: [
+            'Finish the query so only categories with more than 2 products are returned.'
+          ],
+          codeBefore: 'SELECT category, COUNT(*)\nFROM products\nGROUP BY category\nHAVING COUNT(*) ',
+          codeAfter: ' 2;',
+          answer: ['>'],
+          hint: 'The comparison operator for "more than."',
+          explanation: '<code>HAVING COUNT(*) &gt; 2</code> keeps only groups where the count exceeds 2.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 03 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            '<code>GROUP BY</code> splits rows into groups sharing a value, then runs aggregates separately per group.',
+            'Every non-aggregated column in <code>SELECT</code> must also appear in <code>GROUP BY</code>.',
+            '<code>WHERE</code> filters rows before grouping; <code>HAVING</code> filters groups after aggregation.',
+            'Use <code>HAVING</code> specifically when your filter condition involves an aggregate function.'
+          ],
+          next: 'Next up: a checkpoint test on querying, sorting, and grouping.'
+        }
+      ]
+    },
+    {
+      id: 'checkpoint-1',
+      title: 'Checkpoint: Querying & Grouping',
+      sub: 'Checkpoint · 8 questions',
+      isTest: true,
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Checkpoint · Start',
+          title: 'Time to check what stuck',
+          body: [
+            '8 quick questions pulling from SELECT, WHERE, ORDER BY, aggregates, and GROUP BY.'
+          ]
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 1',
+          title: 'Predict the result',
+          body: ['Assume a table <code>books</code> with columns <code>title</code> and <code>author</code>.'],
+          code: 'SELECT title\nFROM books;',
+          options: ['Every title in the books table', 'Every column in the books table', 'Just one row', 'Error'],
+          answer: 0,
+          explanation: '<code>SELECT title</code> returns only the <code>title</code> column, for every row.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint · Question 2',
+          title: 'Complete the query',
+          body: ['Finish the query so it only returns users older than 18.'],
+          codeBefore: 'SELECT name\nFROM users\nWHERE ',
+          codeAfter: ' > 18;',
+          answer: ['age'],
+          hint: 'The column being compared.',
+          explanation: '<code>WHERE age &gt; 18</code> filters out rows where age is 18 or less.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 3',
+          title: 'Predict the result',
+          body: ['Assume products has: Widget/9.99, Gadget/19.99, Gizmo/24.99.'],
+          code: 'SELECT name\nFROM products\nORDER BY price DESC;',
+          options: ['Gizmo, Gadget, Widget', 'Widget, Gadget, Gizmo', 'Random order', 'Error'],
+          answer: 0,
+          explanation: '<code>DESC</code> sorts from highest to lowest price — Gizmo (24.99) first.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint · Question 4',
+          title: 'Complete the query',
+          body: ['Finish the query so it returns the total number of rows in the orders table.'],
+          codeBefore: 'SELECT ',
+          codeAfter: '(*)\nFROM orders;',
+          answer: ['COUNT'],
+          hint: 'The aggregate function that counts rows.',
+          explanation: '<code>COUNT(*)</code> counts every row in the table.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 5',
+          title: 'Predict the result',
+          body: ['Assume products has 3 rows.'],
+          code: 'SELECT COUNT(*)\nFROM products;',
+          options: ['3', '0', 'products', 'Error'],
+          answer: 0,
+          explanation: '<code>COUNT(*)</code> returns the number of rows in the table — 3.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint · Question 6',
+          title: 'Complete the query',
+          body: ['Finish the query so results are grouped by category.'],
+          codeBefore: 'SELECT category, COUNT(*)\nFROM products\n',
+          codeAfter: ' category;',
+          answer: ['GROUP BY'],
+          hint: 'Groups rows sharing the same value.',
+          explanation: '<code>GROUP BY category</code> groups rows sharing the same category before counting.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 7',
+          title: 'Predict the result',
+          body: ['Assume orders has: customer A/$50, customer A/$30, customer B/$20.'],
+          code: 'SELECT customer, SUM(amount)\nFROM orders\nGROUP BY customer;',
+          options: ['A: 80, B: 20', 'A: 50, B: 20', 'A single total of 100', 'Error'],
+          answer: 0,
+          explanation: '<code>SUM(amount)</code> is calculated separately per customer — A\'s orders combine to 80.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint · Question 8',
+          title: 'Complete the query',
+          body: ['Finish the query so only categories with more than 2 products are returned.'],
+          codeBefore: 'SELECT category, COUNT(*)\nFROM products\nGROUP BY category\nHAVING COUNT(*) ',
+          codeAfter: ' 2;',
+          answer: ['>'],
+          hint: 'The comparison operator for "more than."',
+          explanation: '<code>HAVING COUNT(*) &gt; 2</code> keeps only groups where the count exceeds 2.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Checkpoint · Complete',
+          title: 'Here\'s where you stand',
+          bullets: [
+            'SELECT, WHERE, ORDER BY, aggregates, and GROUP BY — the foundation for querying any table.',
+            'If anything felt shaky, the matching lesson is one tap away in the menu — and you can retake this checkpoint any time.'
+          ],
+          next: 'Next up: a project — querying a small store database.'
+        }
+      ]
+    },
+    {
+      id: 'project-store',
+      title: 'Project: Query a Store Database',
+      sub: 'Project · 8 steps',
+      kind: 'project',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Project · Brief',
+          title: 'The goal',
+          body: [
+            'Given a small orders table, filter for larger orders and find the most valuable customers — combining WHERE, GROUP BY, and ORDER BY.'
+          ]
+        },
+        {
+          type: 'info',
+          eyebrow: 'Project · Step 1',
+          title: 'Start with the data',
+          body: [
+            'Assume this orders table.'
+          ],
+          code: 'orders\n----------------------------------------\nid | customer | category    | amount\n1  | Ana      | Electronics | 120\n2  | Ben      | Home        | 45\n3  | Ana      | Home        | 30\n4  | Cara     | Electronics | 90'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Project · Step 2',
+          title: 'Complete the query',
+          body: [
+            'Finish the query so it only returns orders over $50.'
+          ],
+          codeBefore: 'SELECT *\nFROM orders\nWHERE ',
+          codeAfter: ' > 50;',
+          answer: ['amount'],
+          hint: 'The column holding each order\'s value.',
+          explanation: '<code>WHERE amount &gt; 50</code> filters out orders of $50 or less.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Project · Step 3',
+          title: 'Predict the result',
+          code: 'SELECT *\nFROM orders\nWHERE amount > 50;',
+          options: ['Orders 1 and 4 (Ana/120, Cara/90)', 'All four orders', 'Order 2 only', 'Error'],
+          answer: 0,
+          explanation: 'Only amounts over 50 pass the filter — order 1 (120) and order 4 (90).'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Project · Step 4',
+          title: 'Summarize total spend per customer',
+          body: [
+            'Grouping by customer and summing amount collapses multiple orders into one total per customer.'
+          ],
+          code: 'SELECT customer, SUM(amount)\nFROM orders\nGROUP BY customer;\n\n-- returns:\ncustomer | sum\n---------|----\nAna      | 150\nBen      | 45\nCara     | 90'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Project · Step 5',
+          title: 'Complete the query',
+          body: [
+            'Finish the query so customers are ranked by total spend, highest first.'
+          ],
+          codeBefore: 'SELECT customer, SUM(amount) AS total\nFROM orders\nGROUP BY customer\nORDER BY total ',
+          codeAfter: ';',
+          answer: ['DESC'],
+          hint: 'The keyword for descending order.',
+          explanation: '<code>ORDER BY total DESC</code> ranks customers from highest total spend to lowest.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Project · Step 6',
+          title: 'Predict the result',
+          code: 'SELECT customer, SUM(amount) AS total\nFROM orders\nGROUP BY customer\nORDER BY total DESC;',
+          options: ['Ana (150), Cara (90), Ben (45)', 'Ben, Cara, Ana', 'Ana, Ben, Cara', 'Error'],
+          answer: 0,
+          explanation: 'Sorted by total descending: Ana at 150, then Cara at 90, then Ben at 45.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Project · Complete',
+          title: 'You ranked customers by total spend',
+          code: 'SELECT customer, SUM(amount) AS total\nFROM orders\nGROUP BY customer\nORDER BY total DESC;\n\n-- returns:\ncustomer | total\n---------|------\nAna      | 150\nCara     | 90\nBen      | 45',
+          bullets: [
+            'WHERE amount > 50 filtered individual orders before any aggregation happened.',
+            'GROUP BY customer collapsed multiple orders per customer into one row each, summed with SUM(amount).',
+            'ORDER BY total DESC ranked customers from highest total spend to lowest.',
+            'This filter-then-aggregate-then-sort shape answers most real "who are our best customers" questions.'
+          ],
+          next: 'More lessons — joining data across multiple tables — are on the way.'
+        }
+      ]
+    },
+    { id: 'more-soon', title: 'Joining tables', sub: 'coming soon', locked: true }
+  ];
+
+  var state = load();
+  if (!state.testScores) state.testScores = {};
+  var view = { screen: 'menu', lessonId: null, stepIndex: 0, checked: false, firstTry: {} };
+
+  function load() {
+    try {
+      var raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) return JSON.parse(raw);
+    } catch (e) {}
+    return { streak: 0, lastCompleteDate: null, completedLessons: {}, testScores: {} };
+  }
+  function save() {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
+  }
+  function todayStr() {
+    var d = new Date();
+    return d.getFullYear() + '-' + (d.getMonth()+1) + '-' + d.getDate();
+  }
+  function bumpStreak() {
+    var today = todayStr();
+    if (state.lastCompleteDate === today) return;
+    var y = new Date(); y.setDate(y.getDate() - 1);
+    var yesterday = y.getFullYear() + '-' + (y.getMonth()+1) + '-' + y.getDate();
+    state.streak = (state.lastCompleteDate === yesterday) ? state.streak + 1 : 1;
+    state.lastCompleteDate = today;
+    save();
+  }
+
+  function esc(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  function renderChrome() {
+    document.getElementById('streakNum').textContent = state.streak;
+    var path = view.screen === 'menu' ? '~/<b>sql</b>'
+      : '~/sql/<b>' + view.lessonId + '</b>';
+    document.getElementById('chromePath').innerHTML = path;
+  }
+
+  function renderProgress() {
+    var track = document.getElementById('progressTrack');
+    track.innerHTML = '';
+    if (view.screen !== 'lesson') { track.style.display = 'none'; return; }
+    track.style.display = 'flex';
+    var lesson = lessons.filter(function(l){return l.id === view.lessonId;})[0];
+    lesson.steps.forEach(function(_, i) {
+      var seg = document.createElement('div');
+      seg.className = 'progress-seg' + (i < view.stepIndex ? ' done' : i === view.stepIndex ? ' current' : '');
+      track.appendChild(seg);
+    });
+  }
+
+  function renderMenu() {
+    var panel = document.getElementById('panel');
+    var html = '';
+    html += '<p class="eyebrow">Practice terminal</p>';
+    html += '<h1 class="step-title">SQL, one sitting at a time</h1>';
+    html += '<p class="intro-copy">Short, self-contained lessons on querying, filtering, and joining data across tables — the language every database understands.</p>';
+    html += '<div class="menu-list">';
+    lessons.forEach(function(l, i) {
+      var done = state.completedLessons[l.id];
+      var testScore = state.testScores[l.id];
+      var statusLabel = l.locked ? l.sub
+        : testScore ? (testScore.score + '/' + testScore.total)
+        : done ? 'complete' : (l.sub || 'start');
+      html += '<div class="menu-item' + (l.locked ? ' locked' : '') + '" data-lesson="' + l.id + '" tabindex="' + (l.locked ? '-1' : '0') + '">';
+      html += '<div class="menu-num">' + String(i+1).padStart(2,'0') + '</div>';
+      html += '<div class="menu-text"><div class="menu-title">' + esc(l.title) + '</div><div class="menu-sub">' + esc(l.locked ? l.sub : (l.sub || '')) + '</div></div>';
+      html += '<div class="menu-status">' + esc(statusLabel) + '</div>';
+      html += '</div>';
+    });
+    html += '</div>';
+    panel.innerHTML = html;
+    panel.className = 'panel fade';
+    Array.prototype.forEach.call(panel.querySelectorAll('.menu-item:not(.locked)'), function(el) {
+      el.addEventListener('click', function() { openLesson(el.getAttribute('data-lesson')); });
+      el.addEventListener('keydown', function(e) { if (e.key === 'Enter') openLesson(el.getAttribute('data-lesson')); });
+    });
+  }
+
+  function openLesson(id) {
+    view.screen = 'lesson';
+    view.lessonId = id;
+    view.stepIndex = 0;
+    view.checked = false;
+    view.firstTry = {};
+    renderAll();
+  }
+
+  function backToMenu() {
+    view.screen = 'menu';
+    view.lessonId = null;
+    renderAll();
+  }
+
+  function currentLesson() {
+    return lessons.filter(function(l){ return l.id === view.lessonId; })[0];
+  }
+  function currentStep() {
+    return currentLesson().steps[view.stepIndex];
+  }
+
+  function renderStep() {
+    var step = currentStep();
+    var panel = document.getElementById('panel');
+    var html = '<p class="eyebrow">' + esc(step.eyebrow) + '</p>';
+    html += '<h1 class="step-title">' + esc(step.title) + '</h1>';
+
+    if (step.type === 'info') {
+      step.body.forEach(function(p){ html += '<p class="prose">' + p + '</p>'; });
+      if (step.code) html += '<div class="code-block">' + esc(step.code) + '</div>';
+      html += '<div class="footer"><div class="spacer"></div><button class="btn" id="primaryBtn">continue →</button></div>';
+      panel.innerHTML = html;
+      panel.className = 'panel fade';
+      document.getElementById('primaryBtn').addEventListener('click', nextStep);
+      return;
+    }
+
+    if (step.type === 'predict') {
+      if (step.body) step.body.forEach(function(p){ html += '<p class="prose">' + p + '</p>'; });
+      if (step.code) html += '<div class="code-block">' + esc(step.code) + '</div>';
+      html += '<div class="options" id="optionsBox">';
+      step.options.forEach(function(opt, i) {
+        html += '<button class="option" data-idx="' + i + '"><span class="idx">' + (i+1) + '</span>' + esc(opt) + '</button>';
+      });
+      html += '</div>';
+      html += '<div class="feedback" id="feedbackBox"></div>';
+      html += '<div class="footer"><div class="spacer"></div><button class="btn" id="primaryBtn" disabled>continue →</button></div>';
+      panel.innerHTML = html;
+      panel.className = 'panel fade';
+      wireChoice(step);
+      return;
+    }
+
+    if (step.type === 'fill') {
+      step.body.forEach(function(p){ html += '<p class="prose">' + p + '</p>'; });
+      html += '<div class="code-block">' + esc(step.codeBefore) + '<span class="blank" id="blankPreview">___</span>' + esc(step.codeAfter) + '</div>';
+      html += '<div class="prompt-line"><span class="chevron">&gt;&gt;&gt;</span><input id="fillInput" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="type here" /><span class="cursor"></span></div>';
+      html += '<div class="feedback" id="feedbackBox"></div>';
+      html += '<div class="footer"><button class="hint-btn" id="hintBtn">need a hint?</button><div class="spacer"></div><button class="btn" id="checkBtn">check</button></div>';
+      panel.innerHTML = html;
+      panel.className = 'panel fade';
+      wireFill(step);
+      return;
+    }
+
+    if (step.type === 'recap') {
+      var lesson = currentLesson();
+      var scoreResult = lesson.isTest ? computeScore(lesson) : null;
+      if (scoreResult) {
+        html += '<div class="score-box"><div class="score-num">' + scoreResult.score + '<span class="score-of">/' + scoreResult.total + '</span></div>'
+          + '<div class="score-msg">' + esc(scoreResult.message) + '</div></div>';
+      }
+      if (step.code) html += '<div class="code-block">' + esc(step.code) + '</div>';
+      html += '<ul class="recap-list">';
+      step.bullets.forEach(function(b){ html += '<li>' + b + '</li>'; });
+      html += '</ul>';
+      html += '<p class="prose" style="margin-top:16px; color:var(--ink-soft);">' + esc(step.next) + '</p>';
+      html += '<div class="footer"><button class="btn ghost" id="menuBtn">back to lessons</button><div class="spacer"></div></div>';
+      panel.innerHTML = html;
+      panel.className = 'panel fade';
+      document.getElementById('menuBtn').addEventListener('click', function() {
+        state.completedLessons[view.lessonId] = true;
+        if (scoreResult) state.testScores[view.lessonId] = { score: scoreResult.score, total: scoreResult.total, date: todayStr() };
+        bumpStreak();
+        backToMenu();
+      });
+      return;
+    }
+  }
+
+  function computeScore(lesson) {
+    var total = 0, score = 0;
+    lesson.steps.forEach(function(s, i) {
+      if (s.type === 'predict' || s.type === 'fill') {
+        total += 1;
+        if (view.firstTry[i]) score += 1;
+      }
+    });
+    var pct = total ? score / total : 0;
+    var message = pct >= 0.9 ? 'Nailed it — that stuck.'
+      : pct >= 0.7 ? 'Solid. A couple of spots to revisit.'
+      : 'Good practice — worth another pass on the lessons above.';
+    return { score: score, total: total, message: message };
+  }
+
+  function wireChoice(step) {
+    var box = document.getElementById('optionsBox');
+    var fb = document.getElementById('feedbackBox');
+    var primary = document.getElementById('primaryBtn');
+    var answered = false;
+    primary.addEventListener('click', nextStep);
+    Array.prototype.forEach.call(box.querySelectorAll('.option'), function(btn) {
+      btn.addEventListener('click', function() {
+        if (answered) return;
+        answered = true;
+        var idx = parseInt(btn.getAttribute('data-idx'), 10);
+        view.firstTry[view.stepIndex] = (idx === step.answer);
+        Array.prototype.forEach.call(box.querySelectorAll('.option'), function(b, i) {
+          if (i === step.answer) b.classList.add('correct');
+          else if (b === btn) b.classList.add('wrong');
+          else b.classList.add('dim');
+        });
+        fb.className = 'feedback show ' + (idx === step.answer ? 'ok' : 'no');
+        fb.innerHTML = (idx === step.answer ? '<b>Correct.</b> ' : '<b>Not quite.</b> ') + step.explanation;
+        primary.disabled = false;
+      });
+    });
+  }
+
+  function wireFill(step) {
+    var input = document.getElementById('fillInput');
+    var fb = document.getElementById('feedbackBox');
+    var checkBtn = document.getElementById('checkBtn');
+    var hintBtn = document.getElementById('hintBtn');
+    var solved = false;
+
+    function doCheck() {
+      if (solved) { nextStep(); return; }
+      var val = input.value.trim().toLowerCase();
+      var ok = step.answer.some(function(a){ return a.toLowerCase() === val; });
+      if (!(view.stepIndex in view.firstTry)) view.firstTry[view.stepIndex] = ok;
+      fb.className = 'feedback show ' + (ok ? 'ok' : 'no');
+      fb.innerHTML = (ok ? '<b>Correct.</b> ' : '<b>Not quite.</b> ') + step.explanation;
+      if (ok) {
+        solved = true;
+        document.getElementById('blankPreview').textContent = step.answer[0];
+        input.disabled = true;
+        checkBtn.textContent = 'continue →';
+      }
+    }
+    checkBtn.addEventListener('click', doCheck);
+    input.addEventListener('keydown', function(e){ if (e.key === 'Enter') doCheck(); });
+    hintBtn.addEventListener('click', function() {
+      fb.className = 'feedback show ok';
+      fb.innerHTML = '<b>Hint.</b> ' + step.hint;
+    });
+  }
+
+  function nextStep() {
+    var lesson = currentLesson();
+    if (view.stepIndex < lesson.steps.length - 1) {
+      view.stepIndex += 1;
+      renderAll();
+    }
+  }
+
+  function renderAll() {
+    renderChrome();
+    renderProgress();
+    if (view.screen === 'menu') renderMenu();
+    else renderStep();
+  }
+
+  renderAll();
+})();
+</script>
+</body>
+</html>
