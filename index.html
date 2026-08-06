@@ -168,6 +168,8 @@
     border-top: 1px solid var(--line);
     padding-top: 20px;
   }
+  .footnote a { color: var(--accent-ink); text-decoration: none; }
+  .footnote a:hover { text-decoration: underline; }
 </style>
 </head>
 <body>
@@ -177,6 +179,58 @@
     <p class="eyebrow">Course hub</p>
     <h1 class="hero-title">What do you want to learn?</h1>
     <p class="hero-copy">Short, self-contained lessons built for the gaps in a busy day. Each track has its own bite-sized lessons, scored checkpoints, and hands-on projects — pick one and go.</p>
+
+    <p class="section-label">Full-stack path — start to finish, in order</p>
+    <div class="course-grid">
+      <a class="course-card live" href="start-here/">
+        <div class="card-top">
+          <span class="card-title">Start Here</span>
+          <span class="card-status live">live</span>
+        </div>
+        <p class="card-desc">What full-stack means, what HTML, CSS, JavaScript, React, SQL, and Express each actually do, and the order to learn them in. Read this first if you&#8217;re new.</p>
+        <p class="card-meta">Step 1 of 6 · 4 lessons · ~15 min</p>
+      </a>
+      <a class="course-card live" href="html-css/">
+        <div class="card-top">
+          <span class="card-title">HTML &amp; CSS</span>
+          <span class="card-status live">live</span>
+        </div>
+        <p class="card-desc">Structure a page with HTML, then style and lay it out with CSS — box model, Flexbox, Grid, and accessible markup.</p>
+        <p class="card-meta">Step 2 of 6 · 8 lessons · 3 checkpoints · 3 projects</p>
+      </a>
+      <a class="course-card live" href="javascript/">
+        <div class="card-top">
+          <span class="card-title">JavaScript</span>
+          <span class="card-status live">live</span>
+        </div>
+        <p class="card-desc">Variables through the DOM, events, async, and classes — the language that runs in the browser.</p>
+        <p class="card-meta">Step 3 of 6 · 17 lessons · 6 checkpoints · 6 projects</p>
+      </a>
+      <a class="course-card live" href="react/">
+        <div class="card-top">
+          <span class="card-title">React</span>
+          <span class="card-status building">in progress</span>
+        </div>
+        <p class="card-desc">Components, props, and state — building interactive interfaces on top of JavaScript.</p>
+        <p class="card-meta">Step 4 of 6 · 3 lessons · 1 checkpoint · 1 project so far</p>
+      </a>
+      <a class="course-card live" href="sql/">
+        <div class="card-top">
+          <span class="card-title">SQL</span>
+          <span class="card-status building">in progress</span>
+        </div>
+        <p class="card-desc">Query, filter, and join data across tables — the language every database understands.</p>
+        <p class="card-meta">Step 5 of 6 · 6 lessons · 2 checkpoints · 2 projects so far</p>
+      </a>
+      <div class="course-card planned">
+        <div class="card-top">
+          <span class="card-title">Express / Node</span>
+          <span class="card-status planned">planned</span>
+        </div>
+        <p class="card-desc">Build the server that connects a frontend to a database — the backend half of full-stack.</p>
+        <p class="card-meta">Step 6 of 6</p>
+      </div>
+    </div>
 
     <p class="section-label">Available now</p>
     <div class="course-grid">
@@ -196,42 +250,6 @@
         <p class="card-desc">How railway software safety actually works — SIL, the V-model lifecycle, tailoring, and a full project from kickoff to certification, in plain language.</p>
         <p class="card-meta">15 lessons · 6 checkpoints · 6 projects</p>
       </a>
-      <a class="course-card live" href="html-css/">
-        <div class="card-top">
-          <span class="card-title">HTML &amp; CSS</span>
-          <span class="card-status live">live</span>
-        </div>
-        <p class="card-desc">Structure a page with HTML, then style and lay it out with CSS — box model, Flexbox, Grid, and accessible markup. First stop on the full-stack path.</p>
-        <p class="card-meta">8 lessons · 3 checkpoints · 3 projects</p>
-      </a>
-      <a class="course-card live" href="javascript/">
-        <div class="card-top">
-          <span class="card-title">JavaScript</span>
-          <span class="card-status live">live</span>
-        </div>
-        <p class="card-desc">Variables through the DOM, events, async, and classes — the language that runs in the browser. Second stop on the full-stack path.</p>
-        <p class="card-meta">17 lessons · 6 checkpoints · 6 projects</p>
-      </a>
-    </div>
-
-    <p class="section-label">Building now</p>
-    <div class="course-grid">
-      <a class="course-card live" href="react/">
-        <div class="card-top">
-          <span class="card-title">React</span>
-          <span class="card-status building">in progress</span>
-        </div>
-        <p class="card-desc">Components, props, and state — building interactive interfaces on top of JavaScript. Third stop on the full-stack path.</p>
-        <p class="card-meta">3 lessons · 1 checkpoint · 1 project so far</p>
-      </a>
-      <a class="course-card live" href="sql/">
-        <div class="card-top">
-          <span class="card-title">SQL</span>
-          <span class="card-status building">in progress</span>
-        </div>
-        <p class="card-desc">Query, filter, and join data across tables — the language every database understands. Fourth stop on the full-stack path.</p>
-        <p class="card-meta">6 lessons · 2 checkpoints · 2 projects so far</p>
-      </a>
     </div>
 
     <p class="section-label">Beyond code</p>
@@ -246,18 +264,7 @@
       </a>
     </div>
 
-    <p class="section-label">Full-stack path — coming soon</p>
-    <div class="course-grid">
-      <div class="course-card planned">
-        <div class="card-top">
-          <span class="card-title">Express / Node</span>
-          <span class="card-status planned">planned</span>
-        </div>
-        <p class="card-desc">Build the server that connects a frontend to a database — the backend half of full-stack.</p>
-      </div>
-    </div>
-
-    <p class="footnote">Long-term goal: full-stack, one track at a time. Each one builds on the last — HTML &amp; CSS, then JavaScript, then React, then SQL and Express.</p>
+    <p class="footnote">New to full-stack? Start with the <a href="start-here/">orientation lesson</a> above, then work through the path top to bottom — each step builds on the last.</p>
   </div>
 </div>
 

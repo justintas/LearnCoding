@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Start Here — Practice Terminal</title>
+<style>
+  :root {
+    --bg: #F3F7F5;
+    --bg-raised: #FFFFFF;
+    --ink: #1B222A;
+    --ink-soft: #4E5860;
+    --line: rgba(27, 34, 42, 0.12);
+    --accent: #B96A1E;
+    --accent-ink: #7A4614;
+    --accent-soft: rgba(185, 106, 30, 0.12);
+    --success: #2F7D68;
+    --success-soft: rgba(47, 125, 104, 0.12);
+    --error: #B0402E;
+    --error-soft: rgba(176, 64, 46, 0.10);
+    --shadow: 0 1px 2px rgba(27,34,42,0.04), 0 8px 24px rgba(27,34,42,0.06);
+    --radius: 12px;
+
+    --font-display: ui-serif, Georgia, "Iowan Old Style", "Palatino Linotype", serif;
+    --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-mono: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #12161C;
+      --bg-raised: #1A2029;
+      --ink: #ECE7DC;
+      --ink-soft: #9BA3AC;
+      --line: rgba(236, 231, 220, 0.12);
+      --accent: #D89654;
+      --accent-ink: #F0C48F;
+      --accent-soft: rgba(216, 150, 84, 0.16);
+      --success: #63B39C;
+      --success-soft: rgba(99, 179, 156, 0.14);
+      --error: #E08670;
+      --error-soft: rgba(224, 134, 112, 0.14);
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 12px 32px rgba(0,0,0,0.35);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #12161C;
+    --bg-raised: #1A2029;
+    --ink: #ECE7DC;
+    --ink-soft: #9BA3AC;
+    --line: rgba(236, 231, 220, 0.12);
+    --accent: #D89654;
+    --accent-ink: #F0C48F;
+    --accent-soft: rgba(216, 150, 84, 0.16);
+    --success: #63B39C;
+    --success-soft: rgba(99, 179, 156, 0.14);
+    --error: #E08670;
+    --error-soft: rgba(224, 134, 112, 0.14);
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 12px 32px rgba(0,0,0,0.35);
+  }
+  :root[data-theme="light"] {
+    --bg: #F3F7F5;
+    --bg-raised: #FFFFFF;
+    --ink: #1B222A;
+    --ink-soft: #4E5860;
+    --line: rgba(27, 34, 42, 0.12);
+    --accent: #B96A1E;
+    --accent-ink: #7A4614;
+    --accent-soft: rgba(185, 106, 30, 0.12);
+    --success: #2F7D68;
+    --success-soft: rgba(47, 125, 104, 0.12);
+    --error: #B0402E;
+    --error-soft: rgba(176, 64, 46, 0.10);
+    --shadow: 0 1px 2px rgba(27,34,42,0.04), 0 8px 24px rgba(27,34,42,0.06);
+  }
+
+  * { box-sizing: border-box; }
+  body { background: var(--bg); }
+
+  .stage {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 48px 20px 80px;
+    color: var(--ink);
+    font-family: var(--font-body);
+  }
+
+  .frame {
+    width: 100%;
+    max-width: 640px;
+    background: var(--bg-raised);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+
+  .chrome {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--line);
+    font-family: var(--font-mono);
+  }
+  .chrome-path {
+    font-size: 12.5px;
+    letter-spacing: 0.04em;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .chrome-path b { color: var(--ink); font-weight: 600; }
+  .chrome-left { display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .hub-link {
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    text-decoration: none;
+    white-space: nowrap;
+    border-right: 1px solid var(--line);
+    padding-right: 10px;
+  }
+  .hub-link:hover { color: var(--accent); }
+  .streak {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    white-space: nowrap;
+  }
+  .streak b {
+    font-variant-numeric: tabular-nums;
+    color: var(--accent-ink);
+    font-size: 14px;
+  }
+
+  .progress-track {
+    display: flex;
+    gap: 4px;
+    padding: 10px 20px;
+    background: var(--bg);
+  }
+  .progress-seg {
+    flex: 1;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--line);
+    transition: background 0.3s ease;
+  }
+  .progress-seg.done { background: var(--accent); }
+  .progress-seg.current { background: var(--accent); opacity: 0.45; }
+
+  .panel {
+    padding: 32px 28px 28px;
+    min-height: 360px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent-ink);
+    margin: 0 0 10px;
+  }
+
+  h1.step-title {
+    font-family: var(--font-display);
+    font-size: 26px;
+    line-height: 1.25;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+    margin: 0 0 14px;
+    color: var(--ink);
+  }
+
+  .prose { font-size: 15.5px; line-height: 1.6; color: var(--ink); margin: 0 0 12px; }
+  .prose:last-child { margin-bottom: 0; }
+  .prose code { font-family: var(--font-mono); background: var(--accent-soft); padding: 0.05em 0.35em; border-radius: 4px; font-size: 0.9em; }
+
+  .code-block {
+    font-family: var(--font-mono);
+    font-size: 14.5px;
+    line-height: 1.7;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin: 14px 0;
+    white-space: pre;
+    overflow-x: auto;
+    color: var(--ink);
+  }
+  .code-block .blank {
+    display: inline-block;
+    min-width: 2.4em;
+    border-bottom: 2px solid var(--accent);
+    color: var(--accent-ink);
+    text-align: center;
+  }
+  .code-block .cmt { color: var(--ink-soft); }
+
+  .prompt-line {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-mono);
+    margin-top: 14px;
+  }
+  .prompt-line .chevron { color: var(--accent); font-weight: 700; }
+  .prompt-line input {
+    flex: 1;
+    font-family: var(--font-mono);
+    font-size: 15px;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--line);
+    color: var(--ink);
+    padding: 6px 2px;
+    outline: none;
+  }
+  .prompt-line input:focus { border-bottom-color: var(--accent); }
+  .cursor {
+    display: inline-block;
+    width: 8px;
+    height: 16px;
+    background: var(--accent);
+    margin-left: 2px;
+    animation: blink 1.1s steps(1) infinite;
+  }
+  @media (prefers-reduced-motion: reduce) { .cursor { animation: none; opacity: 1; } }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  .options { display: flex; flex-direction: column; gap: 8px; margin-top: 14px; }
+  .option {
+    font-family: var(--font-mono);
+    font-size: 14.5px;
+    text-align: left;
+    padding: 11px 14px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--bg-raised);
+    color: var(--ink);
+    cursor: pointer;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+  .option:hover { border-color: var(--accent); }
+  .option:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .option .idx { color: var(--ink-soft); margin-right: 8px; }
+  .option.correct { border-color: var(--success); background: var(--success-soft); }
+  .option.wrong { border-color: var(--error); background: var(--error-soft); }
+  .option.dim { opacity: 0.5; cursor: default; }
+
+  .feedback {
+    margin-top: 14px;
+    padding: 12px 14px;
+    border-radius: 8px;
+    font-size: 14px;
+    line-height: 1.55;
+    display: none;
+  }
+  .feedback.show { display: block; }
+  .feedback.ok { background: var(--success-soft); color: var(--success); }
+  .feedback.no { background: var(--error-soft); color: var(--error); }
+  .feedback b { color: var(--ink); }
+
+  .score-box {
+    display: flex; align-items: baseline; gap: 14px;
+    padding: 16px 18px; margin-bottom: 16px;
+    background: var(--accent-soft); border: 1px solid var(--line); border-radius: 8px;
+  }
+  .score-num {
+    font-family: var(--font-mono); font-variant-numeric: tabular-nums;
+    font-size: 28px; font-weight: 700; color: var(--accent-ink); line-height: 1;
+  }
+  .score-num .score-of { font-size: 16px; font-weight: 400; color: var(--ink-soft); }
+  .score-msg { font-size: 14px; color: var(--ink-soft); }
+
+  .recap-list { list-style: none; margin: 6px 0 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+  .recap-list li {
+    font-size: 14.5px; line-height: 1.55;
+    padding-left: 18px; position: relative; color: var(--ink);
+  }
+  .recap-list li::before {
+    content: "→"; position: absolute; left: 0; color: var(--accent);
+    font-family: var(--font-mono);
+  }
+
+  .footer {
+    margin-top: auto;
+    padding-top: 22px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+  }
+  .hint-btn {
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    padding: 6px 0;
+  }
+  .hint-btn:hover { color: var(--ink); }
+  .spacer { flex: 1; }
+
+  .btn {
+    font-family: var(--font-mono);
+    font-size: 13.5px;
+    letter-spacing: 0.01em;
+    padding: 11px 20px;
+    border-radius: 8px;
+    border: 1px solid var(--accent);
+    background: var(--accent);
+    color: #FFFDF9;
+    cursor: pointer;
+    transition: transform 0.1s ease, opacity 0.15s ease;
+  }
+  .btn:hover { opacity: 0.92; }
+  .btn:active { transform: translateY(1px); }
+  .btn:disabled { opacity: 0.35; cursor: not-allowed; }
+  .btn.ghost { background: transparent; color: var(--ink-soft); border-color: var(--line); }
+  .btn.ghost:hover { color: var(--ink); border-color: var(--ink-soft); }
+
+  /* menu screen */
+  .menu-list { display: flex; flex-direction: column; gap: 10px; margin-top: 18px; }
+  .menu-item {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 16px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--bg-raised);
+    cursor: pointer;
+    text-align: left;
+  }
+  .menu-item.locked { cursor: default; opacity: 0.5; }
+  .menu-item:not(.locked):hover { border-color: var(--accent); }
+  .menu-num {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--accent-ink);
+    background: var(--accent-soft);
+    border-radius: 6px;
+    padding: 4px 7px;
+    flex-shrink: 0;
+  }
+  .menu-text { flex: 1; }
+  .menu-title { font-size: 15px; font-weight: 600; }
+  .menu-sub { font-size: 12.5px; color: var(--ink-soft); margin-top: 2px; }
+  .menu-status { font-family: var(--font-mono); font-size: 11.5px; color: var(--ink-soft); }
+
+  .intro-copy { font-size: 14.5px; line-height: 1.6; color: var(--ink-soft); margin-top: 4px; }
+
+  .fade { animation: fadeIn 0.28s ease; }
+  @media (prefers-reduced-motion: reduce) { .fade { animation: none; } }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+</style>
+</head>
+<body>
+
+<div class="stage">
+  <div class="frame">
+    <div class="chrome">
+      <div class="chrome-left">
+        <a class="hub-link" href="../">‹ hub</a>
+        <div class="chrome-path" id="chromePath">~/<b>start-here</b></div>
+      </div>
+      <div class="streak" id="streakBox">streak · <b id="streakNum">0</b>d</div>
+    </div>
+    <div class="progress-track" id="progressTrack"></div>
+    <div class="panel" id="panel"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var STORAGE_KEY = 'starthere_progress_v1';
+
+  var lessons = [
+    {
+      id: 'what-is-fullstack',
+      title: 'What is full-stack development?',
+      sub: '4 steps · ~3 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 01 · Step 1',
+          title: 'A website has two halves: frontend and backend',
+          body: [
+            'The <strong>frontend</strong> is everything that runs in the user\'s browser — what they see and click. The <strong>backend</strong> is the server-side program that stores data, runs business logic, and responds to requests from the frontend. "Full-stack" means being comfortable working across both halves.'
+          ],
+          code: 'Frontend (browser)          Backend (server)\n------------------          -----------------\nHTML, CSS, JavaScript  <--> Node/Express, database\nWhat the user sees          Where data lives & logic runs'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 01 · Step 2',
+          title: 'Which layer handles this?',
+          body: [
+            'If a user clicks a "Buy" button and their credit card is charged, which layer actually processes the payment and updates the database?'
+          ],
+          options: ['The backend', 'The frontend', 'Neither — payments happen automatically', 'The browser alone'],
+          answer: 0,
+          explanation: 'Anything involving real data changes, payments, or business logic runs on the backend — the frontend just captures the click and sends a request.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 01 · Step 3',
+          title: 'The browser and server talk over HTTP requests',
+          body: [
+            'When you click a button or load a page, the frontend sends an HTTP <strong>request</strong> to the backend (e.g., "give me this user\'s orders"), and the backend sends back a <strong>response</strong>, usually as JSON data or a rendered page.'
+          ],
+          code: 'Browser  --request-->  Server\nBrowser  <--response--  Server\n\n(this request/response cycle happens constantly as you use any app)'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 01 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            'Frontend = what runs in the browser (HTML, CSS, JavaScript, React); backend = the server-side program and database.',
+            'Full-stack means being comfortable building and connecting both halves.',
+            'The two communicate over HTTP requests and responses, usually exchanging data as JSON.',
+            'Every course on this hub\'s full-stack path teaches one piece of this picture.'
+          ],
+          next: 'Next up: what each piece — HTML, CSS, JavaScript, React — actually does.'
+        }
+      ]
+    },
+    {
+      id: 'frontend-pieces',
+      title: 'The frontend pieces',
+      sub: '6 steps · ~4 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 02 · Step 1',
+          title: 'HTML is the structure — the skeleton of a page',
+          body: [
+            '<strong>HTML</strong> (HyperText Markup Language) defines what\'s on the page: headings, paragraphs, images, buttons, forms. It has no styling and no behavior on its own — just structure and content.'
+          ],
+          code: '<h1>Welcome</h1>\n<p>This is a paragraph.</p>\n<button>Click me</button>'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 02 · Step 2',
+          title: 'CSS is the styling — colors, layout, spacing',
+          body: [
+            '<strong>CSS</strong> (Cascading Style Sheets) controls how HTML looks: colors, fonts, spacing, and layout systems like Flexbox and Grid. The same HTML can look completely different depending on the CSS applied to it.'
+          ],
+          code: 'button {\n  background: blue;\n  color: white;\n  padding: 10px 20px;\n}'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 02 · Step 3',
+          title: 'JavaScript is the behavior — what happens when you interact',
+          body: [
+            '<strong>JavaScript</strong> makes a page interactive: responding to clicks, validating a form, fetching new data without reloading the page. HTML and CSS are static; JavaScript is what makes a page actually do things.'
+          ],
+          code: 'button.addEventListener("click", () => {\n  alert("Button clicked!");\n});'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 02 · Step 4',
+          title: 'React is a tool for building JavaScript UIs at scale',
+          body: [
+            '<strong>React</strong> isn\'t a replacement for JavaScript — it\'s a library built on top of it, for organizing an interface into reusable components (like Button, ProfileCard, Navbar) instead of hand-writing DOM updates for every interaction. Most modern frontend jobs use a framework like React rather than plain JavaScript for anything beyond a simple page.'
+          ],
+          code: 'function Greeting({ name }) {\n  return <h1>Hello, {name}!</h1>;\n}\n\n// a reusable, testable piece of UI'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 02 · Step 5',
+          title: 'Which tool would you use?',
+          body: [
+            'Which of these would you use to change a button\'s color from blue to green?'
+          ],
+          options: ['CSS', 'HTML', 'JavaScript', 'SQL'],
+          answer: 0,
+          explanation: 'Visual styling — including color — is CSS\'s job. HTML defines that the button exists; JavaScript could also change it dynamically, but for static styling, CSS is the direct tool.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 02 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            'HTML defines structure and content — the skeleton of a page.',
+            'CSS defines appearance — colors, fonts, layout.',
+            'JavaScript defines behavior — what happens when a user interacts with the page.',
+            'React is a JavaScript library for organizing complex interfaces into reusable components, not a replacement for JavaScript itself.'
+          ],
+          next: 'Next up: the backend pieces — SQL, and the server that ties it all together.'
+        }
+      ]
+    },
+    {
+      id: 'backend-pieces',
+      title: 'The backend pieces',
+      sub: '5 steps · ~4 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 03 · Step 1',
+          title: 'A database stores data that needs to persist',
+          body: [
+            'Anything that needs to exist after the browser closes — user accounts, orders, posts — lives in a <strong>database</strong>, not in the frontend. <strong>SQL</strong> is the language used to create, read, update, and delete that data.'
+          ],
+          code: "SELECT * FROM users WHERE id = 42;\n\n-- asks the database for one specific user's data"
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 03 · Step 2',
+          title: 'The backend server sits between the frontend and the database',
+          body: [
+            'A backend server (commonly built with <strong>Node.js</strong> and a framework like <strong>Express</strong>) receives requests from the frontend, decides what to do (check permissions, run business logic), talks to the database using SQL, and sends a response back.'
+          ],
+          code: 'Browser\n  --> "give me user 42\'s orders"\nServer (Node/Express)\n  --> runs a SQL query against the database\n  --> formats the result as JSON\n  --> sends it back to the browser'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 03 · Step 3',
+          title: 'Where does this check happen?',
+          body: [
+            'A user\'s password needs to be checked against the stored (hashed) password before letting them log in. Where does that check happen?'
+          ],
+          options: ['The backend', 'The frontend', 'CSS', 'It happens automatically, nowhere specific'],
+          answer: 0,
+          explanation: 'Anything security-sensitive — like verifying a password — must happen on the backend, where the user can\'t see or tamper with the logic.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 03 · Step 4',
+          title: 'Full-stack means connecting all of these into one working app',
+          body: [
+            'A real feature — like "a user can leave a comment" — touches every layer: HTML/CSS/React render the comment form, JavaScript sends the data, the backend server receives it and checks it\'s valid, and SQL saves it to the database — then the whole chain runs in reverse to display it back.'
+          ],
+          code: 'Comment form (React)\n  -> submit (JavaScript/fetch)\n  -> Server (Node/Express) validates it\n  -> SQL INSERT saves it to the database\n  -> Server responds with the saved comment\n  -> React re-renders the page to show it'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 03 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            'SQL is the language for storing and querying data that needs to persist beyond a single browser session.',
+            'The backend server (often Node.js + Express) sits between the frontend and the database, handling logic and security.',
+            'Anything sensitive — passwords, payments, permissions — belongs on the backend, never the frontend alone.',
+            'A single real feature usually touches every layer: frontend UI, JavaScript logic, backend server, and database.'
+          ],
+          next: 'Next up: a suggested order, and where to go deeper on each piece.'
+        }
+      ]
+    },
+    {
+      id: 'order-and-resources',
+      title: 'Suggested order & where to go deeper',
+      sub: '4 steps · ~3 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 04 · Step 1',
+          title: 'A sensible learning order for this hub\'s full-stack path',
+          body: [
+            'HTML & CSS first (structure and style don\'t require any programming logic yet), then JavaScript (adds behavior and programming fundamentals), then React (organizes JavaScript UIs at scale), then SQL (data and querying), then Express/Node (ties the backend together). Each course on this hub follows that order.'
+          ],
+          code: '1. HTML & CSS   — structure & style\n2. JavaScript   — behavior & logic\n3. React        — organizing UI at scale\n4. SQL          — storing & querying data\n5. Express/Node — the backend server (coming soon)'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 04 · Step 2',
+          title: 'Where to go deeper on each piece',
+          body: [
+            'This hub teaches the core ideas, but real fluency comes from building small projects and reading real documentation. A few well-regarded, free places to go deeper on each piece, once you\'ve got the basics here:'
+          ],
+          code: 'HTML & CSS   — MDN Web Docs (developer.mozilla.org)\nJavaScript   — MDN Web Docs, javascript.info\nReact        — react.dev (the official docs, rewritten for beginners)\nSQL          — sqlbolt.com (interactive), PostgreSQL Tutorial\nNode/Express — nodejs.org docs, expressjs.com\nGeneral path — freeCodeCamp.org (project-based, free, full curriculum)'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 04 · Step 3',
+          title: 'The fastest way to actually learn: build something small end-to-end',
+          body: [
+            'Once you\'ve been through HTML/CSS, JavaScript, and SQL here, the single best next step is a tiny full-stack project of your own — a to-do list with a real database, or a simple notes app. Building one complete, working thing teaches more than reading ten more lessons.'
+          ]
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 04 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            'Recommended order: HTML & CSS → JavaScript → React → SQL → Express/Node.',
+            'MDN Web Docs, react.dev, and freeCodeCamp are strong, free places to go deeper on any piece.',
+            'Real fluency comes from building a small end-to-end project, not just finishing more lessons.',
+            'You now have the map — the rest of this hub fills in each piece in order.'
+          ],
+          next: 'Head back to the hub and start with HTML & CSS if you\'re new, or jump to whichever piece you want to strengthen.'
+        }
+      ]
+    }
+  ];
+
+  var state = load();
+  if (!state.testScores) state.testScores = {};
+  var view = { screen: 'menu', lessonId: null, stepIndex: 0, checked: false, firstTry: {} };
+
+  function load() {
+    try {
+      var raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) return JSON.parse(raw);
+    } catch (e) {}
+    return { streak: 0, lastCompleteDate: null, completedLessons: {}, testScores: {} };
+  }
+  function save() {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
+  }
+  function todayStr() {
+    var d = new Date();
+    return d.getFullYear() + '-' + (d.getMonth()+1) + '-' + d.getDate();
+  }
+  function bumpStreak() {
+    var today = todayStr();
+    if (state.lastCompleteDate === today) return;
+    var y = new Date(); y.setDate(y.getDate() - 1);
+    var yesterday = y.getFullYear() + '-' + (y.getMonth()+1) + '-' + y.getDate();
+    state.streak = (state.lastCompleteDate === yesterday) ? state.streak + 1 : 1;
+    state.lastCompleteDate = today;
+    save();
+  }
+
+  function esc(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  function renderChrome() {
+    document.getElementById('streakNum').textContent = state.streak;
+    var path = view.screen === 'menu' ? '~/<b>start-here</b>'
+      : '~/start-here/<b>' + view.lessonId + '</b>';
+    document.getElementById('chromePath').innerHTML = path;
+  }
+
+  function renderProgress() {
+    var track = document.getElementById('progressTrack');
+    track.innerHTML = '';
+    if (view.screen !== 'lesson') { track.style.display = 'none'; return; }
+    track.style.display = 'flex';
+    var lesson = lessons.filter(function(l){return l.id === view.lessonId;})[0];
+    lesson.steps.forEach(function(_, i) {
+      var seg = document.createElement('div');
+      seg.className = 'progress-seg' + (i < view.stepIndex ? ' done' : i === view.stepIndex ? ' current' : '');
+      track.appendChild(seg);
+    });
+  }
+
+  function renderMenu() {
+    var panel = document.getElementById('panel');
+    var html = '';
+    html += '<p class="eyebrow">Practice terminal</p>';
+    html += '<h1 class="step-title">What is full-stack, anyway?</h1>';
+    html += '<p class="intro-copy">A short orientation before you dive in: what full-stack means, what each piece (HTML, CSS, JavaScript, React, SQL, Express/Node) actually does, how they connect, and where to go deeper. Read this first if you\'re new.</p>';
+    html += '<div class="menu-list">';
+    lessons.forEach(function(l, i) {
+      var done = state.completedLessons[l.id];
+      var testScore = state.testScores[l.id];
+      var statusLabel = l.locked ? l.sub
+        : testScore ? (testScore.score + '/' + testScore.total)
+        : done ? 'complete' : (l.sub || 'start');
+      html += '<div class="menu-item' + (l.locked ? ' locked' : '') + '" data-lesson="' + l.id + '" tabindex="' + (l.locked ? '-1' : '0') + '">';
+      html += '<div class="menu-num">' + String(i+1).padStart(2,'0') + '</div>';
+      html += '<div class="menu-text"><div class="menu-title">' + esc(l.title) + '</div><div class="menu-sub">' + esc(l.locked ? l.sub : (l.sub || '')) + '</div></div>';
+      html += '<div class="menu-status">' + esc(statusLabel) + '</div>';
+      html += '</div>';
+    });
+    html += '</div>';
+    panel.innerHTML = html;
+    panel.className = 'panel fade';
+    Array.prototype.forEach.call(panel.querySelectorAll('.menu-item:not(.locked)'), function(el) {
+      el.addEventListener('click', function() { openLesson(el.getAttribute('data-lesson')); });
+      el.addEventListener('keydown', function(e) { if (e.key === 'Enter') openLesson(el.getAttribute('data-lesson')); });
+    });
+  }
+
+  function openLesson(id) {
+    view.screen = 'lesson';
+    view.lessonId = id;
+    view.stepIndex = 0;
+    view.checked = false;
+    view.firstTry = {};
+    renderAll();
+  }
+
+  function backToMenu() {
+    view.screen = 'menu';
+    view.lessonId = null;
+    renderAll();
+  }
+
+  function currentLesson() {
+    return lessons.filter(function(l){ return l.id === view.lessonId; })[0];
+  }
+  function currentStep() {
+    return currentLesson().steps[view.stepIndex];
+  }
+
+  function renderStep() {
+    var step = currentStep();
+    var panel = document.getElementById('panel');
+    var html = '<p class="eyebrow">' + esc(step.eyebrow) + '</p>';
+    html += '<h1 class="step-title">' + esc(step.title) + '</h1>';
+
+    if (step.type === 'info') {
+      step.body.forEach(function(p){ html += '<p class="prose">' + p + '</p>'; });
+      if (step.code) html += '<div class="code-block">' + esc(step.code) + '</div>';
+      html += '<div class="footer"><div class="spacer"></div><button class="btn" id="primaryBtn">continue →</button></div>';
+      panel.innerHTML = html;
+      panel.className = 'panel fade';
+      document.getElementById('primaryBtn').addEventListener('click', nextStep);
+      return;
+    }
+
+    if (step.type === 'predict') {
+      if (step.body) step.body.forEach(function(p){ html += '<p class="prose">' + p + '</p>'; });
+      if (step.code) html += '<div class="code-block">' + esc(step.code) + '</div>';
+      html += '<div class="options" id="optionsBox">';
+      step.options.forEach(function(opt, i) {
+        html += '<button class="option" data-idx="' + i + '"><span class="idx">' + (i+1) + '</span>' + esc(opt) + '</button>';
+      });
+      html += '</div>';
+      html += '<div class="feedback" id="feedbackBox"></div>';
+      html += '<div class="footer"><div class="spacer"></div><button class="btn" id="primaryBtn" disabled>continue →</button></div>';
+      panel.innerHTML = html;
+      panel.className = 'panel fade';
+      wireChoice(step);
+      return;
+    }
+
+    if (step.type === 'fill') {
+      step.body.forEach(function(p){ html += '<p class="prose">' + p + '</p>'; });
+      html += '<div class="code-block">' + esc(step.codeBefore) + '<span class="blank" id="blankPreview">___</span>' + esc(step.codeAfter) + '</div>';
+      html += '<div class="prompt-line"><span class="chevron">&gt;&gt;&gt;</span><input id="fillInput" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="type here" /><span class="cursor"></span></div>';
+      html += '<div class="feedback" id="feedbackBox"></div>';
+      html += '<div class="footer"><button class="hint-btn" id="hintBtn">need a hint?</button><div class="spacer"></div><button class="btn" id="checkBtn">check</button></div>';
+      panel.innerHTML = html;
+      panel.className = 'panel fade';
+      wireFill(step);
+      return;
+    }
+
+    if (step.type === 'recap') {
+      var lesson = currentLesson();
+      var scoreResult = lesson.isTest ? computeScore(lesson) : null;
+      if (scoreResult) {
+        html += '<div class="score-box"><div class="score-num">' + scoreResult.score + '<span class="score-of">/' + scoreResult.total + '</span></div>'
+          + '<div class="score-msg">' + esc(scoreResult.message) + '</div></div>';
+      }
+      if (step.code) html += '<div class="code-block">' + esc(step.code) + '</div>';
+      html += '<ul class="recap-list">';
+      step.bullets.forEach(function(b){ html += '<li>' + b + '</li>'; });
+      html += '</ul>';
+      html += '<p class="prose" style="margin-top:16px; color:var(--ink-soft);">' + esc(step.next) + '</p>';
+      html += '<div class="footer"><button class="btn ghost" id="menuBtn">back to lessons</button><div class="spacer"></div></div>';
+      panel.innerHTML = html;
+      panel.className = 'panel fade';
+      document.getElementById('menuBtn').addEventListener('click', function() {
+        state.completedLessons[view.lessonId] = true;
+        if (scoreResult) state.testScores[view.lessonId] = { score: scoreResult.score, total: scoreResult.total, date: todayStr() };
+        bumpStreak();
+        backToMenu();
+      });
+      return;
+    }
+  }
+
+  function computeScore(lesson) {
+    var total = 0, score = 0;
+    lesson.steps.forEach(function(s, i) {
+      if (s.type === 'predict' || s.type === 'fill') {
+        total += 1;
+        if (view.firstTry[i]) score += 1;
+      }
+    });
+    var pct = total ? score / total : 0;
+    var message = pct >= 0.9 ? 'Nailed it — that stuck.'
+      : pct >= 0.7 ? 'Solid. A couple of spots to revisit.'
+      : 'Good practice — worth another pass on the lessons above.';
+    return { score: score, total: total, message: message };
+  }
+
+  function wireChoice(step) {
+    var box = document.getElementById('optionsBox');
+    var fb = document.getElementById('feedbackBox');
+    var primary = document.getElementById('primaryBtn');
+    var answered = false;
+    primary.addEventListener('click', nextStep);
+    Array.prototype.forEach.call(box.querySelectorAll('.option'), function(btn) {
+      btn.addEventListener('click', function() {
+        if (answered) return;
+        answered = true;
+        var idx = parseInt(btn.getAttribute('data-idx'), 10);
+        view.firstTry[view.stepIndex] = (idx === step.answer);
+        Array.prototype.forEach.call(box.querySelectorAll('.option'), function(b, i) {
+          if (i === step.answer) b.classList.add('correct');
+          else if (b === btn) b.classList.add('wrong');
+          else b.classList.add('dim');
+        });
+        fb.className = 'feedback show ' + (idx === step.answer ? 'ok' : 'no');
+        fb.innerHTML = (idx === step.answer ? '<b>Correct.</b> ' : '<b>Not quite.</b> ') + step.explanation;
+        primary.disabled = false;
+      });
+    });
+  }
+
+  function wireFill(step) {
+    var input = document.getElementById('fillInput');
+    var fb = document.getElementById('feedbackBox');
+    var checkBtn = document.getElementById('checkBtn');
+    var hintBtn = document.getElementById('hintBtn');
+    var solved = false;
+
+    function doCheck() {
+      if (solved) { nextStep(); return; }
+      var val = input.value.trim().toLowerCase();
+      var ok = step.answer.some(function(a){ return a.toLowerCase() === val; });
+      if (!(view.stepIndex in view.firstTry)) view.firstTry[view.stepIndex] = ok;
+      fb.className = 'feedback show ' + (ok ? 'ok' : 'no');
+      fb.innerHTML = (ok ? '<b>Correct.</b> ' : '<b>Not quite.</b> ') + step.explanation;
+      if (ok) {
+        solved = true;
+        document.getElementById('blankPreview').textContent = step.answer[0];
+        input.disabled = true;
+        checkBtn.textContent = 'continue →';
+      }
+    }
+    checkBtn.addEventListener('click', doCheck);
+    input.addEventListener('keydown', function(e){ if (e.key === 'Enter') doCheck(); });
+    hintBtn.addEventListener('click', function() {
+      fb.className = 'feedback show ok';
+      fb.innerHTML = '<b>Hint.</b> ' + step.hint;
+    });
+  }
+
+  function nextStep() {
+    var lesson = currentLesson();
+    if (view.stepIndex < lesson.steps.length - 1) {
+      view.stepIndex += 1;
+      renderAll();
+    }
+  }
+
+  function renderAll() {
+    renderChrome();
+    renderProgress();
+    if (view.screen === 'menu') renderMenu();
+    else renderStep();
+  }
+
+  renderAll();
+})();
+</script>
+</body>
+</html>
