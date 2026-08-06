@@ -1274,7 +1274,491 @@
         }
       ]
     },
-    { id: 'more-soon', title: 'Custom hooks & composition', sub: 'coming soon', locked: true }
+    {
+      id: 'custom-hooks',
+      title: 'Extracting a custom hook',
+      sub: '7 steps · ~5 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 07 · Step 1',
+          title: 'A custom hook is just a function that uses other hooks',
+          body: [
+            'When the same stateful logic shows up in multiple components, you can extract it into your own function — as long as its name starts with "use", it can call <code>useState</code>, <code>useEffect</code>, and other hooks inside it.'
+          ],
+          code: 'function useToggle(initialValue) {\n  const [value, setValue] = useState(initialValue);\n  const toggle = () => setValue(v => !v);\n  return [value, toggle];\n}\n\n// used in a component:\nfunction Modal() {\n  const [isOpen, toggleOpen] = useToggle(false);\n  return <button onClick={toggleOpen}>{isOpen ? "Close" : "Open"}</button>;\n}'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 07 · Step 2',
+          title: 'Predict the outcome',
+          body: [
+            'isOpen starts false. The button is clicked once.'
+          ],
+          code: 'function useToggle(initialValue) {\n  const [value, setValue] = useState(initialValue);\n  const toggle = () => setValue(v => !v);\n  return [value, toggle];\n}\nfunction Modal() {\n  const [isOpen, toggleOpen] = useToggle(false);\n  return <button onClick={toggleOpen}>{isOpen ? "Close" : "Open"}</button>;\n}',
+          options: ['Button now shows "Close"', 'Button still shows "Open"', 'Error', 'Button shows "false"'],
+          answer: 0,
+          explanation: 'Clicking calls <code>toggle()</code>, which flips <code>value</code> from <code>false</code> to <code>true</code> — <code>isOpen</code> becomes <code>true</code>, so the button shows "Close".'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 07 · Step 3',
+          title: 'The "use" naming convention isn\'t just style',
+          body: [
+            'React\'s rules of hooks (like only calling hooks at the top level, never conditionally) are enforced by tooling that looks for the "use" prefix. A function using <code>useState</code> without being named <code>useSomething</code> will confuse both other developers and React\'s linter.'
+          ],
+          code: '// correct:\nfunction useWindowWidth() { /* uses useState, useEffect */ }\n\n// wrong — hides that this uses hooks internally:\nfunction getWindowWidth() { /* ... */ }'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 07 · Step 4',
+          title: 'Which approach fits?',
+          body: [
+            'You have identical useState + useEffect logic for tracking window width in three different components.'
+          ],
+          code: '// Option A: copy-paste the same useState/useEffect into all three components\n// Option B: extract a useWindowWidth() custom hook, call it from all three',
+          options: ['Option B — a custom hook avoids duplicating the same logic', 'Option A — hooks can\'t be shared between components', 'Both are identical in practice', 'Neither works'],
+          answer: 0,
+          explanation: 'A custom hook lets multiple components share the exact same stateful logic without copy-pasting it — that\'s the whole point of extracting one.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 07 · Step 5',
+          title: 'Each component calling a custom hook gets its own independent state',
+          body: [
+            'Even though <code>useToggle</code> is defined once, every component that calls it gets a completely separate value and setter — just like calling <code>useState</code> directly, the state isn\'t shared between components.'
+          ],
+          code: 'function App() {\n  return (\n    <>\n      <Modal />  {/* has its own isOpen */}\n      <Modal />  {/* has a completely separate isOpen */}\n    </>\n  );\n}'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 07 · Step 6',
+          title: 'Complete the function name',
+          body: [
+            'Finish the function name so it follows React\'s convention for a hook that returns a count and an increment function.'
+          ],
+          codeBefore: 'function ',
+          codeAfter: 'Counter(initial) {\n  const [count, setCount] = useState(initial);\n  return [count, () => setCount(count + 1)];\n}',
+          answer: ['use'],
+          hint: 'The prefix React\'s tooling looks for on hook functions.',
+          explanation: 'Prefixing with <code>use</code> (<code>useCounter</code>) signals to React and other developers that this function follows the rules of hooks.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 07 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            'A custom hook is a function that calls other hooks — its name must start with "use".',
+            'Custom hooks let multiple components share the same stateful logic without duplicating code.',
+            'Each component that calls a custom hook gets its own independent state, never shared with other callers.',
+            'The "use" prefix isn\'t just a naming convention — React\'s tooling depends on it to enforce the rules of hooks.'
+          ],
+          next: 'Next up: composition with children — building flexible components without prop drilling.'
+        }
+      ]
+    },
+    {
+      id: 'composition-children',
+      title: 'Composition with children',
+      sub: '7 steps · ~5 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 08 · Step 1',
+          title: 'children is a special prop for whatever\'s nested inside a component',
+          body: [
+            'Anything you put between a component\'s opening and closing tags is automatically passed to it as the <code>children</code> prop — this is how components like Card or Modal can wrap arbitrary content without knowing what it is in advance.'
+          ],
+          code: 'function Card({ children }) {\n  return <div className="card">{children}</div>;\n}\n\n<Card>\n  <h1>Title</h1>\n  <p>Some content</p>\n</Card>\n\n// Card doesn\'t need to know about h1 or p — it just renders whatever it\'s given'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 08 · Step 2',
+          title: 'Predict the output',
+          body: [
+            'What does this render?'
+          ],
+          code: 'function Card({ children }) {\n  return <div className="card">{children}</div>;\n}\n\n<Card>\n  <p>Hello</p>\n</Card>',
+          options: ['<div class="card"><p>Hello</p></div>', '<div class="card"></div> — children is ignored', 'Error', '<p>Hello</p> only, no div'],
+          answer: 0,
+          explanation: 'Whatever is nested inside <code>&lt;Card&gt;...&lt;/Card&gt;</code> becomes the <code>children</code> prop, which Card renders inside its div.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 08 · Step 3',
+          title: 'Composition avoids prop drilling for layout and wrapping',
+          body: [
+            'Instead of passing every possible piece of content as a named prop (title, subtitle, footer, icon...), composition lets you nest exactly the content you need — the wrapping component stays simple and flexible.'
+          ],
+          code: '// rigid — Card has to know about every possible prop:\n<Card title="Hi" footer="Bye" icon={<Icon />} />\n\n// flexible — Card just renders whatever\'s inside:\n<Card>\n  <h1>Hi</h1>\n  <Footer />\n</Card>'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 08 · Step 4',
+          title: 'Which approach fits?',
+          body: [
+            'You\'re building a reusable Panel component that should be able to wrap any content — a form, a chart, plain text.'
+          ],
+          code: '// Option A: <Panel content={<SomeForm />} />\n// Option B: <Panel><SomeForm /></Panel>',
+          options: ['Option B — composition with children is more flexible', 'Option A — a content prop is required', 'Both are identical', 'Neither works for a form'],
+          answer: 0,
+          explanation: 'Composition (nesting content as children) is the idiomatic React way to build a wrapper that can hold anything, without a special-cased prop.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 08 · Step 5',
+          title: 'You can mix children with regular props',
+          body: [
+            'A component isn\'t limited to just children — it can take named props for configuration (like a title or variant) alongside children for the actual content.'
+          ],
+          code: 'function Card({ title, children }) {\n  return (\n    <div className="card">\n      <h2>{title}</h2>\n      {children}\n    </div>\n  );\n}\n\n<Card title="Profile">\n  <p>Bio goes here</p>\n</Card>'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 08 · Step 6',
+          title: 'Complete the signature',
+          body: [
+            'Finish the component so it renders whatever is nested inside it.'
+          ],
+          codeBefore: 'function Card({ ',
+          codeAfter: ' }) {\n  return <div className="card">{children}</div>;\n}',
+          answer: ['children'],
+          hint: 'The special prop containing whatever\'s nested between a component\'s tags.',
+          explanation: 'Destructuring <code>children</code> out of props lets the component render whatever content was nested inside it.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 08 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            '<code>children</code> is a special prop containing whatever is nested between a component\'s opening and closing tags.',
+            'Composition lets wrapper components (like Card or Modal) render arbitrary content without knowing about it in advance.',
+            'Composition is usually more flexible than passing every piece of content as a named prop.',
+            'A component can combine <code>children</code> with regular named props for configuration.'
+          ],
+          next: 'Next up: lifting state up — sharing state between sibling components.'
+        }
+      ]
+    },
+    {
+      id: 'lifting-state-up',
+      title: 'Lifting state up',
+      sub: '7 steps · ~5 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 09 · Step 1',
+          title: 'Two sibling components can\'t share state directly',
+          body: [
+            'If two components need access to the same piece of state, neither can hold it individually — state has to live in their closest common parent, which then passes it down to both as props.'
+          ],
+          code: '// won\'t work — Total can\'t see Cart\'s state:\nfunction Cart() {\n  const [items, setItems] = useState([]);\n  return <div>...</div>;\n}\nfunction Total() {\n  // no access to items here\n}'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 09 · Step 2',
+          title: 'Which approach fits?',
+          body: [
+            'Two sibling components, SearchBox and ResultsList, both need access to the current search text.'
+          ],
+          code: '// Option A: give SearchBox its own useState, and separately give ResultsList its own useState\n// Option B: lift the search state up to their shared parent, pass it down as props',
+          options: ['Option B — lift state to the shared parent', 'Option A — separate state works fine', 'Neither works', 'They should each fetch it independently'],
+          answer: 0,
+          explanation: 'Two separate <code>useState</code> calls would be two different, disconnected values — lifting the single source of truth to the parent lets both children stay in sync.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 09 · Step 3',
+          title: 'The parent owns the state and passes both the value and the setter down',
+          body: [
+            'Once state is lifted, the parent passes the current value to whichever child needs to read it, and passes the setter function (or a handler that calls it) to whichever child needs to update it.'
+          ],
+          code: 'function App() {\n  const [search, setSearch] = useState("");\n  return (\n    <div>\n      <SearchBox search={search} onSearchChange={setSearch} />\n      <ResultsList search={search} />\n    </div>\n  );\n}'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 09 · Step 4',
+          title: 'Predict the outcome',
+          body: [
+            'The user types into SearchBox, which calls onSearchChange.'
+          ],
+          code: 'function App() {\n  const [search, setSearch] = useState("");\n  return (\n    <div>\n      <SearchBox search={search} onSearchChange={setSearch} />\n      <ResultsList search={search} />\n    </div>\n  );\n}',
+          options: ['App re-renders, and ResultsList receives the updated search value', 'Only SearchBox updates; ResultsList is unaffected', 'Nothing happens until the page reloads', 'Error'],
+          answer: 0,
+          explanation: 'Calling <code>setSearch</code> updates App\'s state, which re-renders App and passes the new search value down to both children — including ResultsList.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 09 · Step 5',
+          title: 'This pattern is called "lifting state up"',
+          body: [
+            'It\'s one of the most common patterns in React: start with state as local as possible, and only move ("lift") it up to a shared parent once two or more components actually need to stay in sync on the same value.'
+          ],
+          code: '// rule of thumb: keep state as low as possible,\n// lift it only when a sibling actually needs it too'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 09 · Step 6',
+          title: 'Complete the element',
+          body: [
+            'Finish the line so ResultsList receives the shared search value as a prop.'
+          ],
+          codeBefore: '<ResultsList ',
+          codeAfter: '={search} />',
+          answer: ['search'],
+          hint: 'The prop name matching the state variable being passed down.',
+          explanation: '<code>search={search}</code> passes the parent\'s state value down to ResultsList as a prop.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 09 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            'Two sibling components can\'t share state directly — it has to live in their closest common parent.',
+            'The parent passes the current value down as a prop, and passes the setter (or a handler) to whichever child updates it.',
+            'This pattern is called "lifting state up" — moving state to the lowest common parent that needs it.',
+            'Keep state as local as possible by default, and only lift it when a sibling component actually needs to share it.'
+          ],
+          next: 'Next up: a final checkpoint covering the whole course.'
+        }
+      ]
+    },
+    {
+      id: 'checkpoint-3',
+      title: 'Final Checkpoint: React',
+      sub: 'Checkpoint · 10 questions',
+      isTest: true,
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Checkpoint · Start',
+          title: 'The full-course review',
+          body: [
+            '10 questions — the last three lessons on custom hooks, composition, and lifting state, plus a review of props, state, and effects from earlier in the course.'
+          ]
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 1',
+          title: 'Predict the outcome',
+          body: ['isOpen starts false. The button is clicked once.'],
+          code: 'function useToggle(initialValue) {\n  const [value, setValue] = useState(initialValue);\n  const toggle = () => setValue(v => !v);\n  return [value, toggle];\n}\nfunction Modal() {\n  const [isOpen, toggleOpen] = useToggle(false);\n  return <button onClick={toggleOpen}>{isOpen ? "Close" : "Open"}</button>;\n}',
+          options: ['Button now shows "Close"', 'Button still shows "Open"', 'Error', 'Button shows "false"'],
+          answer: 0,
+          explanation: 'Clicking flips the toggle\'s value from false to true.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint · Question 2',
+          title: 'Complete the function name',
+          body: ['Finish the function name so it follows React\'s convention for a hook.'],
+          codeBefore: 'function ',
+          codeAfter: 'Counter(initial) {\n  const [count, setCount] = useState(initial);\n  return [count, () => setCount(count + 1)];\n}',
+          answer: ['use'],
+          hint: 'The prefix React\'s tooling looks for on hook functions.',
+          explanation: 'Prefixing with <code>use</code> signals this function follows the rules of hooks.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 3',
+          title: 'Predict the output',
+          body: ['What does this render?'],
+          code: 'function Card({ children }) {\n  return <div className="card">{children}</div>;\n}\n\n<Card>\n  <p>Hello</p>\n</Card>',
+          options: ['<div class="card"><p>Hello</p></div>', '<div class="card"></div> — children is ignored', 'Error', '<p>Hello</p> only, no div'],
+          answer: 0,
+          explanation: 'Whatever is nested inside becomes the <code>children</code> prop.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint · Question 4',
+          title: 'Complete the signature',
+          body: ['Finish the component so it renders whatever is nested inside it.'],
+          codeBefore: 'function Card({ ',
+          codeAfter: ' }) {\n  return <div className="card">{children}</div>;\n}',
+          answer: ['children'],
+          hint: 'The special prop containing whatever\'s nested between a component\'s tags.',
+          explanation: 'Destructuring <code>children</code> lets the component render whatever was nested inside it.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 5',
+          title: 'Which approach fits?',
+          body: ['Two sibling components, SearchBox and ResultsList, both need the current search text.'],
+          code: '// Option A: separate useState in each component\n// Option B: lift state to their shared parent',
+          options: ['Option B — lift state to the shared parent', 'Option A — separate state works fine', 'Neither works', 'They should each fetch it independently'],
+          answer: 0,
+          explanation: 'Lifting state to the shared parent keeps both children in sync on the same value.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint · Question 6',
+          title: 'Complete the element',
+          body: ['Finish the line so ResultsList receives the shared search value as a prop.'],
+          codeBefore: '<ResultsList ',
+          codeAfter: '={search} />',
+          answer: ['search'],
+          hint: 'The prop name matching the state variable being passed down.',
+          explanation: '<code>search={search}</code> passes the parent\'s state down as a prop.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 7',
+          title: 'Predict the outcome',
+          body: ['The user types into SearchBox, which calls onSearchChange.'],
+          code: 'function App() {\n  const [search, setSearch] = useState("");\n  return (\n    <div>\n      <SearchBox search={search} onSearchChange={setSearch} />\n      <ResultsList search={search} />\n    </div>\n  );\n}',
+          options: ['App re-renders, and ResultsList receives the updated search value', 'Only SearchBox updates; ResultsList is unaffected', 'Nothing happens until the page reloads', 'Error'],
+          answer: 0,
+          explanation: 'Updating the lifted state re-renders App and passes the new value to both children.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 8',
+          title: 'Review: predict the output',
+          body: ['What does this render?'],
+          code: 'function Greeting({ name }) {\n  return <h1>Hello, {name}!</h1>;\n}\n\n<Greeting name="Ada" />',
+          options: ['<h1>Hello, Ada!</h1>', '<h1>Hello, name!</h1>', 'Error', '<h1>Hello, {name}!</h1>'],
+          answer: 0,
+          explanation: 'Destructured props render directly into the JSX.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 9',
+          title: 'Review: predict the outcome',
+          body: ['Assume this component re-renders 3 times.'],
+          code: 'useEffect(() => {\n  console.log("rendered");\n});',
+          options: ['Logs 3 times', 'Logs once', 'Never logs', 'Error'],
+          answer: 0,
+          explanation: 'With no dependency array, the effect runs after every render.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint · Question 10',
+          title: 'Review: complete the call',
+          body: ['Finish the line so count starts at 0, with setCount to update it.'],
+          codeBefore: 'const [count, setCount] = ',
+          codeAfter: '(0);',
+          answer: ['useState'],
+          hint: 'The hook that creates a piece of state.',
+          explanation: '<code>useState(0)</code> creates state starting at 0, paired with a setter.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Checkpoint · Complete',
+          title: 'Here\'s where you stand',
+          bullets: [
+            'Custom hooks, composition, and lifting state close out the language — components, props, state, and effects now fit into one picture.',
+            'If anything felt shaky, the matching lesson is one tap away in the menu — and you can retake this checkpoint any time.'
+          ],
+          next: 'Next up: the capstone project — bringing it all together.'
+        }
+      ]
+    },
+    {
+      id: 'capstone-notes-app',
+      title: 'Capstone: Build a Notes App',
+      sub: 'Capstone · 9 steps',
+      kind: 'project',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Capstone · Brief',
+          title: 'The goal',
+          body: [
+            'Build a small notes app: a reusable Panel component (composition), a custom hook for managing the notes list, and a controlled input wired up to a rendered list.'
+          ]
+        },
+        {
+          type: 'info',
+          eyebrow: 'Capstone · Step 1',
+          title: 'Start with a composable Panel',
+          body: [
+            'A wrapper component that renders a title plus whatever content is nested inside it.'
+          ],
+          code: 'function Panel({ title, children }) {\n  return (\n    <div className="panel">\n      <h2>{title}</h2>\n      {children}\n    </div>\n  );\n}'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Capstone · Step 2',
+          title: 'Complete the signature',
+          body: [
+            'Finish the signature so Panel can render whatever is nested inside it.'
+          ],
+          codeBefore: 'function Panel({ title, ',
+          codeAfter: ' }) {\n  return (\n    <div className="panel">\n      <h2>{title}</h2>\n      {children}\n    </div>\n  );\n}',
+          answer: ['children'],
+          hint: 'The special prop containing whatever\'s nested between a component\'s tags.',
+          explanation: 'Destructuring <code>children</code> alongside <code>title</code> lets Panel combine configuration with composition.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Capstone · Step 3',
+          title: 'Extract a custom hook for the notes list',
+          body: [
+            'A reusable hook that owns the notes array and an addNote function.'
+          ],
+          code: 'function useNotes() {\n  const [notes, setNotes] = useState([]);\n  function addNote(text) {\n    setNotes([...notes, { id: Date.now(), text }]);\n  }\n  return [notes, addNote];\n}'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Capstone · Step 4',
+          title: 'Predict the outcome',
+          body: [
+            'notes starts empty. addNote("Buy milk") is called once.'
+          ],
+          code: 'function useNotes() {\n  const [notes, setNotes] = useState([]);\n  function addNote(text) {\n    setNotes([...notes, { id: Date.now(), text }]);\n  }\n  return [notes, addNote];\n}\n\nconst [notes, addNote] = useNotes();\naddNote("Buy milk");\n// after re-render, notes has length:',
+          options: ['1', '0', '2', 'Error'],
+          answer: 0,
+          explanation: '<code>addNote</code> spreads the existing (empty) notes array and adds one new note object, so notes ends up with length 1.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Capstone · Step 5',
+          title: 'Wire up the input and the note list inside Panel',
+          body: [
+            'A controlled input feeds addNote, and the notes are rendered as a list, all wrapped in Panel.'
+          ],
+          code: 'function NotesApp() {\n  const [notes, addNote] = useNotes();\n  const [text, setText] = useState("");\n\n  function handleAdd() {\n    addNote(text);\n    setText("");\n  }\n\n  return (\n    <Panel title="Notes">\n      <input value={text} onChange={(e) => setText(e.target.value)} />\n      <button onClick={handleAdd}>Add</button>\n      <ul>\n        {notes.map(note => <li key={note.id}>{note.text}</li>)}\n      </ul>\n    </Panel>\n  );\n}'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Capstone · Step 6',
+          title: 'Complete the element',
+          body: [
+            'Finish the line so each note is rendered with a stable key.'
+          ],
+          codeBefore: '{notes.map(note => <li ',
+          codeAfter: '={note.id}>{note.text}</li>)}',
+          answer: ['key'],
+          hint: 'The special prop React uses to track list items.',
+          explanation: '<code>key={note.id}</code> gives each rendered note a stable identifier.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Capstone · Step 7',
+          title: 'Predict the outcome',
+          body: [
+            'text is "Buy milk" when Add is clicked.'
+          ],
+          code: 'function handleAdd() {\n  addNote(text);\n  setText("");\n}\n\n// user clicks Add',
+          options: ['A new note "Buy milk" is added, and the input clears', 'The note is added but the input keeps "Buy milk"', 'Nothing happens', 'Error'],
+          answer: 0,
+          explanation: '<code>addNote(text)</code> adds the note, then <code>setText("")</code> immediately clears the controlled input back to empty.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Capstone · Complete',
+          title: 'You built a notes app',
+          code: 'function Panel({ title, children }) {\n  return (\n    <div className="panel">\n      <h2>{title}</h2>\n      {children}\n    </div>\n  );\n}\n\nfunction useNotes() {\n  const [notes, setNotes] = useState([]);\n  function addNote(text) {\n    setNotes([...notes, { id: Date.now(), text }]);\n  }\n  return [notes, addNote];\n}\n\nfunction NotesApp() {\n  const [notes, addNote] = useNotes();\n  const [text, setText] = useState("");\n\n  function handleAdd() {\n    addNote(text);\n    setText("");\n  }\n\n  return (\n    <Panel title="Notes">\n      <input value={text} onChange={(e) => setText(e.target.value)} />\n      <button onClick={handleAdd}>Add</button>\n      <ul>\n        {notes.map(note => <li key={note.id}>{note.text}</li>)}\n      </ul>\n    </Panel>\n  );\n}',
+          bullets: [
+            'Panel used composition (children) to wrap the notes UI without needing to know its contents in advance.',
+            'useNotes extracted the notes state and addNote logic into a reusable custom hook.',
+            'A controlled input, list rendering with map and key, and a click handler all came together in NotesApp.',
+            'This shape — composition, a custom hook, a controlled input, and a rendered list — mirrors most real small React features.'
+          ],
+          next: 'That\'s the full React course — components, props, state, effects, hooks, and composition. Nicely done.'
+        }
+      ]
+    }
   ];
 
   var state = load();
