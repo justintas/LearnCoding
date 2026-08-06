@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>React — Practice Terminal</title>
+<title>Executive Presence — Practice Terminal</title>
 <style>
   :root {
     --bg: #F3F7F5;
@@ -376,7 +376,7 @@
     <div class="chrome">
       <div class="chrome-left">
         <a class="hub-link" href="../">‹ hub</a>
-        <div class="chrome-path" id="chromePath">~/<b>react</b></div>
+        <div class="chrome-path" id="chromePath">~/<b>executive-presence</b></div>
       </div>
       <div class="streak" id="streakBox">streak · <b id="streakNum">0</b>d</div>
     </div>
@@ -387,442 +387,257 @@
 
 <script>
 (function(){
-  var STORAGE_KEY = 'react_progress_v1';
+  var STORAGE_KEY = 'execpresence_progress_v1';
 
   var lessons = [
     {
-      id: 'jsx-components',
-      title: 'JSX & components',
-      sub: '7 steps · ~5 min',
+      id: 'labeling',
+      title: 'Label the emotion in the room',
+      sub: '8 steps · ~6 min',
       steps: [
         {
           type: 'info',
-          eyebrow: 'Lesson 01 · Step 1',
-          title: 'A component is a function that returns markup',
+          eyebrow: 'Lesson 01 · Core principle',
+          title: 'Name what they feel — out loud',
           body: [
-            'In React, UI is built from components — JavaScript functions that return JSX, a syntax that looks like HTML but is actually JavaScript.'
-          ],
-          code: 'function Greeting() {\n  return <h1>Hello, world!</h1>;\n}\n\n// renders:\n<h1>Hello, world!</h1>'
-        },
-        {
-          type: 'predict',
-          eyebrow: 'Lesson 01 · Step 2',
-          title: 'Predict the output',
-          body: [
-            'What does calling <code>&lt;Welcome /&gt;</code> render?'
-          ],
-          code: 'function Welcome() {\n  return <p>Welcome to React</p>;\n}',
-          options: ['<p>Welcome to React</p>', 'A function definition, nothing visible', 'Error', '"Welcome to React"'],
-          answer: 0,
-          explanation: '<code>Welcome</code> is a component — calling it as <code>&lt;Welcome /&gt;</code> renders the <code>&lt;p&gt;</code> element it returns.'
+            'Before you can lead a tense conversation, you have to prove you\'re not afraid of what\'s in the room. The fastest way to do that is to name the emotion you\'re sensing, out loud, as a plain observation.',
+            'This is called a <strong>label</strong>. You\'re not agreeing. You\'re not comforting. You\'re showing them you can see clearly even when the temperature rises — and that alone changes how they treat you for the rest of the conversation.'
+          ]
         },
         {
           type: 'info',
-          eyebrow: 'Lesson 01 · Step 3',
-          title: 'JSX embeds JavaScript expressions with curly braces',
+          eyebrow: 'Lesson 01 · Why it works',
+          title: 'Naming an emotion drains its charge',
           body: [
-            'Anything inside <code>{}</code> in JSX is evaluated as a normal JavaScript expression, then rendered as its result.'
-          ],
-          code: 'function Greeting() {\n  const name = "Ada";\n  return <h1>Hello, {name}!</h1>;\n}\n\n// renders:\n<h1>Hello, Ada!</h1>'
-        },
-        {
-          type: 'predict',
-          eyebrow: 'Lesson 01 · Step 4',
-          title: 'Predict the output',
-          code: 'function Total() {\n  const price = 20;\n  const qty = 3;\n  return <p>Total: {price * qty}</p>;\n}',
-          options: ['<p>Total: 60</p>', '<p>Total: {price * qty}</p>', 'Error', '<p>Total: price * qty</p>'],
-          answer: 0,
-          explanation: 'The expression inside <code>{}</code> is evaluated first — <code>price * qty</code> is <code>60</code> — then rendered as text.'
+            'Neuroscience calls this <strong>affect labeling</strong>: putting a feeling into words measurably lowers activity in the amygdala, the brain\'s alarm system. It calms the person feeling it — and it calms you, because doing it well forces you to stay observant instead of reactive.',
+            'There\'s a second effect. Most people escalate a feeling because they don\'t feel seen. The moment someone names it accurately, the pressure to keep proving it drops. You\'ve just answered the unspoken question in the room — "does anyone notice what\'s happening to me?" — before they had to ask it out loud.'
+          ]
         },
         {
           type: 'info',
-          eyebrow: 'Lesson 01 · Step 5',
-          title: 'A component must return a single root element',
+          eyebrow: 'Lesson 01 · Say this',
+          title: 'The exact wording that makes it land',
           body: [
-            'JSX can\'t return two sibling elements directly — wrap them in a single parent element, or an empty <code>&lt;&gt;...&lt;/&gt;</code> fragment if you don\'t want an extra DOM element.'
+            'Start with <strong>"It seems..."</strong>, <strong>"It sounds like..."</strong>, or <strong>"It looks like..."</strong> — never "I think" or "I feel." Those phrases keep the spotlight on them, not on your read of the situation, which is what makes the label land instead of sounding like a lecture.'
           ],
-          code: '// invalid:\nfunction Card() {\n  return (\n    <h1>Title</h1>\n    <p>Body</p>\n  );\n}\n\n// valid:\nfunction Card() {\n  return (\n    <div>\n      <h1>Title</h1>\n      <p>Body</p>\n    </div>\n  );\n}'
+          code: '"It seems like you\'re frustrated with how this timeline came together."\n\n"It sounds like there\'s a real concern about resourcing here."\n\n"It looks like this decision is landing pretty hard on the team."\n\n"It seems like you don\'t feel your team\'s work is being valued."'
         },
         {
-          type: 'fill',
-          eyebrow: 'Lesson 01 · Step 6',
-          title: 'Complete the expression',
+          type: 'info',
+          eyebrow: 'Lesson 01 · Avoid this',
+          title: 'The label-then-"but" trap',
           body: [
-            'Finish the line so the component renders the current year using JavaScript, not a hardcoded number.'
+            'The fastest way to ruin a label is to attach a "but" to it: <em>"I hear that you\'re frustrated, but the deadline isn\'t moving."</em> The "but" cancels everything before it — the other person only hears the sentence after it, and now your label reads as a manipulation tactic, not an observation.',
+            'Say the label. Stop talking. Let it sit there with nothing attached. If you need to make your own point, do it later, in a separate breath — never chained to the label with "but," "however," or "and yet."'
+          ]
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 01 · Practice drill',
+          title: 'Build the muscle in low-stakes reps',
+          body: [
+            'Don\'t debut this in your highest-pressure meeting. In your next three ordinary conversations today — a Slack thread, a coffee chat, a call with a vendor — find one moment to say <strong>"It seems like..."</strong> out loud, about something small. A little annoyance, a little excitement, anything real.',
+            'You\'re not trying to solve anything in this drill. You\'re training your ear to notice emotion in real time, and your mouth to say it plainly, without hedging or over-explaining.'
+          ]
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 01 · Roleplay',
+          title: 'The stakeholder pushback',
+          body: [
+            'A stakeholder says, sharply, in a meeting: <em>"This roadmap doesn\'t make sense — you\'re deprioritizing the thing my team cares about most."</em>',
+            'Your instinct is to defend the roadmap logic immediately. Instead, pause, and label what you\'re sensing before you explain anything. Read it out loud as if they were in front of you right now.'
           ],
-          codeBefore: 'function Footer() {\n  return <p>© ',
-          codeAfter: 'new Date().getFullYear()}</p>;\n}',
-          answer: ['{'],
-          hint: 'The character that starts a JavaScript expression inside JSX.',
-          explanation: '<code>{new Date().getFullYear()}</code> runs the JavaScript expression and renders its result.'
+          code: 'Try saying:\n\n"It sounds like this feels like your team\'s priorities got overlooked."\n\n— then stop talking. Let them respond before you explain the roadmap.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 01 · Feedback rubric',
+          title: 'Grade yourself after the real conversation',
+          body: [
+            'Next time you use a label for real, check yourself against this:'
+          ],
+          code: '☐ Did I label instead of defending or explaining first?\n☐ Did I avoid attaching a "but" right after the label?\n☐ Did my tone stay flat and calm, not scripted or robotic?\n☐ Did their energy visibly drop after I said it?\n☐ Did I let a real silence follow, instead of filling it?'
         },
         {
           type: 'recap',
           eyebrow: 'Lesson 01 · Complete',
           title: 'What you\'ve got',
           bullets: [
-            'A component is a JavaScript function that returns JSX — markup that looks like HTML.',
-            'Curly braces <code>{expression}</code> embed any JavaScript expression directly inside JSX.',
-            'A component must return a single root element — wrap multiple elements in a <code>&lt;div&gt;</code> or a fragment.',
-            'Calling a component like <code>&lt;Welcome /&gt;</code> renders whatever JSX it returns.'
+            'A label is a plain, out-loud observation of someone\'s emotion — not agreement, not sympathy.',
+            '"It seems / It sounds / It looks like..." keeps the focus on them, which is what makes it land.',
+            'Never attach "but" to a label — it cancels the effect instantly.',
+            'Naming an emotion measurably calms the nervous system — theirs and yours.'
           ],
-          next: 'Next up: props — passing data into a component.'
+          next: 'Next up: the power of the pause — why silence is where negotiating power actually lives.'
         }
       ]
     },
     {
-      id: 'props',
-      title: 'Props',
-      sub: '7 steps · ~5 min',
+      id: 'power-of-pause',
+      title: 'The power of the pause',
+      sub: '8 steps · ~6 min',
       steps: [
         {
           type: 'info',
-          eyebrow: 'Lesson 02 · Step 1',
-          title: 'Props pass data from a parent into a component',
+          eyebrow: 'Lesson 02 · Core principle',
+          title: 'Silence is not empty — it\'s where power lives',
           body: [
-            'Props are just the arguments a component function receives, written as attributes when you use the component.'
-          ],
-          code: 'function Greeting(props) {\n  return <h1>Hello, {props.name}!</h1>;\n}\n\n<Greeting name="Ada" />\n\n// renders:\n<h1>Hello, Ada!</h1>'
-        },
-        {
-          type: 'predict',
-          eyebrow: 'Lesson 02 · Step 2',
-          title: 'Predict the output',
-          code: 'function Price(props) {\n  return <p>${props.amount}</p>;\n}\n\n<Price amount={25} />',
-          options: ['<p>$25</p>', '<p>$props.amount</p>', 'Error', '<p>${props.amount}</p>'],
-          answer: 0,
-          explanation: '<code>props.amount</code> reads the <code>amount</code> prop passed in, <code>25</code>, and renders it inside the string.'
+            'After you say something important — an ask, a boundary, a hard truth — the silence that follows isn\'t a gap you need to fill. It\'s the moment the other person actually has to sit with what you said. Whoever breaks that silence first is usually the one who gives something away.',
+            'This isn\'t a trick. It\'s a discipline: staying still and quiet while every instinct in you wants to soften, explain, or apologize your way out of the discomfort.'
+          ]
         },
         {
           type: 'info',
-          eyebrow: 'Lesson 02 · Step 3',
-          title: 'Destructuring makes props easier to read',
+          eyebrow: 'Lesson 02 · Why it works',
+          title: 'Discomfort with silence is a reflex, not a choice',
           body: [
-            'Instead of <code>props.name</code> everywhere, destructure the props object right in the function signature.'
-          ],
-          code: 'function Greeting({ name }) {\n  return <h1>Hello, {name}!</h1>;\n}\n\n<Greeting name="Ada" />\n\n// renders:\n<h1>Hello, Ada!</h1>'
-        },
-        {
-          type: 'predict',
-          eyebrow: 'Lesson 02 · Step 4',
-          title: 'Predict the output',
-          code: 'function Badge({ label, count }) {\n  return <span>{label}: {count}</span>;\n}\n\n<Badge label="Score" count={42} />',
-          options: ['<span>Score: 42</span>', '<span>label: count</span>', 'Error', '<span>{label}: {count}</span>'],
-          answer: 0,
-          explanation: 'Destructuring pulls <code>label</code> and <code>count</code> straight out of props, and both get embedded in the JSX.'
+            'Silence triggers the same low-grade anxiety as any unresolved social signal — your nervous system reads it as a threat and pushes you to act, usually by talking. Most people cave, over-explain, or lower their own ask purely to relieve that discomfort, not because the other side actually pushed back.',
+            'The Stoics framed this exactly: <strong>you control your response, not the external moment.</strong> The pause is where you exercise that control on purpose, instead of letting a reflex spend it for you.'
+          ]
         },
         {
           type: 'info',
-          eyebrow: 'Lesson 02 · Step 5',
-          title: 'Props are read-only',
+          eyebrow: 'Lesson 02 · Say this',
+          title: 'What to do instead of talking',
           body: [
-            'A component should never modify its own props — treat them as fixed input from the parent, the same way a function shouldn\'t reassign its own parameters.'
+            'The technique isn\'t a phrase — it\'s a countdown. State your position plainly, then silently count two full seconds before you allow yourself to speak again, no matter what expression crosses their face.'
           ],
-          code: '// wrong:\nfunction Greeting({ name }) {\n  name = "Changed"; // don\'t do this\n  return <h1>Hello, {name}!</h1>;\n}'
+          code: 'You: "I need two more weeks for this deliverable."\n\n[count: one-one-thousand, two-one-thousand]\n\n— say nothing else. Let them respond first.'
         },
         {
-          type: 'fill',
-          eyebrow: 'Lesson 02 · Step 6',
-          title: 'Complete the signature',
+          type: 'info',
+          eyebrow: 'Lesson 02 · Avoid this',
+          title: 'Rescuing them from the silence',
           body: [
-            'Finish the function signature so it destructures <code>title</code> straight out of props.'
+            'The most common failure is adding a softener the instant you finish your sentence — <em>"...if that\'s okay,"</em> <em>"...but I could try to make it work,"</em> or just nervous laughter. Every one of these hands back whatever ground you just gained, before the other person even had to respond.',
+            'If the silence feels unbearable, that\'s the sign it\'s working — not a sign you did something wrong.'
+          ]
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 02 · Practice drill',
+          title: 'Count before you speak, on purpose',
+          body: [
+            'Pick one request you\'re going to make today — big or small. Say your sentence, then silently count "one-one-thousand, two-one-thousand, three-one-thousand" in your head before you say anything else, even if the other person is already talking.',
+            'Do this once today in something low-stakes. The goal is to notice how long two or three seconds actually feels, so it stops feeling unbearable in a real negotiation.'
+          ]
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 02 · Roleplay',
+          title: 'The deadline conversation',
+          body: [
+            'You need to tell your manager the deliverable is going to take two more weeks than planned. Practice saying it plainly, then holding the silence — even if you imagine them looking unhappy or asking "why."'
           ],
-          codeBefore: 'function Header(',
-          codeAfter: ') {\n  return <h1>{title}</h1>;\n}',
-          answer: ['{ title }'],
-          hint: 'Destructuring syntax for a single prop called title.',
-          explanation: '<code>{ title }</code> destructures the <code>title</code> prop directly out of the props object.'
+          code: 'You: "I need two more weeks for this deliverable."\n\n[silence — do not add a reason yet]\n\nIf they ask "why," THEN explain — briefly, without apologizing for needing the time.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 02 · Feedback rubric',
+          title: 'Grade yourself after the real conversation',
+          body: [
+            'Check yourself against this after you try it for real:'
+          ],
+          code: '☐ Did I state my position in one clean sentence, without hedging?\n☐ Did I stay silent for at least 2-3 seconds afterward?\n☐ Did I resist adding "if that\'s okay" or over-explaining?\n☐ Did my body stay still — no fidgeting, no nervous laugh?\n☐ Who spoke next — me, or them?'
         },
         {
           type: 'recap',
           eyebrow: 'Lesson 02 · Complete',
           title: 'What you\'ve got',
           bullets: [
-            'Props are the arguments a component function receives, passed in as JSX attributes.',
-            '<code>{ name }</code> in a function signature destructures a prop directly, avoiding <code>props.name</code> everywhere.',
-            'Props are read-only — a component should never reassign the props it receives.',
-            'Passing different props to the same component produces different rendered output.'
+            'The silence right after you speak is where negotiating power actually lives — don\'t rescue the other person from it.',
+            'Discomfort with silence is a nervous-system reflex, not a rational signal that you did something wrong.',
+            'Count two to three seconds in your head before speaking again, every time, until it stops feeling unbearable.',
+            'If they speak first, you\'ve kept your position intact. If you speak first, you\'ve usually just given something back.'
           ],
-          next: 'Next up: state — giving a component memory with useState.'
+          next: 'Next up: separating fact from story — how to stop reacting to the version of events you invented.'
         }
       ]
     },
     {
-      id: 'state',
-      title: 'State with useState',
-      sub: '7 steps · ~5 min',
+      id: 'facts-vs-story',
+      title: 'Facts vs. story',
+      sub: '8 steps · ~6 min',
       steps: [
         {
           type: 'info',
-          eyebrow: 'Lesson 03 · Step 1',
-          title: 'useState gives a component memory',
+          eyebrow: 'Lesson 03 · Core principle',
+          title: 'You\'re not reacting to what happened — you\'re reacting to your story about it',
           body: [
-            'Unlike props, state is data a component owns and can change over time. <code>useState(initialValue)</code> returns the current value and a function to update it.'
-          ],
-          code: 'function Counter() {\n  const [count, setCount] = useState(0);\n  return <p>Count: {count}</p>;\n}\n\n// initial render:\n<p>Count: 0</p>'
-        },
-        {
-          type: 'predict',
-          eyebrow: 'Lesson 03 · Step 2',
-          title: 'Predict the output',
-          code: 'function Counter() {\n  const [count, setCount] = useState(5);\n  return <p>Count: {count}</p>;\n}',
-          options: ['<p>Count: 5</p>', '<p>Count: 0</p>', 'Error', '<p>Count: useState(5)</p>'],
-          answer: 0,
-          explanation: '<code>useState(5)</code> starts <code>count</code> at <code>5</code>, so the first render shows <code>Count: 5</code>.'
+            'In almost every tense moment, the raw facts are neutral: an email wasn\'t sent, a meeting didn\'t include you, a deadline moved. What actually produces your anger or anxiety is the <strong>story</strong> you build on top of those facts — an interpretation about intent, competence, or respect that you invented, often in seconds.',
+            'Separating the two — fact, then story — is how you get your composure back before you speak, and how you enter the conversation curious instead of already at war.'
+          ]
         },
         {
           type: 'info',
-          eyebrow: 'Lesson 03 · Step 3',
-          title: 'Calling the setter re-renders with the new value',
+          eyebrow: 'Lesson 03 · Why it works',
+          title: 'Emotion follows the interpretation, not the event',
           body: [
-            '<code>setCount(newValue)</code> updates the state and tells React to re-render the component using that new value.'
-          ],
-          code: 'function Counter() {\n  const [count, setCount] = useState(0);\n  return (\n    <div>\n      <p>Count: {count}</p>\n      <button onClick={() => setCount(count + 1)}>+1</button>\n    </div>\n  );\n}\n\n// after one click:\n<p>Count: 1</p>'
-        },
-        {
-          type: 'predict',
-          eyebrow: 'Lesson 03 · Step 4',
-          title: 'Predict the outcome',
-          code: 'function Counter() {\n  const [count, setCount] = useState(0);\n  return (\n    <div>\n      <p>Count: {count}</p>\n      <button onClick={() => setCount(count + 1)}>+1</button>\n    </div>\n  );\n}\n\n// user clicks the button three times',
-          options: ['<p>Count: 3</p>', '<p>Count: 0</p>', '<p>Count: 1</p>', 'Error'],
-          answer: 0,
-          explanation: 'Each click calls <code>setCount(count + 1)</code>, and React re-renders — after three clicks, <code>count</code> is <code>3</code>.'
+            'Your body doesn\'t react to "I wasn\'t cc\'d on an email." It reacts to "he\'s trying to cut me out" — the story. That story is what spikes your heart rate, not the missing email itself. This is the same mechanism cognitive-behavioral approaches are built on: change the interpretation, and the physiological reaction changes with it.',
+            'There\'s a second benefit. When you open a conversation with your <em>story</em> stated as if it were fact — "you excluded me on purpose" — the other person has to defend their intent before anything else can happen. Opening with the neutral fact instead keeps the door open for an actual explanation.'
+          ]
         },
         {
           type: 'info',
-          eyebrow: 'Lesson 03 · Step 5',
-          title: 'Each component instance keeps its own state',
+          eyebrow: 'Lesson 03 · Say this',
+          title: 'Fact first, curiosity second',
           body: [
-            'If you render the same component twice, each copy gets its own <code>useState</code> — updating one never affects the other, the same way class instances have independent properties.'
+            'Before you speak, separate the two silently. Then open the real conversation with the fact, followed by a genuine question — not an accusation dressed as a question.'
           ],
-          code: '<Counter />\n<Counter />\n\n// clicking the first Counter\'s button only changes that one\'s count'
+          code: 'Silently, before speaking:\nFact: "I wasn\'t cc\'d on the thread about the launch date."\nStory: "He\'s trying to sideline me."\n\nOut loud, to them:\n"I noticed I wasn\'t on the thread about the launch date — can you help me understand what happened?"'
         },
         {
-          type: 'fill',
-          eyebrow: 'Lesson 03 · Step 6',
-          title: 'Complete the call',
+          type: 'info',
+          eyebrow: 'Lesson 03 · Avoid this',
+          title: 'Leading with the accusation',
           body: [
-            'Finish the line so <code>isOpen</code> starts as <code>false</code>, with <code>setIsOpen</code> to update it.'
+            'The mistake is opening with the story as if it\'s established fact — <em>"You excluded me on purpose"</em> or <em>"Why would you do that to me?"</em> Both immediately put the other person on the defensive, and the conversation becomes about denying intent instead of solving the actual problem.',
+            '"Help me understand" invites an explanation. "Why would you" invites a defense. They sound similar; they produce completely different conversations.'
+          ]
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 03 · Practice drill',
+          title: 'Two columns, once today',
+          body: [
+            'The next time you feel a flash of irritation or anxiety about something someone did — even something small — pause and mentally write two columns: <strong>Fact</strong> (what actually, observably happened) and <strong>Story</strong> (the interpretation you\'re adding on top). Do this once today, before you react to anything.',
+            'You\'ll often find the fact alone doesn\'t justify the intensity of what you\'re feeling — the story does. That gap is useful information.'
+          ]
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 03 · Roleplay',
+          title: 'The missed thread',
+          body: [
+            'A colleague made a decision affecting your team without looping you into the email thread. Practice separating fact from story, then opening the real conversation from curiosity.'
           ],
-          codeBefore: 'const [isOpen, setIsOpen] = ',
-          codeAfter: '(false);',
-          answer: ['useState'],
-          hint: 'The hook that creates a piece of state.',
-          explanation: '<code>useState(false)</code> creates a piece of state starting at <code>false</code>, paired with a setter function.'
+          code: 'Fact: "I wasn\'t included on the thread where this was decided."\nStory: "They don\'t think my input matters."\n\nOpening line:\n"I noticed I wasn\'t on the thread for this decision — can you walk me through how it came together?"'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 03 · Feedback rubric',
+          title: 'Grade yourself after the real conversation',
+          body: [
+            'Check yourself against this after you try it for real:'
+          ],
+          code: '☐ Did I separate fact from story before I said anything?\n☐ Did my opening line state the fact neutrally, with no loaded language?\n☐ Did I ask a genuine question instead of making an accusation?\n☐ Did the other person respond with explanation rather than defensiveness?\n☐ Was my story actually true, once I heard their answer?'
         },
         {
           type: 'recap',
           eyebrow: 'Lesson 03 · Complete',
           title: 'What you\'ve got',
           bullets: [
-            '<code>useState(initialValue)</code> returns <code>[currentValue, setterFunction]</code> — a piece of data the component owns.',
-            'Calling the setter updates the state and triggers a re-render with the new value.',
-            'State is different from props: props come from the parent, state is owned and changed by the component itself.',
-            'Each rendered instance of a component keeps its own independent state.'
+            'Your reaction almost always comes from the story you built on top of the facts, not the facts themselves.',
+            'Separate Fact and Story silently before you speak — the gap between them is useful information.',
+            'Open real conversations with the neutral fact, then a genuine question — never with the story stated as fact.',
+            '"Help me understand" invites explanation; "why would you" invites defense.'
           ],
-          next: 'Next up: a checkpoint test on JSX, props, and state.'
+          next: 'That\'s Module 1 — labeling emotion, using silence, and separating fact from story. More modules on holding ground under pressure, structuring hard asks, and negotiating from strength are on the way.'
         }
       ]
     },
-    {
-      id: 'checkpoint-1',
-      title: 'Checkpoint: JSX, Props & State',
-      sub: 'Checkpoint · 8 questions',
-      isTest: true,
-      steps: [
-        {
-          type: 'info',
-          eyebrow: 'Checkpoint · Start',
-          title: 'Time to check what stuck',
-          body: [
-            '8 quick questions pulling from JSX, components, props, and useState.'
-          ]
-        },
-        {
-          type: 'predict',
-          eyebrow: 'Checkpoint · Question 1',
-          title: 'Predict the output',
-          body: ['What does <code>&lt;Welcome /&gt;</code> render?'],
-          code: 'function Welcome() {\n  return <p>Hi there</p>;\n}',
-          options: ['<p>Hi there</p>', 'Nothing visible', 'Error', '"Hi there"'],
-          answer: 0,
-          explanation: 'Calling <code>&lt;Welcome /&gt;</code> renders the <code>&lt;p&gt;</code> element the component returns.'
-        },
-        {
-          type: 'fill',
-          eyebrow: 'Checkpoint · Question 2',
-          title: 'Complete the expression',
-          body: ['Finish the line so <code>price * qty</code> is evaluated as JavaScript, not printed literally.'],
-          codeBefore: 'function Total() {\n  const price = 10;\n  const qty = 4;\n  return <p>Total: ',
-          codeAfter: 'price * qty}</p>;\n}',
-          answer: ['{'],
-          hint: 'Starts a JavaScript expression inside JSX.',
-          explanation: '<code>{price * qty}</code> evaluates the expression and renders the result.'
-        },
-        {
-          type: 'predict',
-          eyebrow: 'Checkpoint · Question 3',
-          title: 'Predict the output',
-          code: 'function Price(props) {\n  return <p>${props.amount}</p>;\n}\n\n<Price amount={25} />',
-          options: ['<p>$25</p>', '<p>$props.amount</p>', 'Error', 'undefined'],
-          answer: 0,
-          explanation: '<code>props.amount</code> reads the value passed in, <code>25</code>.'
-        },
-        {
-          type: 'fill',
-          eyebrow: 'Checkpoint · Question 4',
-          title: 'Complete the signature',
-          body: ['Finish the function signature so it destructures <code>title</code> straight out of props.'],
-          codeBefore: 'function Header(',
-          codeAfter: ') {\n  return <h1>{title}</h1>;\n}',
-          answer: ['{ title }'],
-          hint: 'Destructuring syntax for a single prop called title.',
-          explanation: '<code>{ title }</code> destructures the <code>title</code> prop directly.'
-        },
-        {
-          type: 'predict',
-          eyebrow: 'Checkpoint · Question 5',
-          title: 'Predict the output',
-          code: 'function Counter() {\n  const [count, setCount] = useState(5);\n  return <p>Count: {count}</p>;\n}',
-          options: ['<p>Count: 5</p>', '<p>Count: 0</p>', 'Error', '<p>Count: useState(5)</p>'],
-          answer: 0,
-          explanation: '<code>useState(5)</code> starts <code>count</code> at <code>5</code>.'
-        },
-        {
-          type: 'fill',
-          eyebrow: 'Checkpoint · Question 6',
-          title: 'Complete the call',
-          body: ['Finish the line so <code>isOpen</code> starts as <code>false</code>.'],
-          codeBefore: 'const [isOpen, setIsOpen] = ',
-          codeAfter: '(false);',
-          answer: ['useState'],
-          hint: 'The hook that creates a piece of state.',
-          explanation: '<code>useState(false)</code> creates the state and its setter.'
-        },
-        {
-          type: 'predict',
-          eyebrow: 'Checkpoint · Question 7',
-          title: 'Predict the outcome',
-          code: 'function Counter() {\n  const [count, setCount] = useState(0);\n  return (\n    <div>\n      <p>Count: {count}</p>\n      <button onClick={() => setCount(count + 1)}>+1</button>\n    </div>\n  );\n}\n\n// user clicks the button three times',
-          options: ['<p>Count: 3</p>', '<p>Count: 0</p>', '<p>Count: 1</p>', 'Error'],
-          answer: 0,
-          explanation: 'Three clicks each call <code>setCount(count + 1)</code>, ending at <code>3</code>.'
-        },
-        {
-          type: 'fill',
-          eyebrow: 'Checkpoint · Question 8',
-          title: 'Complete the wrapper',
-          body: ['Finish the JSX so both elements are wrapped in a single parent, as JSX requires.'],
-          codeBefore: 'function Card() {\n  return (\n    ',
-          codeAfter: '\n      <h1>Title</h1>\n      <p>Body</p>\n    </div>\n  );\n}',
-          answer: ['<div>'],
-          hint: 'The opening tag of a wrapping element.',
-          explanation: '<code>&lt;div&gt;</code> wraps both children in a single root element, which JSX requires.'
-        },
-        {
-          type: 'recap',
-          eyebrow: 'Checkpoint · Complete',
-          title: 'Here\'s where you stand',
-          bullets: [
-            'JSX, components, props, and useState — the foundation for everything else in this course.',
-            'If anything felt shaky, the matching lesson is one tap away in the menu — and you can retake this checkpoint any time.'
-          ],
-          next: 'Next up: a project — building a profile card component.'
-        }
-      ]
-    },
-    {
-      id: 'project-profilecard',
-      title: 'Project: Build a Profile Card',
-      sub: 'Project · 8 steps',
-      kind: 'project',
-      steps: [
-        {
-          type: 'info',
-          eyebrow: 'Project · Brief',
-          title: 'The goal',
-          body: [
-            'Build a <code>ProfileCard</code> component that receives data as props and lets the user toggle a "favorited" state — combining components, props, and useState.'
-          ]
-        },
-        {
-          type: 'info',
-          eyebrow: 'Project · Step 1',
-          title: 'Start with props',
-          body: [
-            'A component that renders whatever name and role it\'s given.'
-          ],
-          code: 'function ProfileCard({ name, role }) {\n  return (\n    <div>\n      <h2>{name}</h2>\n      <p>{role}</p>\n    </div>\n  );\n}\n\n<ProfileCard name="Nova" role="Designer" />\n\n// renders:\n<div>\n  <h2>Nova</h2>\n  <p>Designer</p>\n</div>'
-        },
-        {
-          type: 'fill',
-          eyebrow: 'Project · Step 2',
-          title: 'Complete the signature',
-          body: [
-            'Finish the signature so <code>name</code> and <code>role</code> are destructured out of props.'
-          ],
-          codeBefore: 'function ProfileCard(',
-          codeAfter: ') {\n  return (\n    <div>\n      <h2>{name}</h2>\n      <p>{role}</p>\n    </div>\n  );\n}',
-          answer: ['{ name, role }'],
-          hint: 'Destructuring syntax for two props at once.',
-          explanation: '<code>{ name, role }</code> destructures both props directly out of the props object.'
-        },
-        {
-          type: 'predict',
-          eyebrow: 'Project · Step 3',
-          title: 'Predict the output',
-          code: '<ProfileCard name="Sam" role="Engineer" />',
-          options: ['<h2>Sam</h2><p>Engineer</p>', '<h2>name</h2><p>role</p>', 'Error', '<h2>{name}</h2><p>{role}</p>'],
-          answer: 0,
-          explanation: 'The same component renders different output depending on the props it\'s given — here, <code>"Sam"</code> and <code>"Engineer"</code>.'
-        },
-        {
-          type: 'info',
-          eyebrow: 'Project · Step 4',
-          title: 'Add state for the favorite toggle',
-          body: [
-            'A boolean piece of state tracks whether the card is favorited, shown with a ternary.'
-          ],
-          code: 'function ProfileCard({ name, role }) {\n  const [favorited, setFavorited] = useState(false);\n  return (\n    <div>\n      <h2>{name}</h2>\n      <p>{role}</p>\n      <button onClick={() => setFavorited(!favorited)}>\n        {favorited ? "★ Favorited" : "☆ Favorite"}\n      </button>\n    </div>\n  );\n}'
-        },
-        {
-          type: 'fill',
-          eyebrow: 'Project · Step 5',
-          title: 'Complete the toggle',
-          body: [
-            'Finish the click handler so <code>favorited</code> flips to its opposite value.'
-          ],
-          codeBefore: '<button onClick={() => setFavorited(',
-          codeAfter: ')}>',
-          answer: ['!favorited'],
-          hint: 'The logical NOT of the current value.',
-          explanation: '<code>setFavorited(!favorited)</code> flips <code>true</code> to <code>false</code> and back, each click.'
-        },
-        {
-          type: 'predict',
-          eyebrow: 'Project · Step 6',
-          title: 'Predict the outcome',
-          code: '// favorited starts false\n// user clicks the button once',
-          options: ['"★ Favorited"', '"☆ Favorite"', 'Error', 'Nothing changes'],
-          answer: 0,
-          explanation: 'One click flips <code>favorited</code> from <code>false</code> to <code>true</code>, so the button switches to <code>"★ Favorited"</code>.'
-        },
-        {
-          type: 'recap',
-          eyebrow: 'Project · Complete',
-          title: 'You built a profile card',
-          code: 'function ProfileCard({ name, role }) {\n  const [favorited, setFavorited] = useState(false);\n  return (\n    <div>\n      <h2>{name}</h2>\n      <p>{role}</p>\n      <button onClick={() => setFavorited(!favorited)}>\n        {favorited ? "★ Favorited" : "☆ Favorite"}\n      </button>\n    </div>\n  );\n}\n\n<ProfileCard name="Nova" role="Designer" />',
-          bullets: [
-            'Destructured props (<code>name</code>, <code>role</code>) let the same component render different data each time it\'s used.',
-            '<code>useState(false)</code> gave the component its own independent <code>favorited</code> flag.',
-            'The click handler used the logical NOT (<code>!favorited</code>) to flip the state on every click.',
-            'A ternary (<code>favorited ? ... : ...</code>) picked which text to show based on the current state.'
-          ],
-          next: 'More lessons — lists, forms, and effects — are on the way.'
-        }
-      ]
-    },
-    { id: 'more-soon', title: 'Lists, forms & effects', sub: 'coming soon', locked: true }
+    { id: 'more-soon', title: 'Holding ground under pressure', sub: 'coming soon', locked: true }
   ];
 
   var state = load();
@@ -859,8 +674,8 @@
 
   function renderChrome() {
     document.getElementById('streakNum').textContent = state.streak;
-    var path = view.screen === 'menu' ? '~/<b>react</b>'
-      : '~/react/<b>' + view.lessonId + '</b>';
+    var path = view.screen === 'menu' ? '~/<b>executive-presence</b>'
+      : '~/executive-presence/<b>' + view.lessonId + '</b>';
     document.getElementById('chromePath').innerHTML = path;
   }
 
@@ -881,8 +696,8 @@
     var panel = document.getElementById('panel');
     var html = '';
     html += '<p class="eyebrow">Practice terminal</p>';
-    html += '<h1 class="step-title">React, one sitting at a time</h1>';
-    html += '<p class="intro-copy">Short, self-contained lessons on building interfaces with components, props, and state — the third stop on the road to full-stack.</p>';
+    html += '<h1 class="step-title">Calm, fierce, and clear under pressure</h1>';
+    html += '<p class="intro-copy">Practical lessons on executive presence and high-stakes communication — labeling, silence, framing, and power, drawn from negotiation psychology, Stoicism, and hard-won leadership craft. Each lesson ends with a real drill and a roleplay, not a quiz.</p>';
     html += '<div class="menu-list">';
     lessons.forEach(function(l, i) {
       var done = state.completedLessons[l.id];
