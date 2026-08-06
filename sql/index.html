@@ -1737,7 +1737,476 @@
         }
       ]
     },
-    { id: 'more-soon', title: 'Window functions', sub: 'coming soon', locked: true }
+    {
+      id: 'row-number-over',
+      title: 'ROW_NUMBER() & OVER',
+      sub: '7 steps · ~5 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 10 · Step 1',
+          title: 'Window functions calculate across rows without collapsing them',
+          body: [
+            'Unlike <code>GROUP BY</code>, which collapses many rows into one summary row per group, a <strong>window function</strong> computes a value for every row while still showing each row individually. The <code>OVER()</code> clause is what makes a function a window function.'
+          ],
+          code: 'SELECT name, amount,\n  ROW_NUMBER() OVER (ORDER BY amount DESC) AS rank\nFROM orders;\n\n-- returns:\nname | amount | rank\nAna  | 120    | 1\nCara | 90     | 2\nBen  | 45     | 3'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 10 · Step 2',
+          title: 'Predict the result',
+          body: [
+            'Assume orders has: Ana/120, Ben/45, Cara/90.'
+          ],
+          code: 'SELECT name, amount,\n  ROW_NUMBER() OVER (ORDER BY amount DESC) AS rank\nFROM orders;',
+          options: ['Every row kept, numbered 1-3 by amount', 'Only the top row kept', 'Rows grouped into one summary', 'Error'],
+          answer: 0,
+          explanation: '<code>ROW_NUMBER() OVER (...)</code> numbers every row in order, without collapsing any of them — unlike <code>GROUP BY</code>.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 10 · Step 3',
+          title: 'ROW_NUMBER() assigns a unique, sequential number',
+          body: [
+            'Even if two rows tie on the <code>ORDER BY</code> value, <code>ROW_NUMBER()</code> still gives them different numbers, based on whatever order the database breaks the tie.'
+          ],
+          code: 'SELECT name, amount,\n  ROW_NUMBER() OVER (ORDER BY amount DESC) AS rank\nFROM orders;\n\n-- if two rows both have amount = 90, one gets rank 2, the other rank 3 — never tied'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 10 · Step 4',
+          title: 'Predict the result',
+          body: [
+            'Assume orders has 5 rows with different amounts.'
+          ],
+          code: 'SELECT COUNT(*)\nFROM (\n  SELECT name, ROW_NUMBER() OVER (ORDER BY amount DESC) AS rank\n  FROM orders\n) AS ranked;',
+          options: ['5', '1', '0', 'Error'],
+          answer: 0,
+          explanation: '<code>ROW_NUMBER()</code> never removes rows — it only adds a rank column — so the count of the ranked result matches the original 5 rows.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 10 · Step 5',
+          title: 'Window functions can\'t be filtered directly in the same WHERE',
+          body: [
+            'You can\'t filter on a window function\'s result in the same clause where it\'s defined — you wrap the query, like the subquery pattern from the last module, to filter on the computed rank.'
+          ],
+          code: 'SELECT * FROM (\n  SELECT name, amount,\n    ROW_NUMBER() OVER (ORDER BY amount DESC) AS rank\n  FROM orders\n) AS ranked\nWHERE rank <= 2;\n\n-- top 2 orders by amount'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 10 · Step 6',
+          title: 'Complete the query',
+          body: [
+            'Finish the query so each row gets a sequential rank ordered by amount, highest first.'
+          ],
+          codeBefore: 'SELECT name, amount,\n  ',
+          codeAfter: '() OVER (ORDER BY amount DESC) AS rank\nFROM orders;',
+          answer: ['ROW_NUMBER'],
+          hint: 'Assigns a unique, sequential number to each row.',
+          explanation: '<code>ROW_NUMBER() OVER (ORDER BY amount DESC)</code> numbers every row from highest to lowest amount.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 10 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            'A window function computes a value per row without collapsing rows the way <code>GROUP BY</code> does.',
+            '<code>OVER (...)</code> is what turns a function into a window function.',
+            '<code>ROW_NUMBER() OVER (ORDER BY ...)</code> assigns a unique, sequential number to every row.',
+            'To filter on a window function\'s result, wrap the query and filter in an outer <code>WHERE</code>, the same pattern as a subquery.'
+          ],
+          next: 'Next up: PARTITION BY — restarting the window within each group.'
+        }
+      ]
+    },
+    {
+      id: 'partition-by',
+      title: 'PARTITION BY',
+      sub: '7 steps · ~5 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 11 · Step 1',
+          title: 'PARTITION BY restarts the window for each group',
+          body: [
+            'Adding <code>PARTITION BY column</code> inside <code>OVER()</code> resets the window function separately for each distinct value in that column — like <code>GROUP BY</code>, but without collapsing the rows.'
+          ],
+          code: 'SELECT name, category, amount,\n  ROW_NUMBER() OVER (PARTITION BY category ORDER BY amount DESC) AS rank_in_category\nFROM orders;\n\n-- ranks each order within its own category, restarting at 1 for each category'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 11 · Step 2',
+          title: 'Predict the result',
+          body: [
+            'Assume orders: Electronics/120, Electronics/90, Home/45, Home/30.'
+          ],
+          code: 'SELECT name, category, amount,\n  ROW_NUMBER() OVER (PARTITION BY category ORDER BY amount DESC) AS rank_in_category\nFROM orders;',
+          options: ['Rank restarts at 1 for each category (two 1s, two 2s)', 'Rank counts 1-4 across everything', 'All ranks are 1', 'Error'],
+          answer: 0,
+          explanation: '<code>PARTITION BY category</code> resets the numbering separately within Electronics and within Home, so each category gets its own 1, 2.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 11 · Step 3',
+          title: 'PARTITION BY can use multiple columns, just like GROUP BY',
+          body: [
+            '<code>PARTITION BY region, category</code> would restart the window for every unique combination of region and category — the same grouping logic as <code>GROUP BY</code>, just without losing row-level detail.'
+          ],
+          code: 'SELECT name, region, category, amount,\n  RANK() OVER (PARTITION BY region, category ORDER BY amount DESC) AS rank\nFROM orders;'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 11 · Step 4',
+          title: 'Predict the result',
+          body: [
+            'Find the single highest order per category, keeping every row visible.'
+          ],
+          code: 'SELECT * FROM (\n  SELECT name, category, amount,\n    ROW_NUMBER() OVER (PARTITION BY category ORDER BY amount DESC) AS rank\n  FROM orders\n) AS ranked\nWHERE rank = 1;',
+          options: ['The top order from each category', 'Only the single highest order overall', 'Every row from the original table', 'Error'],
+          answer: 0,
+          explanation: 'Filtering the wrapped query to <code>rank = 1</code> keeps just the top-ranked row within each category partition — one winner per category.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 11 · Step 5',
+          title: 'Without PARTITION BY, the whole table is treated as one partition',
+          body: [
+            '<code>OVER (ORDER BY amount DESC)</code> with no <code>PARTITION BY</code> is really one giant partition covering every row, which is why Lesson 10\'s examples ranked across all orders at once.'
+          ],
+          code: '-- these mean different things:\nOVER (ORDER BY amount DESC)                    -- one partition: everything\nOVER (PARTITION BY category ORDER BY amount DESC) -- one partition per category'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 11 · Step 6',
+          title: 'Complete the query',
+          body: [
+            'Finish the query so ranking restarts separately within each category.'
+          ],
+          codeBefore: 'SELECT name, category, amount,\n  ROW_NUMBER() OVER (',
+          codeAfter: ' category ORDER BY amount DESC) AS rank\nFROM orders;',
+          answer: ['PARTITION BY'],
+          hint: 'Restarts the window separately for each group.',
+          explanation: '<code>PARTITION BY category</code> resets the ranking to 1 at the start of every new category.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 11 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            '<code>PARTITION BY column</code> restarts a window function separately for each distinct value in that column.',
+            'It works like <code>GROUP BY</code>, but keeps every row visible instead of collapsing them.',
+            'Without <code>PARTITION BY</code>, the entire result set is treated as a single partition.',
+            'Filtering to <code>rank = 1</code> within each partition is the standard pattern for "the top row per group."'
+          ],
+          next: 'Next up: RANK, DENSE_RANK, and running totals with SUM() OVER.'
+        }
+      ]
+    },
+    {
+      id: 'rank-running-totals',
+      title: 'RANK, DENSE_RANK & running totals',
+      sub: '7 steps · ~5 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 12 · Step 1',
+          title: 'RANK() handles ties differently than ROW_NUMBER()',
+          body: [
+            '<code>RANK()</code> gives tied rows the same rank, then skips the next number — if two rows tie for rank 1, the next row gets rank 3, not 2.'
+          ],
+          code: 'SELECT name, amount,\n  RANK() OVER (ORDER BY amount DESC) AS rank\nFROM orders;\n\n-- if two rows tie at amount = 90 for rank 1:\nname | amount | rank\nAna  | 90     | 1\nBen  | 90     | 1\nCara | 45     | 3   <- skips to 3, not 2'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 12 · Step 2',
+          title: 'Predict the result',
+          body: [
+            'Assume two orders tie for the highest amount.'
+          ],
+          code: 'SELECT name, amount,\n  RANK() OVER (ORDER BY amount DESC) AS rank\nFROM orders;',
+          options: ['Both tied rows get rank 1; the next row gets rank 3', 'Both tied rows get rank 1; the next row gets rank 2', 'Every row gets a different rank', 'Error'],
+          answer: 0,
+          explanation: '<code>RANK()</code> gives tied rows the same number, then skips ahead — leaving a gap where the tied rank would have continued.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 12 · Step 3',
+          title: 'DENSE_RANK() ties without leaving a gap',
+          body: [
+            '<code>DENSE_RANK()</code> also gives tied rows the same rank, but the next distinct value continues immediately — no skipped numbers.'
+          ],
+          code: 'SELECT name, amount,\n  DENSE_RANK() OVER (ORDER BY amount DESC) AS rank\nFROM orders;\n\n-- same tie at amount = 90:\nname | amount | rank\nAna  | 90     | 1\nBen  | 90     | 1\nCara | 45     | 2   <- no gap'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 12 · Step 4',
+          title: 'Predict the result',
+          body: [
+            'Same tie as before: two rows tie for the highest amount.'
+          ],
+          code: 'SELECT name, amount,\n  DENSE_RANK() OVER (ORDER BY amount DESC) AS rank\nFROM orders;',
+          options: ['Both tied rows get rank 1; the next row gets rank 2', 'Both tied rows get rank 1; the next row gets rank 3', 'Every row gets a different rank', 'Error'],
+          answer: 0,
+          explanation: '<code>DENSE_RANK()</code> closes the gap that <code>RANK()</code> would leave — the next distinct value always follows immediately.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 12 · Step 5',
+          title: 'SUM() OVER computes a running total',
+          body: [
+            'Adding <code>ORDER BY</code> inside <code>OVER()</code> to an aggregate like <code>SUM</code> turns it into a running total — each row shows the cumulative sum up through that row, instead of one final total.'
+          ],
+          code: 'SELECT name, amount,\n  SUM(amount) OVER (ORDER BY id) AS running_total\nFROM orders;\n\n-- returns:\nname | amount | running_total\nAna  | 120    | 120\nBen  | 45     | 165\nCara | 90     | 255'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 12 · Step 6',
+          title: 'Complete the query',
+          body: [
+            'Finish the query so tied rows share a rank and the next rank has no gap.'
+          ],
+          codeBefore: 'SELECT name, amount,\n  ',
+          codeAfter: '() OVER (ORDER BY amount DESC) AS rank\nFROM orders;',
+          answer: ['DENSE_RANK'],
+          hint: 'Ranks with ties, but never skips a number.',
+          explanation: '<code>DENSE_RANK() OVER (...)</code> ranks ties together without leaving a gap in the sequence.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 12 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            '<code>RANK()</code> gives tied rows the same number, then skips ahead — leaving a gap.',
+            '<code>DENSE_RANK()</code> also ties rows together, but the next rank always follows immediately, with no gap.',
+            '<code>SUM(amount) OVER (ORDER BY ...)</code> computes a running total, showing the cumulative sum at each row.',
+            'ROW_NUMBER, RANK, DENSE_RANK, and running totals all share the same <code>OVER (...)</code> syntax, just with different behavior on ties.'
+          ],
+          next: 'Next up: a final checkpoint covering the whole course.'
+        }
+      ]
+    },
+    {
+      id: 'checkpoint-4',
+      title: 'Final Checkpoint: SQL',
+      sub: 'Checkpoint · 10 questions',
+      isTest: true,
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Checkpoint · Start',
+          title: 'The full-course review',
+          body: [
+            '10 questions — the last three lessons on window functions, plus a review of JOINs, subqueries, and GROUP BY from earlier in the course.'
+          ]
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 1',
+          title: 'Predict the result',
+          body: ['Assume orders has: Ana/120, Ben/45, Cara/90.'],
+          code: 'SELECT name, amount,\n  ROW_NUMBER() OVER (ORDER BY amount DESC) AS rank\nFROM orders;',
+          options: ['Every row kept, numbered 1-3 by amount', 'Only the top row kept', 'Rows grouped into one summary', 'Error'],
+          answer: 0,
+          explanation: '<code>ROW_NUMBER()</code> numbers every row without collapsing any of them.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint · Question 2',
+          title: 'Complete the query',
+          body: ['Finish the query so each row gets a sequential rank ordered by amount, highest first.'],
+          codeBefore: 'SELECT name, amount,\n  ',
+          codeAfter: '() OVER (ORDER BY amount DESC) AS rank\nFROM orders;',
+          answer: ['ROW_NUMBER'],
+          hint: 'Assigns a unique, sequential number to each row.',
+          explanation: '<code>ROW_NUMBER() OVER (...)</code> numbers every row from highest to lowest amount.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 3',
+          title: 'Predict the result',
+          body: ['Assume orders: Electronics/120, Electronics/90, Home/45, Home/30.'],
+          code: 'SELECT name, category, amount,\n  ROW_NUMBER() OVER (PARTITION BY category ORDER BY amount DESC) AS rank_in_category\nFROM orders;',
+          options: ['Rank restarts at 1 for each category', 'Rank counts 1-4 across everything', 'All ranks are 1', 'Error'],
+          answer: 0,
+          explanation: '<code>PARTITION BY category</code> resets the numbering separately for each category.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint · Question 4',
+          title: 'Complete the query',
+          body: ['Finish the query so ranking restarts separately within each category.'],
+          codeBefore: 'SELECT name, category, amount,\n  ROW_NUMBER() OVER (',
+          codeAfter: ' category ORDER BY amount DESC) AS rank\nFROM orders;',
+          answer: ['PARTITION BY'],
+          hint: 'Restarts the window separately for each group.',
+          explanation: '<code>PARTITION BY category</code> resets the ranking for each category.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 5',
+          title: 'Predict the result',
+          body: ['Two rows tie for the highest amount.'],
+          code: 'SELECT name, amount,\n  RANK() OVER (ORDER BY amount DESC) AS rank\nFROM orders;',
+          options: ['Both tied rows get rank 1; the next row gets rank 3', 'Both tied rows get rank 1; the next row gets rank 2', 'Every row gets a different rank', 'Error'],
+          answer: 0,
+          explanation: '<code>RANK()</code> ties rows together, then skips ahead, leaving a gap.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint · Question 6',
+          title: 'Complete the query',
+          body: ['Finish the query so tied rows share a rank with no gap in the numbering.'],
+          codeBefore: 'SELECT name, amount,\n  ',
+          codeAfter: '() OVER (ORDER BY amount DESC) AS rank\nFROM orders;',
+          answer: ['DENSE_RANK'],
+          hint: 'Ranks with ties, but never skips a number.',
+          explanation: '<code>DENSE_RANK()</code> ranks ties together without leaving a gap.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 7',
+          title: 'Predict the result',
+          body: ['Assume orders (ordered by id): Ana/120, Ben/45, Cara/90.'],
+          code: 'SELECT name, amount,\n  SUM(amount) OVER (ORDER BY id) AS running_total\nFROM orders;',
+          options: ['120, 165, 255', '120, 45, 90', 'A single total of 255 for every row', 'Error'],
+          answer: 0,
+          explanation: 'Each row shows the cumulative sum through that row: 120, then 120+45=165, then 165+90=255.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 8',
+          title: 'Review: predict the result',
+          body: ['Cara has no orders.'],
+          code: 'SELECT customers.name, orders.amount\nFROM customers\nLEFT JOIN orders ON customers.id = orders.customer_id;',
+          options: ['Cara appears with NULL amount', 'Cara is excluded', 'Error', 'Only Cara appears'],
+          answer: 0,
+          explanation: '<code>LEFT JOIN</code> keeps every customer, even without a matching order.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 9',
+          title: 'Review: predict the result',
+          body: ['Cara and Dev have no orders.'],
+          code: 'SELECT name\nFROM customers\nWHERE NOT EXISTS (\n  SELECT 1 FROM orders WHERE orders.customer_id = customers.id\n);',
+          options: ['Cara and Dev', 'Everyone else', 'Error', 'No rows'],
+          answer: 0,
+          explanation: '<code>NOT EXISTS</code> keeps only customers with no matching order rows.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint · Question 10',
+          title: 'Review: complete the query',
+          body: ['Finish the query so results are grouped by category.'],
+          codeBefore: 'SELECT category, COUNT(*)\nFROM products\n',
+          codeAfter: ' category;',
+          answer: ['GROUP BY'],
+          hint: 'Groups rows sharing the same value.',
+          explanation: '<code>GROUP BY category</code> groups rows sharing the same category before counting.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Checkpoint · Complete',
+          title: 'Here\'s where you stand',
+          bullets: [
+            'Window functions close out the language — querying, joining, subqueries, and ranking now fit into one picture.',
+            'If anything felt shaky, the matching lesson is one tap away in the menu — and you can retake this checkpoint any time.'
+          ],
+          next: 'Next up: the capstone project — bringing it all together.'
+        }
+      ]
+    },
+    {
+      id: 'capstone-leaderboard',
+      title: 'Capstone: Sales Leaderboard',
+      sub: 'Capstone · 8 steps',
+      kind: 'project',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Capstone · Brief',
+          title: 'The goal',
+          body: [
+            'Build a sales leaderboard: join customers to their orders, total each customer\'s spend, and rank them — combining JOIN, GROUP BY, aggregates, and a window function.'
+          ]
+        },
+        {
+          type: 'info',
+          eyebrow: 'Capstone · Step 1',
+          title: 'Start with the data',
+          body: [
+            'Assume these two tables.'
+          ],
+          code: 'customers\n---------------\nid | name\n1  | Ana\n2  | Ben\n3  | Cara\n\norders\n---------------------\nid | customer_id | amount\n1  | 1           | 120\n2  | 2           | 45\n3  | 1           | 30\n4  | 2           | 60'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Capstone · Step 2',
+          title: 'Complete the query',
+          body: [
+            'Finish the query so orders are joined to their customer.'
+          ],
+          codeBefore: 'SELECT c.name, o.amount\nFROM customers AS c\n',
+          codeAfter: ' orders AS o ON c.id = o.customer_id;',
+          answer: ['INNER JOIN'],
+          hint: 'Combines two tables, keeping only matching rows.',
+          explanation: '<code>INNER JOIN orders AS o ON ...</code> connects each order to its customer.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Capstone · Step 3',
+          title: 'Total each customer\'s spend',
+          body: [
+            'Grouping by customer and summing the joined amount collapses each customer\'s orders into one total.'
+          ],
+          code: 'SELECT c.name, SUM(o.amount) AS total_spent\nFROM customers AS c\nINNER JOIN orders AS o ON c.id = o.customer_id\nGROUP BY c.name;\n\n-- returns:\nname | total_spent\nAna  | 150\nBen  | 105'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Capstone · Step 4',
+          title: 'Predict the result',
+          code: 'SELECT c.name, SUM(o.amount) AS total_spent\nFROM customers AS c\nINNER JOIN orders AS o ON c.id = o.customer_id\nGROUP BY c.name;',
+          options: ['Ana: 150, Ben: 105', 'Ana: 120, Ben: 45', 'A single total for everyone', 'Error'],
+          answer: 0,
+          explanation: 'Ana\'s orders (120 + 30) total 150; Ben\'s orders (45 + 60) total 105.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Capstone · Step 5',
+          title: 'Complete the query',
+          body: [
+            'Finish the query so customers are ranked by total spend, highest first.'
+          ],
+          codeBefore: 'SELECT c.name, SUM(o.amount) AS total_spent,\n  ',
+          codeAfter: '() OVER (ORDER BY SUM(o.amount) DESC) AS rank\nFROM customers AS c\nINNER JOIN orders AS o ON c.id = o.customer_id\nGROUP BY c.name;',
+          answer: ['RANK'],
+          hint: 'Ranks rows, giving ties the same number and skipping ahead.',
+          explanation: '<code>RANK() OVER (ORDER BY SUM(o.amount) DESC)</code> ranks each customer by their total spend.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Capstone · Step 6',
+          title: 'Predict the result',
+          code: 'SELECT c.name, SUM(o.amount) AS total_spent,\n  RANK() OVER (ORDER BY SUM(o.amount) DESC) AS rank\nFROM customers AS c\nINNER JOIN orders AS o ON c.id = o.customer_id\nGROUP BY c.name;',
+          options: ['Ana: rank 1 (150), Ben: rank 2 (105)', 'Ben: rank 1, Ana: rank 2', 'Both tied at rank 1', 'Error'],
+          answer: 0,
+          explanation: 'Ana\'s total (150) is higher than Ben\'s (105), so Ana ranks 1st and Ben 2nd.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Capstone · Complete',
+          title: 'You built a sales leaderboard',
+          code: 'SELECT c.name, SUM(o.amount) AS total_spent,\n  RANK() OVER (ORDER BY SUM(o.amount) DESC) AS rank\nFROM customers AS c\nINNER JOIN orders AS o ON c.id = o.customer_id\nGROUP BY c.name;',
+          bullets: [
+            'INNER JOIN connected each order back to its customer.',
+            'GROUP BY plus SUM(o.amount) collapsed each customer\'s orders into one total.',
+            'RANK() OVER (ORDER BY ...) added a leaderboard rank without losing any of the summarized rows.',
+            'This join-aggregate-rank shape is exactly how most real leaderboards and reports are built.'
+          ],
+          next: 'That\'s the full SQL course — querying, joining, subqueries, and window functions. Nicely done.'
+        }
+      ]
+    }
   ];
 
   var state = load();
