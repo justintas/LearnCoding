@@ -822,7 +822,459 @@
         }
       ]
     },
-    { id: 'more-soon', title: 'Lists, forms & effects', sub: 'coming soon', locked: true }
+    {
+      id: 'lists-and-keys',
+      title: 'Rendering lists with map & key',
+      sub: '7 steps · ~5 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 04 · Step 1',
+          title: 'Use .map() to turn an array into JSX elements',
+          body: [
+            'React doesn\'t have special list syntax — you write plain JavaScript. <code>.map()</code> transforms an array of data into an array of JSX elements, one per item.'
+          ],
+          code: 'const fruits = ["Apple", "Banana", "Cherry"];\n\nfunction FruitList() {\n  return (\n    <ul>\n      {fruits.map(fruit => <li>{fruit}</li>)}\n    </ul>\n  );\n}\n\n// renders three <li> elements, one per fruit'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 04 · Step 2',
+          title: 'Predict the output',
+          body: [
+            'What does this render?'
+          ],
+          code: 'const numbers = [1, 2, 3];\nfunction NumberList() {\n  return (\n    <ul>\n      {numbers.map(n => <li>{n * 2}</li>)}\n    </ul>\n  );\n}',
+          options: ['Three <li> elements: 2, 4, 6', 'Three <li> elements: 1, 2, 3', 'One <li> element', 'Error'],
+          answer: 0,
+          explanation: '<code>.map()</code> runs the doubling expression on each number, producing three <li> elements showing 2, 4, and 6.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 04 · Step 3',
+          title: 'React needs a key prop to track each item in a list',
+          body: [
+            'Without a unique <code>key</code> on each element, React can\'t efficiently tell which item changed, was added, or was removed when the list re-renders — and it will warn you in the console.'
+          ],
+          code: 'const fruits = ["Apple", "Banana", "Cherry"];\n\nfunction FruitList() {\n  return (\n    <ul>\n      {fruits.map(fruit => <li key={fruit}>{fruit}</li>)}\n    </ul>\n  );\n}'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 04 · Step 4',
+          title: 'Predict the output',
+          body: [
+            'Assume each todo object has a unique id property.'
+          ],
+          code: 'const todos = [{ id: 1, text: "Buy milk" }, { id: 2, text: "Walk dog" }];\n\nfunction TodoList() {\n  return (\n    <ul>\n      {todos.map(todo => <li key={todo.id}>{todo.text}</li>)}\n    </ul>\n  );\n}',
+          options: ['Two <li> elements, each keyed by its unique id', 'Error — objects can\'t be rendered', 'One <li> element', 'Two <li> elements with no keys'],
+          answer: 0,
+          explanation: 'Each todo\'s id becomes its key — a stable, unique identifier React uses to track that item across re-renders.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 04 · Step 5',
+          title: 'Prefer a stable ID over the array index as a key',
+          body: [
+            'Using the array index as a key works for static lists, but breaks down once items can be reordered, inserted, or removed — React can misattribute state to the wrong item. A real, unique ID from your data is almost always the better choice.'
+          ],
+          code: '// risky if the list can reorder:\n{todos.map((todo, index) => <li key={index}>{todo.text}</li>)}\n\n// safer:\n{todos.map(todo => <li key={todo.id}>{todo.text}</li>)}'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 04 · Step 6',
+          title: 'Complete the element',
+          body: [
+            'Finish the line so each list item is keyed by its unique id.'
+          ],
+          codeBefore: '{todos.map(todo => <li ',
+          codeAfter: '={todo.id}>{todo.text}</li>)}',
+          answer: ['key'],
+          hint: 'The special prop React uses to track list items.',
+          explanation: '<code>key={todo.id}</code> gives React a stable identifier for each rendered item.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 04 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            'React has no special list syntax — <code>.map()</code> transforms an array of data into an array of JSX elements.',
+            'Every element in a rendered list needs a unique <code>key</code> prop so React can track it across re-renders.',
+            'A stable ID from your data is a safer key than the array index, especially if the list can reorder.',
+            'Missing keys don\'t crash the app, but React will warn about it — and list updates can behave unexpectedly.'
+          ],
+          next: 'Next up: forms — controlled inputs and handling user input.'
+        }
+      ]
+    },
+    {
+      id: 'forms-controlled-inputs',
+      title: 'Forms & controlled inputs',
+      sub: '7 steps · ~5 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 05 · Step 1',
+          title: 'A controlled input\'s value is driven by React state',
+          body: [
+            'In a controlled input, the input\'s value comes from state, and every keystroke updates that state via <code>onChange</code> — React is the single source of truth for what\'s in the field, not the DOM.'
+          ],
+          code: 'function NameInput() {\n  const [name, setName] = useState("");\n  return (\n    <input\n      value={name}\n      onChange={(e) => setName(e.target.value)}\n    />\n  );\n}'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 05 · Step 2',
+          title: 'Predict the outcome',
+          body: [
+            'The user types "A" into the empty input.'
+          ],
+          code: 'function NameInput() {\n  const [name, setName] = useState("");\n  return (\n    <input value={name} onChange={(e) => setName(e.target.value)} />\n  );\n}',
+          options: ['name becomes "A", and the input shows "A"', 'The input updates, but name stays ""', 'Nothing happens', 'Error'],
+          answer: 0,
+          explanation: 'Each keystroke fires <code>onChange</code>, which calls <code>setName</code> with the input\'s current value — React re-renders the input with that new state.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 05 · Step 3',
+          title: 'event.target.value holds the input\'s current text',
+          body: [
+            'The <code>onChange</code> handler receives an event object; <code>event.target</code> is the actual DOM input element, and <code>.value</code> is whatever text is currently in it.'
+          ],
+          code: 'onChange={(e) => {\n  console.log(e.target.value); // the text just typed\n  setName(e.target.value);\n}}'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 05 · Step 4',
+          title: 'Predict the outcome',
+          body: [
+            'A form has a submit button. Without preventDefault, what happens when it\'s clicked?'
+          ],
+          code: 'function LoginForm() {\n  function handleSubmit(e) {\n    console.log("Submitting");\n  }\n  return <form onSubmit={handleSubmit}><button>Log in</button></form>;\n}',
+          options: ['The page reloads — the browser\'s default form behavior', 'Nothing happens besides the console.log', 'React blocks the reload automatically', 'Error'],
+          answer: 0,
+          explanation: 'Without calling <code>event.preventDefault()</code>, the browser\'s default behavior — a full page reload — still happens on form submit.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 05 · Step 5',
+          title: 'event.preventDefault() stops the page from reloading',
+          body: [
+            'Calling <code>preventDefault()</code> on the submit event is standard in React forms — it stops the browser\'s default full-page reload so your handler can process the data instead.'
+          ],
+          code: 'function handleSubmit(e) {\n  e.preventDefault();\n  console.log("Submitting:", name);\n}'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 05 · Step 6',
+          title: 'Complete the input',
+          body: [
+            'Finish the input so its value comes from the name state, and every keystroke updates it.'
+          ],
+          codeBefore: '<input\n  value={name}\n  ',
+          codeAfter: '={(e) => setName(e.target.value)}\n/>',
+          answer: ['onChange'],
+          hint: 'The event that fires on every keystroke in an input.',
+          explanation: '<code>onChange={(e) => setName(e.target.value)}</code> keeps the state in sync with every keystroke.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 05 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            'A controlled input\'s value comes from state, and <code>onChange</code> updates that state on every keystroke.',
+            '<code>event.target.value</code> holds the current text typed into the input.',
+            'Without <code>event.preventDefault()</code>, a form submit triggers the browser\'s default full-page reload.',
+            'Controlled inputs make React state the single source of truth for form data, instead of the DOM.'
+          ],
+          next: 'Next up: useEffect — running code in response to renders and changes.'
+        }
+      ]
+    },
+    {
+      id: 'useeffect-basics',
+      title: 'useEffect — side effects',
+      sub: '7 steps · ~5 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 06 · Step 1',
+          title: 'useEffect runs code after a component renders',
+          body: [
+            'Some work — fetching data, setting a timer, subscribing to something — isn\'t part of rendering itself, it\'s a side effect that should happen after React updates the screen. <code>useEffect(fn)</code> runs <code>fn</code> after every render.'
+          ],
+          code: 'function Greeting() {\n  useEffect(() => {\n    console.log("Component rendered!");\n  });\n  return <h1>Hello</h1>;\n}\n\n// logs "Component rendered!" after every render'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 06 · Step 2',
+          title: 'Predict the outcome',
+          body: [
+            'Assume this component re-renders 3 times (e.g. from state changes).'
+          ],
+          code: 'function Counter() {\n  const [count, setCount] = useState(0);\n  useEffect(() => {\n    console.log("Rendered, count is", count);\n  });\n  return <button onClick={() => setCount(count + 1)}>{count}</button>;\n}',
+          options: ['Logs once per render, 3 times total', 'Logs only once, ever', 'Never logs', 'Error'],
+          answer: 0,
+          explanation: 'With no dependency array, <code>useEffect</code>\'s function runs after every single render — three renders means three logs.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 06 · Step 3',
+          title: 'A dependency array controls when the effect re-runs',
+          body: [
+            'Adding <code>[]</code> as a second argument makes the effect run only once, after the first render. Adding <code>[someValue]</code> makes it re-run only when <code>someValue</code> changes between renders.'
+          ],
+          code: 'useEffect(() => {\n  console.log("Runs once, on mount");\n}, []);\n\nuseEffect(() => {\n  console.log("Runs when count changes");\n}, [count]);'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 06 · Step 4',
+          title: 'Predict the outcome',
+          body: [
+            'count changes from 0 to 1, but name never changes across two renders.'
+          ],
+          code: 'useEffect(() => {\n  console.log("name effect ran");\n}, [name]);',
+          options: ['Does not log — name didn\'t change', 'Logs on every render regardless', 'Logs twice', 'Error'],
+          answer: 0,
+          explanation: 'With <code>[name]</code> as the dependency, the effect only re-runs when <code>name</code> itself changes — <code>count</code> changing is irrelevant to this effect.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 06 · Step 5',
+          title: 'useEffect is the standard place to fetch data',
+          body: [
+            'Combined with an empty dependency array, <code>useEffect(() => { ... }, [])</code> is the classic pattern for loading data once when a component first appears.'
+          ],
+          code: 'function UserProfile({ userId }) {\n  const [user, setUser] = useState(null);\n\n  useEffect(() => {\n    fetch(`/api/users/${userId}`)\n      .then(res => res.json())\n      .then(data => setUser(data));\n  }, [userId]);\n\n  return <p>{user ? user.name : "Loading..."}</p>;\n}'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 06 · Step 6',
+          title: 'Complete the call',
+          body: [
+            'Finish the call so this effect runs only once, when the component first mounts.'
+          ],
+          codeBefore: 'useEffect(() => {\n  console.log("mounted");\n}, ',
+          codeAfter: ');',
+          answer: ['[]'],
+          hint: 'An empty array means "run once, never again."',
+          explanation: 'An empty dependency array <code>[]</code> tells React this effect has no reactive values to watch, so it only runs once, after the first render.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 06 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            '<code>useEffect(fn)</code> runs <code>fn</code> as a side effect after rendering — for things like fetching data or setting up subscriptions.',
+            'With no dependency array, the effect runs after every render.',
+            'An empty array <code>[]</code> runs the effect once, after the first render only.',
+            '<code>[value]</code> re-runs the effect only when <code>value</code> changes between renders — the standard pattern for loading data tied to a prop or piece of state.'
+          ],
+          next: 'Next up: a checkpoint test on lists, forms, and useEffect.'
+        }
+      ]
+    },
+    {
+      id: 'checkpoint-2',
+      title: 'Checkpoint: Lists, Forms & Effects',
+      sub: 'Checkpoint · 8 questions',
+      isTest: true,
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Checkpoint · Start',
+          title: 'Time to check what stuck',
+          body: [
+            '8 quick questions pulling from rendering lists, controlled forms, and useEffect.'
+          ]
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 1',
+          title: 'Predict the output',
+          body: ['What does this render?'],
+          code: 'const numbers = [1, 2, 3];\nfunction NumberList() {\n  return (\n    <ul>\n      {numbers.map(n => <li>{n * 2}</li>)}\n    </ul>\n  );\n}',
+          options: ['Three <li> elements: 2, 4, 6', 'Three <li> elements: 1, 2, 3', 'One <li> element', 'Error'],
+          answer: 0,
+          explanation: '<code>.map()</code> doubles each number, producing three <li> elements.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint · Question 2',
+          title: 'Complete the element',
+          body: ['Finish the line so each list item is keyed by its unique id.'],
+          codeBefore: '{todos.map(todo => <li ',
+          codeAfter: '={todo.id}>{todo.text}</li>)}',
+          answer: ['key'],
+          hint: 'The special prop React uses to track list items.',
+          explanation: '<code>key={todo.id}</code> gives React a stable identifier for each item.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 3',
+          title: 'Predict the outcome',
+          body: ['The user types "A" into the empty input.'],
+          code: 'function NameInput() {\n  const [name, setName] = useState("");\n  return (\n    <input value={name} onChange={(e) => setName(e.target.value)} />\n  );\n}',
+          options: ['name becomes "A", and the input shows "A"', 'The input updates, but name stays ""', 'Nothing happens', 'Error'],
+          answer: 0,
+          explanation: 'Each keystroke fires <code>onChange</code>, updating state to match the input.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint · Question 4',
+          title: 'Complete the input',
+          body: ['Finish the input so its value comes from the name state, and every keystroke updates it.'],
+          codeBefore: '<input\n  value={name}\n  ',
+          codeAfter: '={(e) => setName(e.target.value)}\n/>',
+          answer: ['onChange'],
+          hint: 'The event that fires on every keystroke in an input.',
+          explanation: '<code>onChange</code> keeps the state in sync with every keystroke.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 5',
+          title: 'Predict the outcome',
+          body: ['A form has a submit button, and the handler does not call preventDefault.'],
+          code: 'function LoginForm() {\n  function handleSubmit(e) {\n    console.log("Submitting");\n  }\n  return <form onSubmit={handleSubmit}><button>Log in</button></form>;\n}',
+          options: ['The page reloads — the browser\'s default form behavior', 'Nothing happens besides the console.log', 'React blocks the reload automatically', 'Error'],
+          answer: 0,
+          explanation: 'Without <code>preventDefault()</code>, the browser\'s default full-page reload still happens.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint · Question 6',
+          title: 'Complete the call',
+          body: ['Finish the call so this effect runs only once, when the component first mounts.'],
+          codeBefore: 'useEffect(() => {\n  console.log("mounted");\n}, ',
+          codeAfter: ');',
+          answer: ['[]'],
+          hint: 'An empty array means "run once, never again."',
+          explanation: 'An empty dependency array runs the effect only once, after the first render.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 7',
+          title: 'Predict the outcome',
+          body: ['count changes from 0 to 1, but name never changes across two renders.'],
+          code: 'useEffect(() => {\n  console.log("name effect ran");\n}, [name]);',
+          options: ['Does not log — name didn\'t change', 'Logs on every render regardless', 'Logs twice', 'Error'],
+          answer: 0,
+          explanation: 'The effect only re-runs when <code>name</code> itself changes.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 8',
+          title: 'Predict the outcome',
+          body: ['Assume this component re-renders 3 times.'],
+          code: 'function Counter() {\n  const [count, setCount] = useState(0);\n  useEffect(() => {\n    console.log("Rendered, count is", count);\n  });\n  return <button onClick={() => setCount(count + 1)}>{count}</button>;\n}',
+          options: ['Logs once per render, 3 times total', 'Logs only once, ever', 'Never logs', 'Error'],
+          answer: 0,
+          explanation: 'With no dependency array, the effect runs after every render.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Checkpoint · Complete',
+          title: 'Here\'s where you stand',
+          bullets: [
+            'Rendering lists, controlled forms, and useEffect — the tools for building interactive, data-driven components.',
+            'If anything felt shaky, the matching lesson is one tap away in the menu — and you can retake this checkpoint any time.'
+          ],
+          next: 'Next up: a project — a searchable, filterable to-do list.'
+        }
+      ]
+    },
+    {
+      id: 'project-filterable-todo',
+      title: 'Project: Build a Filterable Todo List',
+      sub: 'Project · 8 steps',
+      kind: 'project',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Project · Brief',
+          title: 'The goal',
+          body: [
+            'Build a todo list with a search box that filters as you type — combining rendering lists, controlled inputs, and useEffect.'
+          ]
+        },
+        {
+          type: 'info',
+          eyebrow: 'Project · Step 1',
+          title: 'Start with the state',
+          body: [
+            'A list of todos, and a piece of state for the search text.'
+          ],
+          code: 'const [todos] = useState([\n  { id: 1, text: "Buy milk" },\n  { id: 2, text: "Walk the dog" },\n  { id: 3, text: "Write report" }\n]);\nconst [search, setSearch] = useState("");'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Project · Step 2',
+          title: 'Complete the input',
+          body: [
+            'Finish the input so its value comes from search state and updates on every keystroke.'
+          ],
+          codeBefore: '<input\n  value={search}\n  ',
+          codeAfter: '={(e) => setSearch(e.target.value)}\n/>',
+          answer: ['onChange'],
+          hint: 'The event that fires on every keystroke.',
+          explanation: '<code>onChange={(e) => setSearch(e.target.value)}</code> keeps search in sync with the input.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Project · Step 3',
+          title: 'Filter the todos based on the search text',
+          body: [
+            '.filter() narrows the todos down to only those whose text includes the search term.'
+          ],
+          code: 'const filtered = todos.filter(todo =>\n  todo.text.toLowerCase().includes(search.toLowerCase())\n);'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Project · Step 4',
+          title: 'Predict the outcome',
+          body: [
+            'search is "dog".'
+          ],
+          code: 'const todos = [{ id: 1, text: "Buy milk" }, { id: 2, text: "Walk the dog" }];\nconst search = "dog";\nconst filtered = todos.filter(todo =>\n  todo.text.toLowerCase().includes(search.toLowerCase())\n);\nconsole.log(filtered.length);',
+          options: ['1', '0', '2', 'Error'],
+          answer: 0,
+          explanation: 'Only "Walk the dog" includes "dog", so <code>filtered</code> has exactly one match.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Project · Step 5',
+          title: 'Complete the element',
+          body: [
+            'Finish the line so each filtered todo is rendered with a stable key.'
+          ],
+          codeBefore: '{filtered.map(todo => <li ',
+          codeAfter: '={todo.id}>{todo.text}</li>)}',
+          answer: ['key'],
+          hint: 'The special prop React uses to track list items.',
+          explanation: '<code>key={todo.id}</code> keeps each rendered todo trackable across re-renders.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Project · Step 6',
+          title: 'Predict the outcome',
+          code: 'useEffect(() => {\n  console.log(`${filtered.length} results for "${search}"`);\n}, [search]);\n\n// user types in the search box, changing search from "" to "dog"',
+          options: ['Logs once, after search changes to "dog"', 'Logs on every keystroke of any input on the page', 'Never logs', 'Error'],
+          answer: 0,
+          explanation: 'With <code>[search]</code> as the dependency, the effect only re-runs when <code>search</code> itself changes value.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Project · Complete',
+          title: 'You built a filterable todo list',
+          code: 'function TodoApp() {\n  const [todos] = useState([\n    { id: 1, text: "Buy milk" },\n    { id: 2, text: "Walk the dog" },\n    { id: 3, text: "Write report" }\n  ]);\n  const [search, setSearch] = useState("");\n\n  const filtered = todos.filter(todo =>\n    todo.text.toLowerCase().includes(search.toLowerCase())\n  );\n\n  useEffect(() => {\n    console.log(`${filtered.length} results for "${search}"`);\n  }, [search]);\n\n  return (\n    <div>\n      <input value={search} onChange={(e) => setSearch(e.target.value)} />\n      <ul>\n        {filtered.map(todo => <li key={todo.id}>{todo.text}</li>)}\n      </ul>\n    </div>\n  );\n}',
+          bullets: [
+            'A controlled input (value + onChange) kept the search state in sync with every keystroke.',
+            '.filter() narrowed the todos down to only those matching the search text.',
+            'Each filtered todo was rendered with .map(), keyed by its stable id.',
+            'useEffect with [search] as its dependency ran only when the search text actually changed.'
+          ],
+          next: 'More lessons — custom hooks and component composition — are on the way.'
+        }
+      ]
+    },
+    { id: 'more-soon', title: 'Custom hooks & composition', sub: 'coming soon', locked: true }
   ];
 
   var state = load();
