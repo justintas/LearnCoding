@@ -840,7 +840,455 @@
         }
       ]
     },
-    { id: 'more-soon', title: 'Joining tables', sub: 'coming soon', locked: true }
+    {
+      id: 'inner-join',
+      title: 'INNER JOIN',
+      sub: '7 steps · ~5 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 04 · Step 1',
+          title: 'JOIN combines rows from two tables based on a matching column',
+          body: [
+            'Real databases split related data across multiple tables — an orders table might only store a customer_id, not the customer\'s name. <code>JOIN</code> reconnects them by matching a column that exists in both tables.'
+          ],
+          code: 'customers\n---------------\nid | name\n1  | Ana\n2  | Ben\n\norders\n---------------------\nid | customer_id | amount\n1  | 1           | 120\n2  | 2           | 45\n3  | 1           | 30'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 04 · Step 2',
+          title: 'INNER JOIN syntax',
+          body: [
+            '<code>INNER JOIN table2 ON condition</code> names the second table and the columns that should match between the two tables.'
+          ],
+          code: 'SELECT orders.id, customers.name, orders.amount\nFROM orders\nINNER JOIN customers ON orders.customer_id = customers.id;\n\n-- returns:\nid | name | amount\n1  | Ana  | 120\n2  | Ben  | 45\n3  | Ana  | 30'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 04 · Step 3',
+          title: 'Predict the result',
+          body: [
+            'Using the customers and orders tables above.'
+          ],
+          code: 'SELECT customers.name, orders.amount\nFROM orders\nINNER JOIN customers ON orders.customer_id = customers.id\nWHERE orders.amount > 50;',
+          options: ['Just Ana, 120', 'All three rows', 'Ben, 45', 'Error'],
+          answer: 0,
+          explanation: 'The join matches each order to its customer, then <code>WHERE</code> filters to only the row where amount &gt; 50 — Ana\'s 120 order.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 04 · Step 4',
+          title: 'INNER JOIN only keeps rows that match on both sides',
+          body: [
+            'If a customer has no orders, or an order references a customer_id that doesn\'t exist, <code>INNER JOIN</code> drops that row entirely — it only returns rows where the join condition is satisfied on both tables.'
+          ],
+          code: 'customers\n---------------\nid | name\n1  | Ana\n2  | Ben\n3  | Cara   <- has no orders\n\nSELECT customers.name, orders.amount\nFROM customers\nINNER JOIN orders ON customers.id = orders.customer_id;\n\n-- Cara is missing — she has no matching order row'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 04 · Step 5',
+          title: 'Predict the result',
+          body: [
+            'Using customers (Ana=1, Ben=2, Cara=3) and orders (customer_id 1 and 2 only — Cara has none).'
+          ],
+          code: 'SELECT customers.name, orders.amount\nFROM customers\nINNER JOIN orders ON customers.id = orders.customer_id;',
+          options: ['Ana and Ben only, Cara excluded', 'All three customers, Cara with null amount', 'Error', 'Just Cara'],
+          answer: 0,
+          explanation: '<code>INNER JOIN</code> drops any row without a match on both sides — since Cara has no orders, she\'s excluded entirely.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 04 · Step 6',
+          title: 'Complete the query',
+          body: [
+            'Finish the query so orders are joined to their matching customer.'
+          ],
+          codeBefore: 'SELECT orders.id, customers.name\nFROM orders\n',
+          codeAfter: ' customers ON orders.customer_id = customers.id;',
+          answer: ['INNER JOIN'],
+          hint: 'Combines two tables, keeping only matching rows.',
+          explanation: '<code>INNER JOIN customers ON ...</code> matches each order to its customer row.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 04 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            '<code>JOIN</code> combines rows from two tables by matching a shared column, usually an id and a foreign key.',
+            '<code>INNER JOIN table2 ON condition</code> names the second table and how the two tables relate.',
+            '<code>INNER JOIN</code> only keeps rows that have a match on both sides — unmatched rows are dropped entirely.',
+            '<code>table.column</code> syntax (like <code>customers.name</code>) specifies which table a column comes from when joining.'
+          ],
+          next: 'Next up: LEFT JOIN — keeping every row from one side, even without a match.'
+        }
+      ]
+    },
+    {
+      id: 'left-join',
+      title: 'LEFT JOIN',
+      sub: '7 steps · ~5 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 05 · Step 1',
+          title: 'LEFT JOIN keeps every row from the left table, matched or not',
+          body: [
+            'Unlike <code>INNER JOIN</code>, <code>LEFT JOIN</code> keeps every row from the table listed first (the "left" table), filling in <code>NULL</code> for any columns from the second table when there\'s no match.'
+          ],
+          code: 'SELECT customers.name, orders.amount\nFROM customers\nLEFT JOIN orders ON customers.id = orders.customer_id;\n\n-- returns:\nname | amount\nAna  | 120\nBen  | 45\nAna  | 30\nCara | NULL   <- kept, even with no matching order'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 05 · Step 2',
+          title: 'Predict the result',
+          body: [
+            'Using customers (Ana=1, Ben=2, Cara=3) and orders (customer_id 1 and 2 only).'
+          ],
+          code: 'SELECT customers.name, orders.amount\nFROM customers\nLEFT JOIN orders ON customers.id = orders.customer_id;',
+          options: ['All three customers, Cara with NULL amount', 'Ana and Ben only', 'Error', 'Just Cara'],
+          answer: 0,
+          explanation: '<code>LEFT JOIN</code> keeps every row from customers (the left table) — Cara appears with a <code>NULL</code> amount since she has no matching order.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 05 · Step 3',
+          title: 'Use LEFT JOIN to find rows with no match',
+          body: [
+            'Combining <code>LEFT JOIN</code> with <code>WHERE column IS NULL</code> is the standard way to find rows on the left side that have no matching row on the right — like "customers who have never ordered."'
+          ],
+          code: 'SELECT customers.name\nFROM customers\nLEFT JOIN orders ON customers.id = orders.customer_id\nWHERE orders.id IS NULL;\n\n-- returns:\nname\nCara'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 05 · Step 4',
+          title: 'Predict the result',
+          body: [
+            'Using the same customers/orders tables (Cara has no orders).'
+          ],
+          code: 'SELECT customers.name\nFROM customers\nLEFT JOIN orders ON customers.id = orders.customer_id\nWHERE orders.id IS NULL;',
+          options: ['Just Cara', 'All customers', 'No rows', 'Error'],
+          answer: 0,
+          explanation: '<code>WHERE orders.id IS NULL</code> keeps only rows where the join found no match — exactly the customers with no orders.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 05 · Step 5',
+          title: 'The order of tables matters in LEFT JOIN',
+          body: [
+            '<code>customers LEFT JOIN orders</code> keeps every customer; <code>orders LEFT JOIN customers</code> would keep every order instead. Swapping the table order changes which side is guaranteed to be complete.'
+          ],
+          code: '-- keeps every customer, even without orders:\nFROM customers LEFT JOIN orders ON ...\n\n-- keeps every order, even if customer_id is missing:\nFROM orders LEFT JOIN customers ON ...'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 05 · Step 6',
+          title: 'Complete the query',
+          body: [
+            'Finish the query so every customer is kept, even those with no orders.'
+          ],
+          codeBefore: 'SELECT customers.name, orders.amount\nFROM customers\n',
+          codeAfter: ' orders ON customers.id = orders.customer_id;',
+          answer: ['LEFT JOIN'],
+          hint: 'Keeps every row from the first table, matched or not.',
+          explanation: '<code>LEFT JOIN orders ON ...</code> keeps every customer row, filling in <code>NULL</code> where there\'s no matching order.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 05 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            '<code>LEFT JOIN</code> keeps every row from the left (first-listed) table, even without a match on the right.',
+            'Unmatched rows get <code>NULL</code> for any columns pulled from the right table.',
+            '<code>LEFT JOIN</code> plus <code>WHERE column IS NULL</code> is the standard way to find rows with no match — like customers who never ordered.',
+            'The order of tables in a <code>LEFT JOIN</code> matters — it determines which side is guaranteed to be complete.'
+          ],
+          next: 'Next up: table aliases and joining across three tables.'
+        }
+      ]
+    },
+    {
+      id: 'aliases-multi-join',
+      title: 'Aliases & multi-table joins',
+      sub: '7 steps · ~5 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 06 · Step 1',
+          title: 'Aliases give a table a short nickname for the rest of the query',
+          body: [
+            '<code>AS</code> lets you rename a table (or column) to something shorter, which makes queries with joins much easier to read and write.'
+          ],
+          code: 'SELECT c.name, o.amount\nFROM customers AS c\nINNER JOIN orders AS o ON c.id = o.customer_id;\n\n-- c and o are just short names for the tables above'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 06 · Step 2',
+          title: 'Predict the result',
+          body: [
+            'Using the same customers/orders tables, aliased as c and o.'
+          ],
+          code: 'SELECT c.name, o.amount\nFROM customers AS c\nINNER JOIN orders AS o ON c.id = o.customer_id\nWHERE o.amount > 40;',
+          options: ['Rows for Ana (120) and Ben (45)', 'Every row, aliases don\'t filter anything', 'Error — aliases aren\'t valid SQL', 'Just Ana'],
+          answer: 0,
+          explanation: 'The alias just renames the tables — the <code>WHERE</code> filter still applies normally, keeping orders over 40.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 06 · Step 3',
+          title: 'You can chain multiple JOINs in one query',
+          body: [
+            'Adding a second <code>JOIN</code> lets you pull in a third table — for example, connecting orders to customers, and customers to their region.'
+          ],
+          code: 'SELECT o.id, c.name, r.region_name\nFROM orders AS o\nINNER JOIN customers AS c ON o.customer_id = c.id\nINNER JOIN regions AS r ON c.region_id = r.id;'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 06 · Step 4',
+          title: 'Predict the result',
+          body: [
+            'Assume orders links to customers (via customer_id), and customers links to regions (via region_id). Ana is in the "West" region.'
+          ],
+          code: 'SELECT o.amount, c.name, r.region_name\nFROM orders AS o\nINNER JOIN customers AS c ON o.customer_id = c.id\nINNER JOIN regions AS r ON c.region_id = r.id\nWHERE c.name = \'Ana\';',
+          options: ['Ana\'s orders, each labeled with "West"', 'Every order in the database', 'Error', 'Just the region name, no amounts'],
+          answer: 0,
+          explanation: 'Chaining both joins connects each of Ana\'s orders through to her region, and <code>WHERE</code> narrows it to just her rows.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 06 · Step 5',
+          title: 'AS on columns renames the output, not just tables',
+          body: [
+            'The same <code>AS</code> keyword can rename a column in the result — especially useful for aggregate columns like <code>SUM(...)</code>, which otherwise show up with an awkward default name.'
+          ],
+          code: 'SELECT c.name, SUM(o.amount) AS total_spent\nFROM customers AS c\nINNER JOIN orders AS o ON c.id = o.customer_id\nGROUP BY c.name;\n\n-- the summed column is now labeled total_spent, not sum'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 06 · Step 6',
+          title: 'Complete the query',
+          body: [
+            'Finish the query so orders is aliased as o.'
+          ],
+          codeBefore: 'SELECT o.amount\nFROM orders ',
+          codeAfter: ' o;',
+          answer: ['AS'],
+          hint: 'The keyword that assigns an alias.',
+          explanation: '<code>FROM orders AS o</code> gives the orders table the short alias <code>o</code> for the rest of the query.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 06 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            '<code>AS</code> gives a table (or column) a short alias, making joined queries much easier to read.',
+            'Multiple <code>JOIN</code>s can be chained in one query to connect three or more related tables.',
+            '<code>table.column</code> syntax combined with aliases (like <code>c.name</code>) keeps queries readable even with several joined tables.',
+            '<code>AS</code> on an aggregate column (like <code>SUM(...) AS total</code>) gives the result a clean, meaningful name.'
+          ],
+          next: 'Next up: a checkpoint test on joining tables.'
+        }
+      ]
+    },
+    {
+      id: 'checkpoint-2',
+      title: 'Checkpoint: Joining Tables',
+      sub: 'Checkpoint · 8 questions',
+      isTest: true,
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Checkpoint · Start',
+          title: 'Time to check what stuck',
+          body: [
+            '8 quick questions pulling from INNER JOIN, LEFT JOIN, aliases, and multi-table joins.'
+          ]
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 1',
+          title: 'Predict the result',
+          body: ['Using customers (Ana=1, Ben=2) and orders (order 1: customer_id 1/$120, order 2: customer_id 2/$45).'],
+          code: 'SELECT customers.name, orders.amount\nFROM orders\nINNER JOIN customers ON orders.customer_id = customers.id;',
+          options: ['Ana/120 and Ben/45', 'Every customer, no amounts', 'Error', 'Just Ana'],
+          answer: 0,
+          explanation: 'The join matches each order to its customer, returning both rows with names attached.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint · Question 2',
+          title: 'Complete the query',
+          body: ['Finish the query so orders are joined to their matching customer.'],
+          codeBefore: 'SELECT orders.id, customers.name\nFROM orders\n',
+          codeAfter: ' customers ON orders.customer_id = customers.id;',
+          answer: ['INNER JOIN'],
+          hint: 'Combines two tables, keeping only matching rows.',
+          explanation: '<code>INNER JOIN customers ON ...</code> matches each order to its customer row.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 3',
+          title: 'Predict the result',
+          body: ['Cara (id 3) has no orders.'],
+          code: 'SELECT customers.name, orders.amount\nFROM customers\nINNER JOIN orders ON customers.id = orders.customer_id;',
+          options: ['Cara is excluded entirely', 'Cara appears with NULL amount', 'Error', 'Only Cara appears'],
+          answer: 0,
+          explanation: '<code>INNER JOIN</code> drops any row without a match on both sides — Cara has no orders, so she\'s excluded.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint · Question 4',
+          title: 'Complete the query',
+          body: ['Finish the query so every customer is kept, even those with no orders.'],
+          codeBefore: 'SELECT customers.name, orders.amount\nFROM customers\n',
+          codeAfter: ' orders ON customers.id = orders.customer_id;',
+          answer: ['LEFT JOIN'],
+          hint: 'Keeps every row from the first table, matched or not.',
+          explanation: '<code>LEFT JOIN orders ON ...</code> keeps every customer row, even without a matching order.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 5',
+          title: 'Predict the result',
+          body: ['Cara has no orders.'],
+          code: 'SELECT customers.name, orders.amount\nFROM customers\nLEFT JOIN orders ON customers.id = orders.customer_id;',
+          options: ['Cara appears with NULL amount', 'Cara is excluded', 'Error', 'Only Cara appears'],
+          answer: 0,
+          explanation: '<code>LEFT JOIN</code> keeps every customer — Cara appears with a <code>NULL</code> amount since she has no order.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 6',
+          title: 'Predict the result',
+          code: 'SELECT customers.name\nFROM customers\nLEFT JOIN orders ON customers.id = orders.customer_id\nWHERE orders.id IS NULL;',
+          options: ['Just customers with no orders', 'Every customer', 'No rows', 'Error'],
+          answer: 0,
+          explanation: '<code>WHERE orders.id IS NULL</code> keeps only rows where the join found no match.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint · Question 7',
+          title: 'Complete the query',
+          body: ['Finish the query so orders is aliased as o.'],
+          codeBefore: 'SELECT o.amount\nFROM orders ',
+          codeAfter: ' o;',
+          answer: ['AS'],
+          hint: 'The keyword that assigns an alias.',
+          explanation: '<code>FROM orders AS o</code> gives the table the short alias <code>o</code>.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 8',
+          title: 'Predict the result',
+          body: ['Chaining orders → customers → regions, filtered to name = "Ana".'],
+          code: 'SELECT o.amount, r.region_name\nFROM orders AS o\nINNER JOIN customers AS c ON o.customer_id = c.id\nINNER JOIN regions AS r ON c.region_id = r.id\nWHERE c.name = \'Ana\';',
+          options: ['Ana\'s orders, each with her region', 'Every order in the database', 'Error', 'Just the region, no amounts'],
+          answer: 0,
+          explanation: 'Chaining both joins connects each of Ana\'s orders through to her region.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Checkpoint · Complete',
+          title: 'Here\'s where you stand',
+          bullets: [
+            'INNER JOIN, LEFT JOIN, aliases, and multi-table joins — the tools for combining related data across tables.',
+            'If anything felt shaky, the matching lesson is one tap away in the menu — and you can retake this checkpoint any time.'
+          ],
+          next: 'Next up: a project — a customer order report using joins.'
+        }
+      ]
+    },
+    {
+      id: 'project-order-report',
+      title: 'Project: Customer Order Report',
+      sub: 'Project · 8 steps',
+      kind: 'project',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Project · Brief',
+          title: 'The goal',
+          body: [
+            'Build a report showing every customer\'s total spend, including customers who haven\'t ordered yet — combining LEFT JOIN, aliases, GROUP BY, and aggregates.'
+          ]
+        },
+        {
+          type: 'info',
+          eyebrow: 'Project · Step 1',
+          title: 'Start with the data',
+          body: [
+            'Assume these two tables.'
+          ],
+          code: 'customers\n---------------\nid | name\n1  | Ana\n2  | Ben\n3  | Cara\n\norders\n---------------------\nid | customer_id | amount\n1  | 1           | 120\n2  | 2           | 45\n3  | 1           | 30'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Project · Step 2',
+          title: 'Complete the query',
+          body: [
+            'Finish the query so every customer is included, even Cara who has no orders.'
+          ],
+          codeBefore: 'SELECT c.name, o.amount\nFROM customers AS c\n',
+          codeAfter: ' orders AS o ON c.id = o.customer_id;',
+          answer: ['LEFT JOIN'],
+          hint: 'Keeps every row from the first table, matched or not.',
+          explanation: '<code>LEFT JOIN orders AS o ON ...</code> keeps every customer, even without a matching order.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Project · Step 3',
+          title: 'Predict the result',
+          code: 'SELECT c.name, o.amount\nFROM customers AS c\nLEFT JOIN orders AS o ON c.id = o.customer_id;',
+          options: ['Ana/120, Ben/45, Ana/30, Cara/NULL', 'Only Ana and Ben', 'Error', 'Cara only'],
+          answer: 0,
+          explanation: '<code>LEFT JOIN</code> keeps every customer — Cara appears with a <code>NULL</code> amount since she has no matching order.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Project · Step 4',
+          title: 'Summarize total spend per customer',
+          body: [
+            'Grouping by customer name and summing the joined amount collapses each customer\'s orders into one total row.'
+          ],
+          code: 'SELECT c.name, SUM(o.amount) AS total_spent\nFROM customers AS c\nLEFT JOIN orders AS o ON c.id = o.customer_id\nGROUP BY c.name;\n\n-- returns:\nname | total_spent\nAna  | 150\nBen  | 45\nCara | 0 or NULL (no orders to sum)'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Project · Step 5',
+          title: 'Complete the query',
+          body: [
+            'Finish the query so the summed column is labeled total_spent.'
+          ],
+          codeBefore: 'SELECT c.name, SUM(o.amount) ',
+          codeAfter: ' total_spent\nFROM customers AS c\nLEFT JOIN orders AS o ON c.id = o.customer_id\nGROUP BY c.name;',
+          answer: ['AS'],
+          hint: 'The keyword that renames a column in the result.',
+          explanation: '<code>SUM(o.amount) AS total_spent</code> gives the summed column a clean, readable name.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Project · Step 6',
+          title: 'Predict the result',
+          code: 'SELECT c.name, SUM(o.amount) AS total_spent\nFROM customers AS c\nLEFT JOIN orders AS o ON c.id = o.customer_id\nGROUP BY c.name\nORDER BY total_spent DESC;',
+          options: ['Ana (150), Ben (45), Cara (0 or NULL)', 'Cara, Ben, Ana', 'Error', 'Only Ana and Ben'],
+          answer: 0,
+          explanation: 'Sorted by total_spent descending: Ana at 150 leads, then Ben at 45, then Cara with nothing to sum.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Project · Complete',
+          title: 'You built a customer order report',
+          code: 'SELECT c.name, SUM(o.amount) AS total_spent\nFROM customers AS c\nLEFT JOIN orders AS o ON c.id = o.customer_id\nGROUP BY c.name\nORDER BY total_spent DESC;',
+          bullets: [
+            'LEFT JOIN kept every customer in the report, even Cara who has never placed an order.',
+            'Aliases (c, o) kept the query readable despite joining two tables.',
+            'GROUP BY plus SUM(...) AS total_spent collapsed each customer\'s orders into one summary row.',
+            'This filter-join-aggregate-sort shape is the backbone of most real reporting queries.'
+          ],
+          next: 'More lessons — subqueries and multi-table joins with real datasets — are on the way.'
+        }
+      ]
+    },
+    { id: 'more-soon', title: 'Subqueries', sub: 'coming soon', locked: true }
   ];
 
   var state = load();
