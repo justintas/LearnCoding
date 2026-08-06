@@ -1288,7 +1288,456 @@
         }
       ]
     },
-    { id: 'more-soon', title: 'Subqueries', sub: 'coming soon', locked: true }
+    {
+      id: 'subquery-where',
+      title: 'Subqueries in WHERE',
+      sub: '7 steps · ~5 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 07 · Step 1',
+          title: 'A subquery is a query nested inside another query',
+          body: [
+            'A subquery runs first, and its result is used by the outer query — often inside <code>WHERE</code>, to filter based on a value that itself needs to be calculated.'
+          ],
+          code: 'SELECT name\nFROM customers\nWHERE id IN (\n  SELECT customer_id FROM orders WHERE amount > 100\n);\n\n-- returns customers who have at least one order over $100'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 07 · Step 2',
+          title: 'Predict the result',
+          body: [
+            'Assume orders has: customer_id 1/$120, customer_id 2/$45, customer_id 1/$30.'
+          ],
+          code: 'SELECT name\nFROM customers\nWHERE id IN (\n  SELECT customer_id FROM orders WHERE amount > 100\n);',
+          options: ['Just the customer with id 1', 'Every customer', 'No customers', 'Error'],
+          answer: 0,
+          explanation: 'The subquery returns customer_id 1 (the only order over $100), so the outer query returns just that customer.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 07 · Step 3',
+          title: 'The subquery runs once, independently, before the outer query',
+          body: [
+            'In this form, the inner query isn\'t tied to each row of the outer query — it computes its result set once, and the outer query just checks membership with <code>IN</code>.'
+          ],
+          code: '-- the subquery alone:\nSELECT customer_id FROM orders WHERE amount > 100;\n-- returns: [1]\n\n-- then the outer query becomes, effectively:\nSELECT name FROM customers WHERE id IN (1);'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 07 · Step 4',
+          title: 'Predict the result',
+          body: [
+            'Assume orders has: customer_id 2/$45, customer_id 3/$60 — no order is over $100.'
+          ],
+          code: 'SELECT name\nFROM customers\nWHERE id IN (\n  SELECT customer_id FROM orders WHERE amount > 100\n);',
+          options: ['No rows returned', 'Every customer returned', 'Error', 'NULL returned'],
+          answer: 0,
+          explanation: 'If the subquery returns an empty result, <code>IN (...)</code> has nothing to match, so the outer query returns no rows.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 07 · Step 5',
+          title: 'NOT IN finds rows with no match in the subquery',
+          body: [
+            '<code>NOT IN (subquery)</code> is the classic pattern for "customers who have never ordered" — the opposite of <code>IN</code>.'
+          ],
+          code: 'SELECT name\nFROM customers\nWHERE id NOT IN (\n  SELECT customer_id FROM orders\n);\n\n-- returns customers with zero orders'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 07 · Step 6',
+          title: 'Complete the query',
+          body: [
+            'Finish the query so it returns customers who have placed at least one order over $100.'
+          ],
+          codeBefore: 'SELECT name\nFROM customers\nWHERE id ',
+          codeAfter: ' (\n  SELECT customer_id FROM orders WHERE amount > 100\n);',
+          answer: ['IN'],
+          hint: 'Checks membership in a set of values.',
+          explanation: '<code>WHERE id IN (subquery)</code> keeps only customers whose id appears in the subquery\'s results.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 07 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            'A subquery is a query nested inside another — it runs first, and its result feeds the outer query.',
+            '<code>WHERE column IN (subquery)</code> filters rows to those matching any value the subquery returns.',
+            '<code>WHERE column NOT IN (subquery)</code> is the classic pattern for finding rows with no match.',
+            'If the subquery returns nothing, <code>IN (...)</code> matches nothing, and the outer query returns no rows.'
+          ],
+          next: 'Next up: subqueries in SELECT — computing a value per row.'
+        }
+      ]
+    },
+    {
+      id: 'subquery-select',
+      title: 'Subqueries in SELECT',
+      sub: '7 steps · ~5 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 08 · Step 1',
+          title: 'A subquery can compute a single value for each row',
+          body: [
+            'Placed inside <code>SELECT</code>, a subquery runs once per outer row and must return exactly one value — this is called a <strong>scalar subquery</strong>, often used to attach a summary value without a full JOIN.'
+          ],
+          code: 'SELECT name,\n  (SELECT COUNT(*) FROM orders WHERE orders.customer_id = customers.id) AS order_count\nFROM customers;\n\n-- returns each customer\'s name plus their own order count'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 08 · Step 2',
+          title: 'Predict the result',
+          body: [
+            'Assume orders has: customer_id 1 (x2 rows), customer_id 2 (x1 row), customer_id 3 (0 rows).'
+          ],
+          code: 'SELECT name,\n  (SELECT COUNT(*) FROM orders WHERE orders.customer_id = customers.id) AS order_count\nFROM customers;',
+          options: ['Each customer with their own order count (2, 1, 0)', 'A single total order count for everyone', 'Error', 'Only customers with orders'],
+          answer: 0,
+          explanation: 'The subquery re-runs for each customer row, correlating on <code>customers.id</code>, so each gets their own count — including 0 for customer 3.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 08 · Step 3',
+          title: 'This is called a correlated subquery',
+          body: [
+            'Because the inner query references a column from the outer query (<code>customers.id</code>), it can\'t run independently — it re-runs once for every row the outer query processes. This makes it powerful, but potentially slower than a JOIN on large tables.'
+          ],
+          code: '-- "correlated" because orders.customer_id = customers.id\n-- ties the inner query to whichever outer row is currently being processed'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 08 · Step 4',
+          title: 'Predict the result',
+          body: [
+            'A customer with zero orders.'
+          ],
+          code: 'SELECT name,\n  (SELECT COUNT(*) FROM orders WHERE orders.customer_id = customers.id) AS order_count\nFROM customers\nWHERE name = \'Cara\';',
+          options: ['Cara, 0', 'Cara, NULL', 'No rows — Cara is excluded', 'Error'],
+          answer: 0,
+          explanation: '<code>COUNT(*)</code> on zero matching rows returns <code>0</code>, not <code>NULL</code> or an error — this is one advantage of <code>COUNT</code> over other aggregates for this pattern.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 08 · Step 5',
+          title: 'Scalar subqueries must return exactly one value',
+          body: [
+            'If a subquery in <code>SELECT</code> could return more than one row, the database raises an error — this pattern only works for subqueries that are guaranteed to collapse to a single value, like <code>COUNT</code>, <code>SUM</code>, or a query filtered down to one row.'
+          ],
+          code: '-- valid: COUNT always returns one number\n(SELECT COUNT(*) FROM orders WHERE ...)\n\n-- invalid: could return many rows, not one value\n(SELECT amount FROM orders WHERE ...)  -- error unless guaranteed to be one row'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 08 · Step 6',
+          title: 'Complete the subquery',
+          body: [
+            'Finish the subquery so it counts each customer\'s own orders.'
+          ],
+          codeBefore: 'SELECT name,\n  (SELECT ',
+          codeAfter: '(*) FROM orders WHERE orders.customer_id = customers.id) AS order_count\nFROM customers;',
+          answer: ['COUNT'],
+          hint: 'The aggregate function that counts rows.',
+          explanation: '<code>COUNT(*)</code> collapses however many matching order rows exist into a single number, satisfying the scalar-subquery requirement.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 08 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            'A subquery in <code>SELECT</code> (a scalar subquery) must return exactly one value per outer row.',
+            'A correlated subquery references a column from the outer query, so it re-runs once per outer row.',
+            '<code>COUNT(*)</code> naturally returns 0 for no matches, unlike some other aggregates — useful for this pattern.',
+            'Scalar subqueries can replace a JOIN for simple per-row summaries, at some performance cost on large tables.'
+          ],
+          next: 'Next up: choosing between subqueries, IN, and EXISTS.'
+        }
+      ]
+    },
+    {
+      id: 'in-exists-choosing',
+      title: 'IN, EXISTS & choosing an approach',
+      sub: '7 steps · ~5 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 09 · Step 1',
+          title: 'EXISTS checks whether a subquery returns any rows at all',
+          body: [
+            'Unlike <code>IN</code>, which compares values, <code>EXISTS (subquery)</code> just checks: did this produce at least one row? It\'s often faster, because the database can stop as soon as it finds one match instead of building a full list of values.'
+          ],
+          code: 'SELECT name\nFROM customers\nWHERE EXISTS (\n  SELECT 1 FROM orders WHERE orders.customer_id = customers.id\n);\n\n-- returns customers who have at least one order'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 09 · Step 2',
+          title: 'Predict the result',
+          body: [
+            'Assume orders has customer_id 1 and 2, but not 3.'
+          ],
+          code: 'SELECT name\nFROM customers\nWHERE EXISTS (\n  SELECT 1 FROM orders WHERE orders.customer_id = customers.id\n);',
+          options: ['Customers 1 and 2 only', 'All three customers', 'Error', 'No rows'],
+          answer: 0,
+          explanation: '<code>EXISTS</code> is true only for customers whose id appears in orders — customers 1 and 2 have matching order rows, customer 3 does not.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 09 · Step 3',
+          title: 'NOT EXISTS is the standard way to find rows with no related data',
+          body: [
+            '<code>NOT EXISTS (subquery)</code> is the <code>EXISTS</code> equivalent of <code>NOT IN</code> — often preferred over <code>NOT IN</code> because <code>NOT IN</code> can behave unexpectedly if the subquery\'s results contain a <code>NULL</code> value.'
+          ],
+          code: 'SELECT name\nFROM customers\nWHERE NOT EXISTS (\n  SELECT 1 FROM orders WHERE orders.customer_id = customers.id\n);\n\n-- returns customers with zero orders — safer than NOT IN'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 09 · Step 4',
+          title: 'Subqueries and JOINs often solve the same problem',
+          body: [
+            'If you only need to filter rows (does this customer have any order?), <code>EXISTS</code> or <code>IN</code> is usually clean and fast. If you need columns from both tables in the result, a <code>JOIN</code> is the right tool — subqueries can\'t pull extra columns from the inner table into the outer result.'
+          ],
+          code: '-- subquery: filter only, no order columns available\nSELECT name FROM customers WHERE EXISTS (SELECT 1 FROM orders WHERE ...);\n\n-- JOIN: can pull columns from both tables\nSELECT customers.name, orders.amount FROM customers INNER JOIN orders ON ...;'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 09 · Step 5',
+          title: 'Which approach fits?',
+          body: [
+            'You need a list of customer names along with each of their individual order amounts.'
+          ],
+          code: '-- Option A: WHERE EXISTS (subquery)\n-- Option B: INNER JOIN orders',
+          options: ['JOIN — you need columns from both tables', 'EXISTS — it\'s always faster', 'Either works identically', 'Neither can do this'],
+          answer: 0,
+          explanation: 'Since you need individual order amounts alongside customer names, a JOIN is required — a subquery used only for filtering can\'t return those extra columns.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 09 · Step 6',
+          title: 'Complete the query',
+          body: [
+            'Finish the query so it returns customers who have at least one order.'
+          ],
+          codeBefore: 'SELECT name\nFROM customers\nWHERE ',
+          codeAfter: ' (\n  SELECT 1 FROM orders WHERE orders.customer_id = customers.id\n);',
+          answer: ['EXISTS'],
+          hint: 'Checks whether a subquery returns any rows at all.',
+          explanation: '<code>WHERE EXISTS (subquery)</code> is true for any customer whose subquery finds at least one matching order.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 09 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            '<code>EXISTS (subquery)</code> checks for at least one matching row — often faster than <code>IN</code> since it can stop at the first match.',
+            '<code>NOT EXISTS</code> is generally safer than <code>NOT IN</code>, which can misbehave if the subquery\'s results include <code>NULL</code>.',
+            'Use a subquery (<code>IN</code>/<code>EXISTS</code>) when you only need to filter; use a <code>JOIN</code> when you need columns from both tables in the result.',
+            'Subqueries and JOINs often solve the same problem from different angles — the right choice depends on what the query needs to return.'
+          ],
+          next: 'Next up: a checkpoint test on subqueries.'
+        }
+      ]
+    },
+    {
+      id: 'checkpoint-3',
+      title: 'Checkpoint: Subqueries',
+      sub: 'Checkpoint · 8 questions',
+      isTest: true,
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Checkpoint · Start',
+          title: 'Time to check what stuck',
+          body: [
+            '8 quick questions pulling from subqueries in WHERE, scalar/correlated subqueries, and EXISTS.'
+          ]
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 1',
+          title: 'Predict the result',
+          body: ['Assume orders has: customer_id 1/$120, customer_id 2/$45.'],
+          code: 'SELECT name\nFROM customers\nWHERE id IN (\n  SELECT customer_id FROM orders WHERE amount > 100\n);',
+          options: ['Just the customer with id 1', 'Every customer', 'No customers', 'Error'],
+          answer: 0,
+          explanation: 'The subquery returns only customer_id 1, so the outer query returns just that customer.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint · Question 2',
+          title: 'Complete the query',
+          body: ['Finish the query so it returns customers who have placed at least one order over $100.'],
+          codeBefore: 'SELECT name\nFROM customers\nWHERE id ',
+          codeAfter: ' (\n  SELECT customer_id FROM orders WHERE amount > 100\n);',
+          answer: ['IN'],
+          hint: 'Checks membership in a set of values.',
+          explanation: '<code>WHERE id IN (subquery)</code> keeps only matching customers.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 3',
+          title: 'Predict the result',
+          body: ['No order in the table is over $100.'],
+          code: 'SELECT name\nFROM customers\nWHERE id IN (\n  SELECT customer_id FROM orders WHERE amount > 100\n);',
+          options: ['No rows returned', 'Every customer returned', 'Error', 'NULL returned'],
+          answer: 0,
+          explanation: 'An empty subquery result means <code>IN (...)</code> matches nothing.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint · Question 4',
+          title: 'Complete the subquery',
+          body: ['Finish the subquery so it counts each customer\'s own orders.'],
+          codeBefore: 'SELECT name,\n  (SELECT ',
+          codeAfter: '(*) FROM orders WHERE orders.customer_id = customers.id) AS order_count\nFROM customers;',
+          answer: ['COUNT'],
+          hint: 'The aggregate function that counts rows.',
+          explanation: '<code>COUNT(*)</code> gives each customer their own order count via the correlated subquery.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 5',
+          title: 'Predict the result',
+          body: ['A customer with zero orders.'],
+          code: 'SELECT name,\n  (SELECT COUNT(*) FROM orders WHERE orders.customer_id = customers.id) AS order_count\nFROM customers\nWHERE name = \'Cara\';',
+          options: ['Cara, 0', 'Cara, NULL', 'No rows — Cara is excluded', 'Error'],
+          answer: 0,
+          explanation: '<code>COUNT(*)</code> on zero matches returns <code>0</code>, not <code>NULL</code>.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint · Question 6',
+          title: 'Complete the query',
+          body: ['Finish the query so it returns customers who have at least one order.'],
+          codeBefore: 'SELECT name\nFROM customers\nWHERE ',
+          codeAfter: ' (\n  SELECT 1 FROM orders WHERE orders.customer_id = customers.id\n);',
+          answer: ['EXISTS'],
+          hint: 'Checks whether a subquery returns any rows at all.',
+          explanation: '<code>WHERE EXISTS (subquery)</code> is true for customers with at least one matching order.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 7',
+          title: 'Predict the result',
+          body: ['Assume orders has customer_id 1 and 2, but not 3.'],
+          code: 'SELECT name\nFROM customers\nWHERE EXISTS (\n  SELECT 1 FROM orders WHERE orders.customer_id = customers.id\n);',
+          options: ['Customers 1 and 2 only', 'All three customers', 'Error', 'No rows'],
+          answer: 0,
+          explanation: 'Only customers 1 and 2 have matching order rows.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 8',
+          title: 'Which approach fits?',
+          body: ['You need customer names along with each of their individual order amounts.'],
+          code: '-- Option A: WHERE EXISTS (subquery)\n-- Option B: INNER JOIN orders',
+          options: ['JOIN — you need columns from both tables', 'EXISTS — it\'s always faster', 'Either works identically', 'Neither can do this'],
+          answer: 0,
+          explanation: 'A JOIN is required to pull individual order amounts alongside customer names.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Checkpoint · Complete',
+          title: 'Here\'s where you stand',
+          bullets: [
+            'Subqueries in WHERE, scalar/correlated subqueries, and EXISTS — tools for filtering and summarizing based on related data.',
+            'If anything felt shaky, the matching lesson is one tap away in the menu — and you can retake this checkpoint any time.'
+          ],
+          next: 'Next up: a project — finding customers who need a check-in.'
+        }
+      ]
+    },
+    {
+      id: 'project-at-risk',
+      title: 'Project: Find At-Risk Customers',
+      sub: 'Project · 8 steps',
+      kind: 'project',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Project · Brief',
+          title: 'The goal',
+          body: [
+            'Find customers worth reaching out to: those who have never ordered, and separately, big spenders — combining subqueries, NOT EXISTS, and correlated subqueries.'
+          ]
+        },
+        {
+          type: 'info',
+          eyebrow: 'Project · Step 1',
+          title: 'Start with the data',
+          body: [
+            'Assume these two tables. Cara and Dev have no orders.'
+          ],
+          code: 'customers\n---------------\nid | name\n1  | Ana\n2  | Ben\n3  | Cara\n4  | Dev\n\norders\n---------------------\nid | customer_id | amount\n1  | 1           | 120\n2  | 2           | 45\n3  | 1           | 30'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Project · Step 2',
+          title: 'Complete the query',
+          body: [
+            'Finish the query so it finds customers who have never placed an order.'
+          ],
+          codeBefore: 'SELECT name\nFROM customers\nWHERE ',
+          codeAfter: ' (\n  SELECT 1 FROM orders WHERE orders.customer_id = customers.id\n);',
+          answer: ['NOT EXISTS'],
+          hint: 'The negated form of EXISTS.',
+          explanation: '<code>NOT EXISTS (subquery)</code> keeps only customers with zero matching order rows.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Project · Step 3',
+          title: 'Predict the result',
+          code: 'SELECT name\nFROM customers\nWHERE NOT EXISTS (\n  SELECT 1 FROM orders WHERE orders.customer_id = customers.id\n);',
+          options: ['Cara and Dev', 'Ana and Ben', 'All four customers', 'No rows'],
+          answer: 0,
+          explanation: 'Cara and Dev have no matching rows in orders, so <code>NOT EXISTS</code> is true for them.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Project · Step 4',
+          title: 'Add each customer\'s total spend',
+          body: [
+            'A correlated scalar subquery sums each customer\'s own orders.'
+          ],
+          code: 'SELECT name,\n  (SELECT SUM(amount) FROM orders WHERE orders.customer_id = customers.id) AS total_spent\nFROM customers;\n\n-- returns:\nname | total_spent\nAna  | 150\nBen  | 45\nCara | NULL\nDev  | NULL'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Project · Step 5',
+          title: 'Complete the subquery',
+          body: [
+            'Finish the subquery so it sums each customer\'s own order amounts.'
+          ],
+          codeBefore: 'SELECT name,\n  (SELECT ',
+          codeAfter: '(amount) FROM orders WHERE orders.customer_id = customers.id) AS total_spent\nFROM customers;',
+          answer: ['SUM'],
+          hint: 'The aggregate function that adds values together.',
+          explanation: '<code>SUM(amount)</code> totals each customer\'s own orders via the correlated subquery.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Project · Step 6',
+          title: 'Predict the result',
+          code: 'SELECT name\nFROM customers\nWHERE (SELECT SUM(amount) FROM orders WHERE orders.customer_id = customers.id) > 100;',
+          options: ['Just Ana', 'Ana and Ben', 'Everyone', 'No rows'],
+          answer: 0,
+          explanation: 'Only Ana\'s total (150) exceeds 100 — Ben\'s total is 45, and Cara/Dev have no orders to sum.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Project · Complete',
+          title: 'You found the at-risk and high-value customers',
+          code: '-- customers to check in with (never ordered):\nSELECT name\nFROM customers\nWHERE NOT EXISTS (\n  SELECT 1 FROM orders WHERE orders.customer_id = customers.id\n);\n\n-- high-value customers (spent over $100):\nSELECT name\nFROM customers\nWHERE (SELECT SUM(amount) FROM orders WHERE orders.customer_id = customers.id) > 100;',
+          bullets: [
+            'NOT EXISTS found customers with zero matching orders — the classic "never purchased" query.',
+            'A correlated scalar subquery (SUM(amount) WHERE orders.customer_id = customers.id) computed each customer\'s own total spend.',
+            'Filtering directly on a subquery\'s result in WHERE combines summarization and filtering in one query.',
+            'These two patterns — NOT EXISTS for "never happened" and a correlated subquery for "per-row summary" — cover most real customer-segmentation queries.'
+          ],
+          next: 'More lessons — window functions and advanced querying — are on the way.'
+        }
+      ]
+    },
+    { id: 'more-soon', title: 'Window functions', sub: 'coming soon', locked: true }
   ];
 
   var state = load();
