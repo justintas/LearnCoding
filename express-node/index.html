@@ -842,7 +842,492 @@
         }
       ]
     },
-    { id: 'more-soon', title: 'Connecting to a database', sub: 'coming soon', locked: true }
+    {
+      id: 'db-connection',
+      title: 'Connecting to a database',
+      sub: '7 steps · ~5 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 04 · Step 1',
+          title: 'A database client connects your server to a real database',
+          body: [
+            'Instead of storing data in memory (which disappears when the server restarts), a database client lets your server run real SQL queries against a persistent database like PostgreSQL or MySQL.'
+          ],
+          code: 'const { Pool } = require("pg");\n\nconst db = new Pool({\n  host: "localhost",\n  database: "notes_app",\n  user: "admin",\n  password: "secret"\n});'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 04 · Step 2',
+          title: 'What does a database solve?',
+          body: [
+            'What problem does a database solve that an in-memory array does not?'
+          ],
+          code: '// in-memory:\nlet notes = [];  // gone when the server restarts\n\n// database:\n// data persists even after the server restarts',
+          options: ['Data survives a server restart', 'Arrays can\'t hold objects', 'Databases are always faster', 'There is no real difference'],
+          answer: 0,
+          explanation: 'An in-memory array lives only as long as the process is running — a database persists data independently of the server process.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 04 · Step 3',
+          title: 'db.query() sends a SQL string to the database and returns a Promise',
+          body: [
+            'Since talking to a database over the network takes time, <code>query()</code> is asynchronous — it returns a Promise you await, the same pattern used for <code>fetch</code> in the frontend.'
+          ],
+          code: 'async function getNotes() {\n  const result = await db.query("SELECT * FROM notes");\n  return result.rows;\n}'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 04 · Step 4',
+          title: 'Predict the outcome',
+          body: [
+            'Assume the notes table has 3 rows.'
+          ],
+          code: 'async function getNotes() {\n  const result = await db.query("SELECT * FROM notes");\n  return result.rows;\n}\n\nconst notes = await getNotes();\nconsole.log(notes.length);',
+          options: ['3', '0', '1', 'Error'],
+          answer: 0,
+          explanation: '<code>result.rows</code> holds every row returned by the query — three rows in, three rows out.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 04 · Step 5',
+          title: 'Route handlers can be async functions',
+          body: [
+            'Since Express route handlers can be async, you can <code>await</code> a database query directly inside one, then send the result.'
+          ],
+          code: 'app.get("/notes", async (req, res) => {\n  const result = await db.query("SELECT * FROM notes");\n  res.json(result.rows);\n});'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 04 · Step 6',
+          title: 'Complete the line',
+          body: [
+            'Finish the line so the query result is awaited before continuing.'
+          ],
+          codeBefore: 'app.get("/notes", async (req, res) => {\n  const result = ',
+          codeAfter: ' db.query("SELECT * FROM notes");\n  res.json(result.rows);\n});',
+          answer: ['await'],
+          hint: 'Pauses an async function until a Promise resolves.',
+          explanation: '<code>await</code> pauses until the database responds, giving you the actual query result instead of a pending Promise.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 04 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            'A database client (like <code>pg</code> for PostgreSQL) connects your server to a real, persistent database.',
+            'Unlike an in-memory array, data in a real database survives a server restart.',
+            '<code>db.query(sql)</code> is asynchronous — it returns a Promise, awaited the same way as <code>fetch</code>.',
+            'Express route handlers can be async functions, letting you await a database query directly inside one.'
+          ],
+          next: 'Next up: parameterized queries — passing safe, dynamic values into SQL.'
+        }
+      ]
+    },
+    {
+      id: 'parameterized-queries',
+      title: 'Parameterized queries',
+      sub: '7 steps · ~5 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 05 · Step 1',
+          title: 'Never build SQL by directly inserting user input into a string',
+          body: [
+            'Concatenating user input straight into a SQL string opens the door to <strong>SQL injection</strong> — a malicious user could send input that changes what the query actually does, including deleting data or reading data they shouldn\'t see.'
+          ],
+          code: '// dangerous — never do this:\nconst id = req.params.id;\nawait db.query(`SELECT * FROM notes WHERE id = ${id}`);\n\n// a malicious id like "1; DROP TABLE notes;" could damage the database'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 05 · Step 2',
+          title: 'Predict the risk',
+          body: [
+            'A user sends a crafted id value designed to manipulate the query.'
+          ],
+          code: 'const id = req.params.id; // attacker-controlled\nawait db.query(`SELECT * FROM notes WHERE id = ${id}`);',
+          options: ['The attacker may be able to run their own SQL against your database', 'Nothing bad can happen — SQL always ignores extra text', 'The server crashes immediately, but data is safe', 'Only string columns are vulnerable to this'],
+          answer: 0,
+          explanation: 'Directly inserting untrusted input into a SQL string is exactly how SQL injection works — the attacker\'s input can change the query\'s actual meaning.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 05 · Step 3',
+          title: 'Placeholders keep values separate from the SQL structure',
+          body: [
+            'A parameterized query uses a placeholder (<code>$1</code>, <code>$2</code>, or <code>?</code> depending on the library) in the SQL string, then passes the actual values as a separate array — the database treats them strictly as data, never as part of the SQL itself.'
+          ],
+          code: 'const id = req.params.id;\nconst result = await db.query(\n  "SELECT * FROM notes WHERE id = $1",\n  [id]\n);\n\n// id is always treated as a value, never as SQL code'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 05 · Step 4',
+          title: 'Predict the outcome',
+          body: [
+            'Same attacker-controlled id as before, but using a parameterized query this time.'
+          ],
+          code: 'const id = req.params.id; // attacker-controlled\nconst result = await db.query(\n  "SELECT * FROM notes WHERE id = $1",\n  [id]\n);',
+          options: ['Safe — the value is treated as plain data, not SQL', 'Still vulnerable in the same way', 'The query fails to run at all', 'Error — placeholders aren\'t supported'],
+          answer: 0,
+          explanation: 'Because the value is passed separately from the SQL string, the database can never interpret it as part of the query structure — this is the standard fix for SQL injection.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 05 · Step 5',
+          title: 'Every value from a request should go through a placeholder',
+          body: [
+            'This applies to anything coming from <code>req.params</code>, <code>req.query</code>, or <code>req.body</code> — not just obviously "dangerous-looking" input. Any value a user controls should never be concatenated directly into SQL.'
+          ],
+          code: 'app.post("/notes", async (req, res) => {\n  const { text } = req.body;\n  const result = await db.query(\n    "INSERT INTO notes (text) VALUES ($1) RETURNING *",\n    [text]\n  );\n  res.json(result.rows[0]);\n});'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 05 · Step 6',
+          title: 'Complete the query',
+          body: [
+            'Finish the query so the id value is passed as a safe parameter, not concatenated into the string.'
+          ],
+          codeBefore: 'const result = await db.query(\n  "SELECT * FROM notes WHERE id = $1",\n  ',
+          codeAfter: '\n);',
+          answer: ['[id]'],
+          hint: 'An array containing the value that fills the $1 placeholder.',
+          explanation: '<code>[id]</code> passes <code>id</code> as the value for <code>$1</code> — separate from the SQL string, which is what keeps the query safe.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 05 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            'Never concatenate user input directly into a SQL string — it opens the door to SQL injection.',
+            'A parameterized query uses a placeholder (<code>$1</code>) in the SQL, with actual values passed as a separate array.',
+            'The database treats parameterized values strictly as data, never as part of the SQL structure.',
+            'Every value from <code>req.params</code>, <code>req.query</code>, or <code>req.body</code> should go through a placeholder, not string concatenation.'
+          ],
+          next: 'Next up: error handling — what happens when a database query fails.'
+        }
+      ]
+    },
+    {
+      id: 'db-error-handling',
+      title: 'Error handling for database calls',
+      sub: '7 steps · ~5 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 06 · Step 1',
+          title: 'A database query can fail',
+          body: [
+            'Unlike a simple in-memory operation, a database call goes over the network and can fail in ways your code needs to handle gracefully instead of crashing the server.'
+          ],
+          code: 'app.get("/notes/:id", async (req, res) => {\n  const result = await db.query(\n    "SELECT * FROM notes WHERE id = $1",\n    [req.params.id]\n  );\n  res.json(result.rows[0]);\n});\n\n// if the database is unreachable, this throws — and crashes the request'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 06 · Step 2',
+          title: 'Predict the outcome',
+          body: [
+            'The database connection is temporarily down when this route is called.'
+          ],
+          code: 'app.get("/notes/:id", async (req, res) => {\n  const result = await db.query(\n    "SELECT * FROM notes WHERE id = $1",\n    [req.params.id]\n  );\n  res.json(result.rows[0]);\n});',
+          options: ['The query throws, and without a try/catch, the request fails with an unhandled error', 'Express automatically retries the query', 'res.json sends an empty response', 'Nothing happens, the request just hangs'],
+          answer: 0,
+          explanation: 'An awaited query that throws propagates up — without a try/catch, the failure is unhandled, so this needs explicit handling.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 06 · Step 3',
+          title: 'Wrap the query in try/catch, just like any other async call',
+          body: [
+            'The same try/catch pattern used for <code>fetch</code> works for database queries — catch the error and send an appropriate error response instead of letting it crash the request.'
+          ],
+          code: 'app.get("/notes/:id", async (req, res) => {\n  try {\n    const result = await db.query(\n      "SELECT * FROM notes WHERE id = $1",\n      [req.params.id]\n    );\n    res.json(result.rows[0]);\n  } catch (error) {\n    res.status(500).json({ error: "Something went wrong" });\n  }\n});'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 06 · Step 4',
+          title: 'Predict the outcome',
+          body: [
+            'The query fails inside the try block.'
+          ],
+          code: 'app.get("/notes/:id", async (req, res) => {\n  try {\n    const result = await db.query("SELECT * FROM notes WHERE id = $1", [req.params.id]);\n    res.json(result.rows[0]);\n  } catch (error) {\n    res.status(500).json({ error: "Something went wrong" });\n  }\n});',
+          options: ['The catch block runs, sending a 500 status with an error message', 'The server crashes', 'res.json still runs with undefined data', 'Nothing is sent back'],
+          answer: 0,
+          explanation: 'The catch block intercepts the thrown error and sends a proper error response instead of letting the failure crash the request.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 06 · Step 5',
+          title: 'res.status() sets the HTTP status code before sending a response',
+          body: [
+            '200 means success (the default); 404 means not found; 500 means a server error. Setting the right status code lets the frontend distinguish "this failed" from "this succeeded," without parsing the response body.'
+          ],
+          code: 'res.status(404).json({ error: "Note not found" });\nres.status(500).json({ error: "Server error" });\nres.status(201).json(newNote); // 201 = created'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 06 · Step 6',
+          title: 'Complete the line',
+          body: [
+            'Finish the line so a failed query responds with a 500 status and an error message.'
+          ],
+          codeBefore: '} catch (error) {\n  res.',
+          codeAfter: '(500).json({ error: "Something went wrong" });\n}',
+          answer: ['status'],
+          hint: 'Sets the HTTP status code on the response.',
+          explanation: '<code>res.status(500)</code> marks this response as a server error before sending the JSON body.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 06 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            'A database call can fail over the network — always assume it might, and handle that case.',
+            'Wrap <code>await db.query(...)</code> in try/catch, the same pattern used for any other async call.',
+            '<code>res.status(code)</code> sets the HTTP status before sending a response — 404 for not found, 500 for server errors.',
+            'A caught error should produce a clear, appropriately-coded response, never a crashed or hanging request.'
+          ],
+          next: 'Next up: a final checkpoint covering the whole course.'
+        }
+      ]
+    },
+    {
+      id: 'checkpoint-2',
+      title: 'Final Checkpoint: Express/Node',
+      sub: 'Checkpoint · 10 questions',
+      isTest: true,
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Checkpoint · Start',
+          title: 'The full-course review',
+          body: [
+            '10 questions — the last three lessons on databases, parameterized queries, and error handling, plus a review of routes and middleware from earlier in the course.'
+          ]
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 1',
+          title: 'What does a database solve?',
+          body: ['What problem does a database solve that an in-memory array does not?'],
+          code: '// in-memory:\nlet notes = [];  // gone when the server restarts\n\n// database:\n// data persists even after the server restarts',
+          options: ['Data survives a server restart', 'Arrays can\'t hold objects', 'Databases are always faster', 'There is no real difference'],
+          answer: 0,
+          explanation: 'A database persists data independently of the server process.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint · Question 2',
+          title: 'Complete the line',
+          body: ['Finish the line so the query result is awaited before continuing.'],
+          codeBefore: 'app.get("/notes", async (req, res) => {\n  const result = ',
+          codeAfter: ' db.query("SELECT * FROM notes");\n  res.json(result.rows);\n});',
+          answer: ['await'],
+          hint: 'Pauses an async function until a Promise resolves.',
+          explanation: '<code>await</code> pauses until the database responds.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 3',
+          title: 'Predict the risk',
+          body: ['A user sends a crafted id value designed to manipulate the query.'],
+          code: 'const id = req.params.id; // attacker-controlled\nawait db.query(`SELECT * FROM notes WHERE id = ${id}`);',
+          options: ['The attacker may be able to run their own SQL against your database', 'Nothing bad can happen', 'The server crashes immediately, but data is safe', 'Only string columns are vulnerable'],
+          answer: 0,
+          explanation: 'Directly inserting untrusted input into SQL is exactly how SQL injection works.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint · Question 4',
+          title: 'Complete the query',
+          body: ['Finish the query so the id value is passed as a safe parameter, not concatenated into the string.'],
+          codeBefore: 'const result = await db.query(\n  "SELECT * FROM notes WHERE id = $1",\n  ',
+          codeAfter: '\n);',
+          answer: ['[id]'],
+          hint: 'An array containing the value that fills the $1 placeholder.',
+          explanation: '<code>[id]</code> passes the value separately from the SQL string.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 5',
+          title: 'Predict the outcome',
+          body: ['Same attacker-controlled id, but using a parameterized query this time.'],
+          code: 'const id = req.params.id;\nconst result = await db.query(\n  "SELECT * FROM notes WHERE id = $1",\n  [id]\n);',
+          options: ['Safe — the value is treated as plain data, not SQL', 'Still vulnerable in the same way', 'The query fails to run at all', 'Error'],
+          answer: 0,
+          explanation: 'Parameterized values can never be interpreted as part of the SQL structure.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint · Question 6',
+          title: 'Complete the line',
+          body: ['Finish the line so a failed query responds with a 500 status.'],
+          codeBefore: '} catch (error) {\n  res.',
+          codeAfter: '(500).json({ error: "Something went wrong" });\n}',
+          answer: ['status'],
+          hint: 'Sets the HTTP status code on the response.',
+          explanation: '<code>res.status(500)</code> marks this response as a server error.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 7',
+          title: 'Predict the outcome',
+          body: ['The query fails inside the try block.'],
+          code: 'try {\n  const result = await db.query("SELECT * FROM notes WHERE id = $1", [req.params.id]);\n  res.json(result.rows[0]);\n} catch (error) {\n  res.status(500).json({ error: "Something went wrong" });\n}',
+          options: ['The catch block runs, sending a 500 status with an error message', 'The server crashes', 'res.json still runs with undefined data', 'Nothing is sent back'],
+          answer: 0,
+          explanation: 'The catch block intercepts the thrown error.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 8',
+          title: 'Review: predict the outcome',
+          body: ['A request comes in for GET /users/7.'],
+          code: 'app.get("/users/:id", (req, res) => {\n  res.send(`User ID: ${req.params.id}`);\n});',
+          options: ['Response body: "User ID: 7"', 'Response body: "User ID: :id"', 'Error', 'Response body: "7"'],
+          answer: 0,
+          explanation: '<code>req.params.id</code> captures "7" from the URL.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 9',
+          title: 'Review: which method fits?',
+          body: ['A frontend wants to create a new blog post.'],
+          code: '// Option A: app.get("/posts", ...)\n// Option B: app.post("/posts", ...)',
+          options: ['Option B — POST for creating something new', 'Option A — GET works for creating too', 'Either works identically', 'Neither is correct'],
+          answer: 0,
+          explanation: 'POST is the standard method for creating a new resource.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint · Question 10',
+          title: 'Review: complete the function',
+          body: ['Finish the line so the function calls next to continue to the next middleware or route.'],
+          codeBefore: 'function logger(req, res, next) {\n  console.log(req.path);\n  ',
+          codeAfter: '();\n}',
+          answer: ['next'],
+          hint: 'Passes control to the next function in the chain.',
+          explanation: '<code>next()</code> hands off control to continue the chain.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Checkpoint · Complete',
+          title: 'Here\'s where you stand',
+          bullets: [
+            'Databases, parameterized queries, and error handling close out the language — servers, routes, and middleware now fit into one picture.',
+            'If anything felt shaky, the matching lesson is one tap away in the menu — and you can retake this checkpoint any time.'
+          ],
+          next: 'Next up: the capstone project — bringing it all together.'
+        }
+      ]
+    },
+    {
+      id: 'capstone-notes-api-db',
+      title: 'Capstone: Database-Backed Notes API',
+      sub: 'Capstone · 9 steps',
+      kind: 'project',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Capstone · Brief',
+          title: 'The goal',
+          body: [
+            'Upgrade the Notes API from Module 1 to use a real database: parameterized queries, async/await, and proper error handling on every route.'
+          ]
+        },
+        {
+          type: 'info',
+          eyebrow: 'Capstone · Step 1',
+          title: 'Start with the database connection',
+          body: [
+            'A basic Express app connected to a database pool.'
+          ],
+          code: 'const express = require("express");\nconst { Pool } = require("pg");\n\nconst app = express();\napp.use(express.json());\nconst db = new Pool({ database: "notes_app" });'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Capstone · Step 2',
+          title: 'Complete the route',
+          body: [
+            'Finish the route so the query result is awaited before sending it.'
+          ],
+          codeBefore: 'app.get("/notes", async (req, res) => {\n  const result = ',
+          codeAfter: ' db.query("SELECT * FROM notes");\n  res.json(result.rows);\n});',
+          answer: ['await'],
+          hint: 'Pauses an async function until a Promise resolves.',
+          explanation: '<code>await</code> pauses until the database responds with the query result.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Capstone · Step 3',
+          title: 'Get a single note using a parameterized query',
+          body: [
+            'The id from the URL is passed as a safe parameter, never concatenated into the SQL.'
+          ],
+          code: 'app.get("/notes/:id", async (req, res) => {\n  const result = await db.query(\n    "SELECT * FROM notes WHERE id = $1",\n    [req.params.id]\n  );\n  res.json(result.rows[0]);\n});'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Capstone · Step 4',
+          title: 'Complete the query call',
+          body: [
+            'Finish the query call so req.params.id is passed as a safe parameter.'
+          ],
+          codeBefore: 'const result = await db.query(\n    "SELECT * FROM notes WHERE id = $1",\n    ',
+          codeAfter: '\n  );',
+          answer: ['[req.params.id]'],
+          hint: 'An array containing the value that fills the $1 placeholder.',
+          explanation: '<code>[req.params.id]</code> passes the URL parameter separately from the SQL string, keeping the query safe.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Capstone · Step 5',
+          title: 'Wrap the create route in try/catch',
+          body: [
+            'A failed insert should return a clean error response instead of crashing the request.'
+          ],
+          code: 'app.post("/notes", async (req, res) => {\n  try {\n    const { text } = req.body;\n    const result = await db.query(\n      "INSERT INTO notes (text) VALUES ($1) RETURNING *",\n      [text]\n    );\n    res.status(201).json(result.rows[0]);\n  } catch (error) {\n    res.status(500).json({ error: "Could not create note" });\n  }\n});'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Capstone · Step 6',
+          title: 'Complete the line',
+          body: [
+            'Finish the line so a newly created note responds with the 201 status code.'
+          ],
+          codeBefore: 'res.',
+          codeAfter: '(201).json(result.rows[0]);',
+          answer: ['status'],
+          hint: 'Sets the HTTP status code on the response.',
+          explanation: '<code>res.status(201)</code> marks this response as "created" before sending the new note back.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Capstone · Step 7',
+          title: 'Predict the outcome',
+          body: [
+            'The database connection drops during the INSERT.'
+          ],
+          code: 'app.post("/notes", async (req, res) => {\n  try {\n    const { text } = req.body;\n    const result = await db.query(\n      "INSERT INTO notes (text) VALUES ($1) RETURNING *",\n      [text]\n    );\n    res.status(201).json(result.rows[0]);\n  } catch (error) {\n    res.status(500).json({ error: "Could not create note" });\n  }\n});',
+          options: ['The catch block sends a 500 error response', 'The server crashes', 'res.status(201) still runs', 'The request hangs forever'],
+          answer: 0,
+          explanation: 'try/catch intercepts the thrown error from the failed query, so the catch block runs instead of letting the failure crash the request.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Capstone · Complete',
+          title: 'You built a database-backed API',
+          code: 'const express = require("express");\nconst { Pool } = require("pg");\n\nconst app = express();\napp.use(express.json());\nconst db = new Pool({ database: "notes_app" });\n\napp.get("/notes", async (req, res) => {\n  const result = await db.query("SELECT * FROM notes");\n  res.json(result.rows);\n});\n\napp.get("/notes/:id", async (req, res) => {\n  const result = await db.query(\n    "SELECT * FROM notes WHERE id = $1",\n    [req.params.id]\n  );\n  res.json(result.rows[0]);\n});\n\napp.post("/notes", async (req, res) => {\n  try {\n    const { text } = req.body;\n    const result = await db.query(\n      "INSERT INTO notes (text) VALUES ($1) RETURNING *",\n      [text]\n    );\n    res.status(201).json(result.rows[0]);\n  } catch (error) {\n    res.status(500).json({ error: "Could not create note" });\n  }\n});\n\napp.listen(3000);',
+          bullets: [
+            'A real database connection replaced the in-memory array, so data now survives a server restart.',
+            'Every query used a parameterized placeholder ($1) instead of concatenating request data into SQL.',
+            'async/await let each route read cleanly, despite the database calls taking real time.',
+            'try/catch on the write route turned a potential crash into a clean, properly-coded error response.'
+          ],
+          next: 'That\'s the full Express/Node course — servers, routes, middleware, databases, and error handling. And with that, the entire full-stack path is complete. Nicely done.'
+        }
+      ]
+    }
   ];
 
   var state = load();
