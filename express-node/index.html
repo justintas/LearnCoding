@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Express / Node — Practice Terminal</title>
+<style>
+  :root {
+    --bg: #F3F7F5;
+    --bg-raised: #FFFFFF;
+    --ink: #1B222A;
+    --ink-soft: #4E5860;
+    --line: rgba(27, 34, 42, 0.12);
+    --accent: #B96A1E;
+    --accent-ink: #7A4614;
+    --accent-soft: rgba(185, 106, 30, 0.12);
+    --success: #2F7D68;
+    --success-soft: rgba(47, 125, 104, 0.12);
+    --error: #B0402E;
+    --error-soft: rgba(176, 64, 46, 0.10);
+    --shadow: 0 1px 2px rgba(27,34,42,0.04), 0 8px 24px rgba(27,34,42,0.06);
+    --radius: 12px;
+
+    --font-display: ui-serif, Georgia, "Iowan Old Style", "Palatino Linotype", serif;
+    --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-mono: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #12161C;
+      --bg-raised: #1A2029;
+      --ink: #ECE7DC;
+      --ink-soft: #9BA3AC;
+      --line: rgba(236, 231, 220, 0.12);
+      --accent: #D89654;
+      --accent-ink: #F0C48F;
+      --accent-soft: rgba(216, 150, 84, 0.16);
+      --success: #63B39C;
+      --success-soft: rgba(99, 179, 156, 0.14);
+      --error: #E08670;
+      --error-soft: rgba(224, 134, 112, 0.14);
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 12px 32px rgba(0,0,0,0.35);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #12161C;
+    --bg-raised: #1A2029;
+    --ink: #ECE7DC;
+    --ink-soft: #9BA3AC;
+    --line: rgba(236, 231, 220, 0.12);
+    --accent: #D89654;
+    --accent-ink: #F0C48F;
+    --accent-soft: rgba(216, 150, 84, 0.16);
+    --success: #63B39C;
+    --success-soft: rgba(99, 179, 156, 0.14);
+    --error: #E08670;
+    --error-soft: rgba(224, 134, 112, 0.14);
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 12px 32px rgba(0,0,0,0.35);
+  }
+  :root[data-theme="light"] {
+    --bg: #F3F7F5;
+    --bg-raised: #FFFFFF;
+    --ink: #1B222A;
+    --ink-soft: #4E5860;
+    --line: rgba(27, 34, 42, 0.12);
+    --accent: #B96A1E;
+    --accent-ink: #7A4614;
+    --accent-soft: rgba(185, 106, 30, 0.12);
+    --success: #2F7D68;
+    --success-soft: rgba(47, 125, 104, 0.12);
+    --error: #B0402E;
+    --error-soft: rgba(176, 64, 46, 0.10);
+    --shadow: 0 1px 2px rgba(27,34,42,0.04), 0 8px 24px rgba(27,34,42,0.06);
+  }
+
+  * { box-sizing: border-box; }
+  body { background: var(--bg); }
+
+  .stage {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 48px 20px 80px;
+    color: var(--ink);
+    font-family: var(--font-body);
+  }
+
+  .frame {
+    width: 100%;
+    max-width: 640px;
+    background: var(--bg-raised);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+
+  .chrome {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--line);
+    font-family: var(--font-mono);
+  }
+  .chrome-path {
+    font-size: 12.5px;
+    letter-spacing: 0.04em;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .chrome-path b { color: var(--ink); font-weight: 600; }
+  .chrome-left { display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .hub-link {
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    text-decoration: none;
+    white-space: nowrap;
+    border-right: 1px solid var(--line);
+    padding-right: 10px;
+  }
+  .hub-link:hover { color: var(--accent); }
+  .streak {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    white-space: nowrap;
+  }
+  .streak b {
+    font-variant-numeric: tabular-nums;
+    color: var(--accent-ink);
+    font-size: 14px;
+  }
+
+  .progress-track {
+    display: flex;
+    gap: 4px;
+    padding: 10px 20px;
+    background: var(--bg);
+  }
+  .progress-seg {
+    flex: 1;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--line);
+    transition: background 0.3s ease;
+  }
+  .progress-seg.done { background: var(--accent); }
+  .progress-seg.current { background: var(--accent); opacity: 0.45; }
+
+  .panel {
+    padding: 32px 28px 28px;
+    min-height: 360px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent-ink);
+    margin: 0 0 10px;
+  }
+
+  h1.step-title {
+    font-family: var(--font-display);
+    font-size: 26px;
+    line-height: 1.25;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+    margin: 0 0 14px;
+    color: var(--ink);
+  }
+
+  .prose { font-size: 15.5px; line-height: 1.6; color: var(--ink); margin: 0 0 12px; }
+  .prose:last-child { margin-bottom: 0; }
+  .prose code { font-family: var(--font-mono); background: var(--accent-soft); padding: 0.05em 0.35em; border-radius: 4px; font-size: 0.9em; }
+
+  .code-block {
+    font-family: var(--font-mono);
+    font-size: 14.5px;
+    line-height: 1.7;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin: 14px 0;
+    white-space: pre;
+    overflow-x: auto;
+    color: var(--ink);
+  }
+  .code-block .blank {
+    display: inline-block;
+    min-width: 2.4em;
+    border-bottom: 2px solid var(--accent);
+    color: var(--accent-ink);
+    text-align: center;
+  }
+  .code-block .cmt { color: var(--ink-soft); }
+
+  .prompt-line {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-mono);
+    margin-top: 14px;
+  }
+  .prompt-line .chevron { color: var(--accent); font-weight: 700; }
+  .prompt-line input {
+    flex: 1;
+    font-family: var(--font-mono);
+    font-size: 15px;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--line);
+    color: var(--ink);
+    padding: 6px 2px;
+    outline: none;
+  }
+  .prompt-line input:focus { border-bottom-color: var(--accent); }
+  .cursor {
+    display: inline-block;
+    width: 8px;
+    height: 16px;
+    background: var(--accent);
+    margin-left: 2px;
+    animation: blink 1.1s steps(1) infinite;
+  }
+  @media (prefers-reduced-motion: reduce) { .cursor { animation: none; opacity: 1; } }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  .options { display: flex; flex-direction: column; gap: 8px; margin-top: 14px; }
+  .option {
+    font-family: var(--font-mono);
+    font-size: 14.5px;
+    text-align: left;
+    padding: 11px 14px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--bg-raised);
+    color: var(--ink);
+    cursor: pointer;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+  .option:hover { border-color: var(--accent); }
+  .option:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .option .idx { color: var(--ink-soft); margin-right: 8px; }
+  .option.correct { border-color: var(--success); background: var(--success-soft); }
+  .option.wrong { border-color: var(--error); background: var(--error-soft); }
+  .option.dim { opacity: 0.5; cursor: default; }
+
+  .feedback {
+    margin-top: 14px;
+    padding: 12px 14px;
+    border-radius: 8px;
+    font-size: 14px;
+    line-height: 1.55;
+    display: none;
+  }
+  .feedback.show { display: block; }
+  .feedback.ok { background: var(--success-soft); color: var(--success); }
+  .feedback.no { background: var(--error-soft); color: var(--error); }
+  .feedback b { color: var(--ink); }
+
+  .score-box {
+    display: flex; align-items: baseline; gap: 14px;
+    padding: 16px 18px; margin-bottom: 16px;
+    background: var(--accent-soft); border: 1px solid var(--line); border-radius: 8px;
+  }
+  .score-num {
+    font-family: var(--font-mono); font-variant-numeric: tabular-nums;
+    font-size: 28px; font-weight: 700; color: var(--accent-ink); line-height: 1;
+  }
+  .score-num .score-of { font-size: 16px; font-weight: 400; color: var(--ink-soft); }
+  .score-msg { font-size: 14px; color: var(--ink-soft); }
+
+  .recap-list { list-style: none; margin: 6px 0 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+  .recap-list li {
+    font-size: 14.5px; line-height: 1.55;
+    padding-left: 18px; position: relative; color: var(--ink);
+  }
+  .recap-list li::before {
+    content: "→"; position: absolute; left: 0; color: var(--accent);
+    font-family: var(--font-mono);
+  }
+
+  .footer {
+    margin-top: auto;
+    padding-top: 22px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+  }
+  .hint-btn {
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    padding: 6px 0;
+  }
+  .hint-btn:hover { color: var(--ink); }
+  .spacer { flex: 1; }
+
+  .btn {
+    font-family: var(--font-mono);
+    font-size: 13.5px;
+    letter-spacing: 0.01em;
+    padding: 11px 20px;
+    border-radius: 8px;
+    border: 1px solid var(--accent);
+    background: var(--accent);
+    color: #FFFDF9;
+    cursor: pointer;
+    transition: transform 0.1s ease, opacity 0.15s ease;
+  }
+  .btn:hover { opacity: 0.92; }
+  .btn:active { transform: translateY(1px); }
+  .btn:disabled { opacity: 0.35; cursor: not-allowed; }
+  .btn.ghost { background: transparent; color: var(--ink-soft); border-color: var(--line); }
+  .btn.ghost:hover { color: var(--ink); border-color: var(--ink-soft); }
+
+  /* menu screen */
+  .menu-list { display: flex; flex-direction: column; gap: 10px; margin-top: 18px; }
+  .menu-item {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 16px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--bg-raised);
+    cursor: pointer;
+    text-align: left;
+  }
+  .menu-item.locked { cursor: default; opacity: 0.5; }
+  .menu-item:not(.locked):hover { border-color: var(--accent); }
+  .menu-num {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--accent-ink);
+    background: var(--accent-soft);
+    border-radius: 6px;
+    padding: 4px 7px;
+    flex-shrink: 0;
+  }
+  .menu-text { flex: 1; }
+  .menu-title { font-size: 15px; font-weight: 600; }
+  .menu-sub { font-size: 12.5px; color: var(--ink-soft); margin-top: 2px; }
+  .menu-status { font-family: var(--font-mono); font-size: 11.5px; color: var(--ink-soft); }
+
+  .intro-copy { font-size: 14.5px; line-height: 1.6; color: var(--ink-soft); margin-top: 4px; }
+
+  .fade { animation: fadeIn 0.28s ease; }
+  @media (prefers-reduced-motion: reduce) { .fade { animation: none; } }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+</style>
+</head>
+<body>
+
+<div class="stage">
+  <div class="frame">
+    <div class="chrome">
+      <div class="chrome-left">
+        <a class="hub-link" href="../">‹ hub</a>
+        <div class="chrome-path" id="chromePath">~/<b>express-node</b></div>
+      </div>
+      <div class="streak" id="streakBox">streak · <b id="streakNum">0</b>d</div>
+    </div>
+    <div class="progress-track" id="progressTrack"></div>
+    <div class="panel" id="panel"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var STORAGE_KEY = 'expressnode_progress_v1';
+
+  var lessons = [
+    {
+      id: 'first-express-server',
+      title: 'Your first Express server',
+      sub: '7 steps · ~5 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 01 · Step 1',
+          title: 'Express is a framework for building a Node.js server',
+          body: [
+            'Node.js lets JavaScript run outside the browser; Express is a lightweight framework on top of it for handling HTTP requests without writing raw networking code yourself.'
+          ],
+          code: 'const express = require("express");\nconst app = express();\n\napp.listen(3000, () => {\n  console.log("Server running on port 3000");\n});'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 01 · Step 2',
+          title: 'Predict the outcome',
+          body: [
+            'What does running this file do?'
+          ],
+          code: 'const express = require("express");\nconst app = express();\n\napp.listen(3000, () => {\n  console.log("Server running on port 3000");\n});',
+          options: ['Starts a server listening on port 3000', 'Immediately sends a response to the browser', 'Creates a database', 'Error — nothing happens without a route'],
+          answer: 0,
+          explanation: '<code>app.listen(3000, ...)</code> starts the server and keeps it running, waiting for incoming requests on port 3000.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 01 · Step 3',
+          title: 'app.get() defines a route that responds to GET requests',
+          body: [
+            'A route matches a specific URL path and HTTP method, then runs a handler function to produce the response.'
+          ],
+          code: 'app.get("/", (req, res) => {\n  res.send("Hello, world!");\n});\n\n// visiting http://localhost:3000/ shows: Hello, world!'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 01 · Step 4',
+          title: 'Predict the outcome',
+          body: [
+            'Assume the server is running and this route is defined.'
+          ],
+          code: 'app.get("/about", (req, res) => {\n  res.send("About this site");\n});\n\n// a browser requests GET /about',
+          options: ['Response body: "About this site"', 'Response body: "/about"', 'Nothing happens', 'Error'],
+          answer: 0,
+          explanation: 'The route handler runs <code>res.send("About this site")</code>, which becomes the response body for that GET /about request.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 01 · Step 5',
+          title: 'res.send() and res.json() are the two most common ways to respond',
+          body: [
+            '<code>res.send()</code> sends plain text or HTML; <code>res.json()</code> sends a JavaScript object or array, automatically converted to JSON — the standard for APIs that a frontend will consume.'
+          ],
+          code: 'app.get("/api/user", (req, res) => {\n  res.json({ name: "Ada", age: 30 });\n});\n\n// response body: {"name":"Ada","age":30}'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 01 · Step 6',
+          title: 'Complete the route',
+          body: [
+            'Finish the line so this defines a route that responds to GET requests at /health.'
+          ],
+          codeBefore: 'app.',
+          codeAfter: '("/health", (req, res) => {\n  res.send("OK");\n});',
+          answer: ['get'],
+          hint: 'The Express method for handling GET requests.',
+          explanation: '<code>app.get("/health", ...)</code> registers a handler for GET requests to /health.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 01 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            'Express is a lightweight framework on top of Node.js for handling HTTP requests.',
+            '<code>app.listen(port, callback)</code> starts the server, listening for incoming requests.',
+            '<code>app.get(path, handler)</code> defines a route that matches GET requests to a specific path.',
+            '<code>res.send()</code> responds with text or HTML; <code>res.json()</code> responds with data as JSON, the standard for APIs.'
+          ],
+          next: 'Next up: routes, HTTP methods, and reading data from a request.'
+        }
+      ]
+    },
+    {
+      id: 'routes-http-methods',
+      title: 'Routes & HTTP methods',
+      sub: '7 steps · ~5 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 02 · Step 1',
+          title: 'Different HTTP methods represent different intents',
+          body: [
+            'GET requests data; POST creates something new; PUT or PATCH updates something existing; DELETE removes something. Express has a matching method for each: <code>app.get</code>, <code>app.post</code>, <code>app.put</code>, <code>app.delete</code>.'
+          ],
+          code: 'app.get("/users", (req, res) => { /* list users */ });\napp.post("/users", (req, res) => { /* create a user */ });\napp.delete("/users/1", (req, res) => { /* delete user 1 */ });'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 02 · Step 2',
+          title: 'Which method fits?',
+          body: [
+            'A frontend wants to create a new blog post.'
+          ],
+          code: '// Option A: app.get("/posts", ...)\n// Option B: app.post("/posts", ...)',
+          options: ['Option B — POST for creating something new', 'Option A — GET works for creating too', 'Either works identically', 'Neither is correct'],
+          answer: 0,
+          explanation: 'Creating a new resource is the classic use case for POST — GET is meant for reading data, not creating it.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 02 · Step 3',
+          title: 'Route parameters capture part of the URL as a variable',
+          body: [
+            'A colon in a route path, like <code>:id</code>, captures that segment of the URL and makes it available on <code>req.params</code>.'
+          ],
+          code: 'app.get("/users/:id", (req, res) => {\n  res.send(`User ID: ${req.params.id}`);\n});\n\n// GET /users/42 -> "User ID: 42"'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 02 · Step 4',
+          title: 'Predict the outcome',
+          body: [
+            'A request comes in for GET /users/7.'
+          ],
+          code: 'app.get("/users/:id", (req, res) => {\n  res.send(`User ID: ${req.params.id}`);\n});',
+          options: ['Response body: "User ID: 7"', 'Response body: "User ID: :id"', 'Error', 'Response body: "7"'],
+          answer: 0,
+          explanation: '<code>req.params.id</code> captures "7" from the URL, so the response becomes "User ID: 7".'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 02 · Step 5',
+          title: 'Query strings are read from req.query',
+          body: [
+            'Everything after a <code>?</code> in a URL — like <code>?sort=name&amp;limit=10</code> — is available as an object on <code>req.query</code>, separate from route parameters.'
+          ],
+          code: 'app.get("/products", (req, res) => {\n  console.log(req.query.sort); // "price"\n  res.send(`Sorting by ${req.query.sort}`);\n});\n\n// GET /products?sort=price'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 02 · Step 6',
+          title: 'Complete the route',
+          body: [
+            'Finish the route so it captures the id segment of the URL.'
+          ],
+          codeBefore: 'app.get("/users/',
+          codeAfter: '", (req, res) => {\n  res.send(`User ID: ${req.params.id}`);\n});',
+          answer: [':id'],
+          hint: 'A colon followed by the parameter name.',
+          explanation: '<code>:id</code> in the path captures that URL segment and makes it available as <code>req.params.id</code>.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 02 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            'GET reads, POST creates, PUT/PATCH updates, DELETE removes — Express has a matching method for each.',
+            'Route parameters (<code>:id</code>) capture part of the URL path, available on <code>req.params</code>.',
+            'Query strings (<code>?sort=price</code>) are available on <code>req.query</code>, separate from route parameters.',
+            'Choosing the right HTTP method communicates intent, both to other developers and to tools that inspect APIs.'
+          ],
+          next: 'Next up: middleware — code that runs between the request and the response.'
+        }
+      ]
+    },
+    {
+      id: 'middleware-basics',
+      title: 'Middleware & req/res',
+      sub: '7 steps · ~5 min',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Lesson 03 · Step 1',
+          title: 'Middleware is a function that runs before your route handler',
+          body: [
+            'A middleware function receives <code>req</code>, <code>res</code>, and a third argument, <code>next</code> — calling <code>next()</code> passes control to the next function in the chain, whether that\'s more middleware or the final route handler.'
+          ],
+          code: 'function logger(req, res, next) {\n  console.log(`${req.method} ${req.path}`);\n  next();\n}\n\napp.use(logger);\n\napp.get("/", (req, res) => {\n  res.send("Home");\n});\n\n// every request logs its method and path before reaching a route'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 03 · Step 2',
+          title: 'Predict the outcome',
+          body: [
+            'A GET request comes in for /about.'
+          ],
+          code: 'function logger(req, res, next) {\n  console.log(`${req.method} ${req.path}`);\n  next();\n}\napp.use(logger);\napp.get("/about", (req, res) => {\n  res.send("About");\n});',
+          options: ['Logs "GET /about", then responds with "About"', 'Only responds with "About", nothing logged', 'Logs forever, never responds', 'Error'],
+          answer: 0,
+          explanation: '<code>logger</code> runs first, logs the request, calls <code>next()</code> to continue, and then the /about route handler sends its response.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 03 · Step 3',
+          title: 'Forgetting to call next() leaves the request hanging',
+          body: [
+            'If a middleware function never calls <code>next()</code> and never sends a response itself, the request just hangs — the browser waits indefinitely because nothing ever completes it.'
+          ],
+          code: '// broken — request never completes:\nfunction logger(req, res, next) {\n  console.log(`${req.method} ${req.path}`);\n  // forgot next()!\n}'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Lesson 03 · Step 4',
+          title: 'Predict the outcome',
+          body: [
+            'This middleware is missing something.'
+          ],
+          code: 'function auth(req, res, next) {\n  console.log("Checking auth...");\n}\napp.use(auth);\napp.get("/dashboard", (req, res) => {\n  res.send("Dashboard");\n});\n\n// a request comes in for /dashboard',
+          options: ['The request hangs — auth never calls next() or sends a response', 'The dashboard route still responds normally', 'Error is thrown immediately', 'Express skips the broken middleware automatically'],
+          answer: 0,
+          explanation: 'Since <code>auth</code> neither calls <code>next()</code> nor sends a response, the request stalls — the dashboard route never even runs.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Lesson 03 · Step 5',
+          title: 'express.json() is middleware that parses a JSON request body',
+          body: [
+            'When a POST request sends JSON data, it arrives as a raw stream by default — <code>express.json()</code> middleware parses it into a regular JavaScript object, available on <code>req.body</code>.'
+          ],
+          code: 'app.use(express.json());\n\napp.post("/users", (req, res) => {\n  console.log(req.body.name); // parsed from the JSON body\n  res.json({ received: req.body });\n});'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Lesson 03 · Step 6',
+          title: 'Complete the function',
+          body: [
+            'Finish the line so the function calls next to continue to the next middleware or route.'
+          ],
+          codeBefore: 'function logger(req, res, next) {\n  console.log(req.path);\n  ',
+          codeAfter: '();\n}',
+          answer: ['next'],
+          hint: 'Passes control to the next function in the chain.',
+          explanation: '<code>next()</code> hands off control so the request continues to whatever comes after this middleware.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Lesson 03 · Complete',
+          title: 'What you\'ve got',
+          bullets: [
+            'Middleware functions run before route handlers, receiving <code>req</code>, <code>res</code>, and <code>next</code>.',
+            'Calling <code>next()</code> passes control forward; forgetting it leaves the request hanging indefinitely.',
+            '<code>app.use(middleware)</code> applies a middleware function to every incoming request.',
+            '<code>express.json()</code> is built-in middleware that parses a JSON request body into <code>req.body</code>.'
+          ],
+          next: 'Next up: a checkpoint test on servers, routes, and middleware.'
+        }
+      ]
+    },
+    {
+      id: 'checkpoint-1',
+      title: 'Checkpoint: Servers, Routes & Middleware',
+      sub: 'Checkpoint · 8 questions',
+      isTest: true,
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Checkpoint · Start',
+          title: 'Time to check what stuck',
+          body: [
+            '8 quick questions pulling from servers, routes, route parameters, and middleware.'
+          ]
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 1',
+          title: 'Predict the outcome',
+          body: ['What does running this file do?'],
+          code: 'const express = require("express");\nconst app = express();\n\napp.listen(3000, () => {\n  console.log("Server running on port 3000");\n});',
+          options: ['Starts a server listening on port 3000', 'Immediately sends a response to the browser', 'Creates a database', 'Error — nothing happens without a route'],
+          answer: 0,
+          explanation: '<code>app.listen</code> starts the server and keeps it running.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint · Question 2',
+          title: 'Complete the route',
+          body: ['Finish the line so this defines a route that responds to GET requests at /health.'],
+          codeBefore: 'app.',
+          codeAfter: '("/health", (req, res) => {\n  res.send("OK");\n});',
+          answer: ['get'],
+          hint: 'The Express method for handling GET requests.',
+          explanation: '<code>app.get(...)</code> registers a GET handler.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 3',
+          title: 'Predict the outcome',
+          body: ['A request comes in for GET /users/7.'],
+          code: 'app.get("/users/:id", (req, res) => {\n  res.send(`User ID: ${req.params.id}`);\n});',
+          options: ['Response body: "User ID: 7"', 'Response body: "User ID: :id"', 'Error', 'Response body: "7"'],
+          answer: 0,
+          explanation: '<code>req.params.id</code> captures "7" from the URL.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint · Question 4',
+          title: 'Complete the route',
+          body: ['Finish the route so it captures the id segment of the URL.'],
+          codeBefore: 'app.get("/users/',
+          codeAfter: '", (req, res) => {\n  res.send(`User ID: ${req.params.id}`);\n});',
+          answer: [':id'],
+          hint: 'A colon followed by the parameter name.',
+          explanation: '<code>:id</code> captures that URL segment as <code>req.params.id</code>.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 5',
+          title: 'Which method fits?',
+          body: ['A frontend wants to create a new blog post.'],
+          code: '// Option A: app.get("/posts", ...)\n// Option B: app.post("/posts", ...)',
+          options: ['Option B — POST for creating something new', 'Option A — GET works for creating too', 'Either works identically', 'Neither is correct'],
+          answer: 0,
+          explanation: 'POST is the standard method for creating a new resource.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 6',
+          title: 'Predict the outcome',
+          body: ['A GET request comes in for /about.'],
+          code: 'function logger(req, res, next) {\n  console.log(`${req.method} ${req.path}`);\n  next();\n}\napp.use(logger);\napp.get("/about", (req, res) => {\n  res.send("About");\n});',
+          options: ['Logs "GET /about", then responds with "About"', 'Only responds with "About", nothing logged', 'Logs forever, never responds', 'Error'],
+          answer: 0,
+          explanation: 'The middleware logs, calls <code>next()</code>, then the route responds.'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Checkpoint · Question 7',
+          title: 'Complete the function',
+          body: ['Finish the line so the function calls next to continue to the next middleware or route.'],
+          codeBefore: 'function logger(req, res, next) {\n  console.log(req.path);\n  ',
+          codeAfter: '();\n}',
+          answer: ['next'],
+          hint: 'Passes control to the next function in the chain.',
+          explanation: '<code>next()</code> hands off control to continue the chain.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Checkpoint · Question 8',
+          title: 'Predict the outcome',
+          body: ['This middleware is missing something.'],
+          code: 'function auth(req, res, next) {\n  console.log("Checking auth...");\n}\napp.use(auth);\napp.get("/dashboard", (req, res) => {\n  res.send("Dashboard");\n});\n\n// a request comes in for /dashboard',
+          options: ['The request hangs — auth never calls next() or sends a response', 'The dashboard route still responds normally', 'Error is thrown immediately', 'Express skips the broken middleware automatically'],
+          answer: 0,
+          explanation: 'Without <code>next()</code> or a response, the request stalls.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Checkpoint · Complete',
+          title: 'Here\'s where you stand',
+          bullets: [
+            'Servers, routes, route parameters, and middleware — the foundation for building any Express API.',
+            'If anything felt shaky, the matching lesson is one tap away in the menu — and you can retake this checkpoint any time.'
+          ],
+          next: 'Next up: a project — building a small REST API.'
+        }
+      ]
+    },
+    {
+      id: 'project-notes-api',
+      title: 'Project: Build a Notes API',
+      sub: 'Project · 8 steps',
+      kind: 'project',
+      steps: [
+        {
+          type: 'info',
+          eyebrow: 'Project · Brief',
+          title: 'The goal',
+          body: [
+            'Build a small REST API for notes: list all notes, get one by id, and create a new note — combining routes, route parameters, and middleware.'
+          ]
+        },
+        {
+          type: 'info',
+          eyebrow: 'Project · Step 1',
+          title: 'Start with the setup',
+          body: [
+            'A basic Express app with JSON parsing and some starting data.'
+          ],
+          code: 'const express = require("express");\nconst app = express();\napp.use(express.json());\n\nlet notes = [\n  { id: 1, text: "Buy milk" },\n  { id: 2, text: "Walk the dog" }\n];'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Project · Step 2',
+          title: 'Complete the route',
+          body: [
+            'Finish the route so GET /notes returns the full notes array as JSON.'
+          ],
+          codeBefore: 'app.get("/notes", (req, res) => {\n  res.',
+          codeAfter: '(notes);\n});',
+          answer: ['json'],
+          hint: 'Sends data as JSON.',
+          explanation: '<code>res.json(notes)</code> sends the entire notes array as the response body.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Project · Step 3',
+          title: 'Predict the outcome',
+          body: [
+            'Assume notes has two items, as above.'
+          ],
+          code: 'app.get("/notes", (req, res) => {\n  res.json(notes);\n});\n\n// GET /notes',
+          options: ['The full array of two notes, as JSON', 'Just the first note', 'An empty array', 'Error'],
+          answer: 0,
+          explanation: '<code>res.json(notes)</code> sends the entire notes array as the JSON response body.'
+        },
+        {
+          type: 'info',
+          eyebrow: 'Project · Step 4',
+          title: 'Get a single note by its id',
+          body: [
+            'The route parameter is used to find the matching note in the array.'
+          ],
+          code: 'app.get("/notes/:id", (req, res) => {\n  const note = notes.find(n => n.id === Number(req.params.id));\n  res.json(note);\n});\n\n// GET /notes/2 -> { id: 2, text: "Walk the dog" }'
+        },
+        {
+          type: 'fill',
+          eyebrow: 'Project · Step 5',
+          title: 'Complete the route',
+          body: [
+            'Finish the route so it captures the id segment of the URL.'
+          ],
+          codeBefore: 'app.get("/notes/',
+          codeAfter: '", (req, res) => {\n  const note = notes.find(n => n.id === Number(req.params.id));\n  res.json(note);\n});',
+          answer: [':id'],
+          hint: 'A colon followed by the parameter name.',
+          explanation: '<code>:id</code> captures the URL segment as <code>req.params.id</code>.'
+        },
+        {
+          type: 'predict',
+          eyebrow: 'Project · Step 6',
+          title: 'Predict the outcome',
+          code: 'app.post("/notes", (req, res) => {\n  const newNote = { id: Date.now(), text: req.body.text };\n  notes.push(newNote);\n  res.json(newNote);\n});\n\n// POST /notes with body { "text": "Read a book" }',
+          options: ['A new note is added to notes, and the new note is returned as JSON', 'Nothing happens without app.use(express.json())', 'The existing notes array is replaced', 'Error'],
+          answer: 0,
+          explanation: 'With <code>express.json()</code> already applied, <code>req.body.text</code> is readable, so the new note is created, pushed into notes, and sent back.'
+        },
+        {
+          type: 'recap',
+          eyebrow: 'Project · Complete',
+          title: 'You built a notes API',
+          code: 'const express = require("express");\nconst app = express();\napp.use(express.json());\n\nlet notes = [\n  { id: 1, text: "Buy milk" },\n  { id: 2, text: "Walk the dog" }\n];\n\napp.get("/notes", (req, res) => {\n  res.json(notes);\n});\n\napp.get("/notes/:id", (req, res) => {\n  const note = notes.find(n => n.id === Number(req.params.id));\n  res.json(note);\n});\n\napp.post("/notes", (req, res) => {\n  const newNote = { id: Date.now(), text: req.body.text };\n  notes.push(newNote);\n  res.json(newNote);\n});\n\napp.listen(3000);',
+          bullets: [
+            'GET /notes and GET /notes/:id covered reading all notes and reading one specific note by id.',
+            'POST /notes read the request body (parsed by express.json() middleware) to create a new note.',
+            'Route parameters (:id) and req.body work together to build a complete, working REST API.',
+            'This list-one-create shape is the backbone of almost every real API resource.'
+          ],
+          next: 'More lessons — connecting to a real database — are on the way.'
+        }
+      ]
+    },
+    { id: 'more-soon', title: 'Connecting to a database', sub: 'coming soon', locked: true }
+  ];
+
+  var state = load();
+  if (!state.testScores) state.testScores = {};
+  var view = { screen: 'menu', lessonId: null, stepIndex: 0, checked: false, firstTry: {} };
+
+  function load() {
+    try {
+      var raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) return JSON.parse(raw);
+    } catch (e) {}
+    return { streak: 0, lastCompleteDate: null, completedLessons: {}, testScores: {} };
+  }
+  function save() {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
+  }
+  function todayStr() {
+    var d = new Date();
+    return d.getFullYear() + '-' + (d.getMonth()+1) + '-' + d.getDate();
+  }
+  function bumpStreak() {
+    var today = todayStr();
+    if (state.lastCompleteDate === today) return;
+    var y = new Date(); y.setDate(y.getDate() - 1);
+    var yesterday = y.getFullYear() + '-' + (y.getMonth()+1) + '-' + y.getDate();
+    state.streak = (state.lastCompleteDate === yesterday) ? state.streak + 1 : 1;
+    state.lastCompleteDate = today;
+    save();
+  }
+
+  function esc(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  function renderChrome() {
+    document.getElementById('streakNum').textContent = state.streak;
+    var path = view.screen === 'menu' ? '~/<b>express-node</b>'
+      : '~/express-node/<b>' + view.lessonId + '</b>';
+    document.getElementById('chromePath').innerHTML = path;
+  }
+
+  function renderProgress() {
+    var track = document.getElementById('progressTrack');
+    track.innerHTML = '';
+    if (view.screen !== 'lesson') { track.style.display = 'none'; return; }
+    track.style.display = 'flex';
+    var lesson = lessons.filter(function(l){return l.id === view.lessonId;})[0];
+    lesson.steps.forEach(function(_, i) {
+      var seg = document.createElement('div');
+      seg.className = 'progress-seg' + (i < view.stepIndex ? ' done' : i === view.stepIndex ? ' current' : '');
+      track.appendChild(seg);
+    });
+  }
+
+  function renderMenu() {
+    var panel = document.getElementById('panel');
+    var html = '';
+    html += '<p class="eyebrow">Practice terminal</p>';
+    html += '<h1 class="step-title">Express &amp; Node, one sitting at a time</h1>';
+    html += '<p class="intro-copy">Short, self-contained lessons on building the server that connects a frontend to a database — routes, middleware, and REST APIs.</p>';
+    html += '<div class="menu-list">';
+    lessons.forEach(function(l, i) {
+      var done = state.completedLessons[l.id];
+      var testScore = state.testScores[l.id];
+      var statusLabel = l.locked ? l.sub
+        : testScore ? (testScore.score + '/' + testScore.total)
+        : done ? 'complete' : (l.sub || 'start');
+      html += '<div class="menu-item' + (l.locked ? ' locked' : '') + '" data-lesson="' + l.id + '" tabindex="' + (l.locked ? '-1' : '0') + '">';
+      html += '<div class="menu-num">' + String(i+1).padStart(2,'0') + '</div>';
+      html += '<div class="menu-text"><div class="menu-title">' + esc(l.title) + '</div><div class="menu-sub">' + esc(l.locked ? l.sub : (l.sub || '')) + '</div></div>';
+      html += '<div class="menu-status">' + esc(statusLabel) + '</div>';
+      html += '</div>';
+    });
+    html += '</div>';
+    panel.innerHTML = html;
+    panel.className = 'panel fade';
+    Array.prototype.forEach.call(panel.querySelectorAll('.menu-item:not(.locked)'), function(el) {
+      el.addEventListener('click', function() { openLesson(el.getAttribute('data-lesson')); });
+      el.addEventListener('keydown', function(e) { if (e.key === 'Enter') openLesson(el.getAttribute('data-lesson')); });
+    });
+  }
+
+  function openLesson(id) {
+    view.screen = 'lesson';
+    view.lessonId = id;
+    view.stepIndex = 0;
+    view.checked = false;
+    view.firstTry = {};
+    renderAll();
+  }
+
+  function backToMenu() {
+    view.screen = 'menu';
+    view.lessonId = null;
+    renderAll();
+  }
+
+  function currentLesson() {
+    return lessons.filter(function(l){ return l.id === view.lessonId; })[0];
+  }
+  function currentStep() {
+    return currentLesson().steps[view.stepIndex];
+  }
+
+  function renderStep() {
+    var step = currentStep();
+    var panel = document.getElementById('panel');
+    var html = '<p class="eyebrow">' + esc(step.eyebrow) + '</p>';
+    html += '<h1 class="step-title">' + esc(step.title) + '</h1>';
+
+    if (step.type === 'info') {
+      step.body.forEach(function(p){ html += '<p class="prose">' + p + '</p>'; });
+      if (step.code) html += '<div class="code-block">' + esc(step.code) + '</div>';
+      html += '<div class="footer"><div class="spacer"></div><button class="btn" id="primaryBtn">continue →</button></div>';
+      panel.innerHTML = html;
+      panel.className = 'panel fade';
+      document.getElementById('primaryBtn').addEventListener('click', nextStep);
+      return;
+    }
+
+    if (step.type === 'predict') {
+      if (step.body) step.body.forEach(function(p){ html += '<p class="prose">' + p + '</p>'; });
+      if (step.code) html += '<div class="code-block">' + esc(step.code) + '</div>';
+      html += '<div class="options" id="optionsBox">';
+      step.options.forEach(function(opt, i) {
+        html += '<button class="option" data-idx="' + i + '"><span class="idx">' + (i+1) + '</span>' + esc(opt) + '</button>';
+      });
+      html += '</div>';
+      html += '<div class="feedback" id="feedbackBox"></div>';
+      html += '<div class="footer"><div class="spacer"></div><button class="btn" id="primaryBtn" disabled>continue →</button></div>';
+      panel.innerHTML = html;
+      panel.className = 'panel fade';
+      wireChoice(step);
+      return;
+    }
+
+    if (step.type === 'fill') {
+      step.body.forEach(function(p){ html += '<p class="prose">' + p + '</p>'; });
+      html += '<div class="code-block">' + esc(step.codeBefore) + '<span class="blank" id="blankPreview">___</span>' + esc(step.codeAfter) + '</div>';
+      html += '<div class="prompt-line"><span class="chevron">&gt;&gt;&gt;</span><input id="fillInput" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="type here" /><span class="cursor"></span></div>';
+      html += '<div class="feedback" id="feedbackBox"></div>';
+      html += '<div class="footer"><button class="hint-btn" id="hintBtn">need a hint?</button><div class="spacer"></div><button class="btn" id="checkBtn">check</button></div>';
+      panel.innerHTML = html;
+      panel.className = 'panel fade';
+      wireFill(step);
+      return;
+    }
+
+    if (step.type === 'recap') {
+      var lesson = currentLesson();
+      var scoreResult = lesson.isTest ? computeScore(lesson) : null;
+      if (scoreResult) {
+        html += '<div class="score-box"><div class="score-num">' + scoreResult.score + '<span class="score-of">/' + scoreResult.total + '</span></div>'
+          + '<div class="score-msg">' + esc(scoreResult.message) + '</div></div>';
+      }
+      if (step.code) html += '<div class="code-block">' + esc(step.code) + '</div>';
+      html += '<ul class="recap-list">';
+      step.bullets.forEach(function(b){ html += '<li>' + b + '</li>'; });
+      html += '</ul>';
+      html += '<p class="prose" style="margin-top:16px; color:var(--ink-soft);">' + esc(step.next) + '</p>';
+      html += '<div class="footer"><button class="btn ghost" id="menuBtn">back to lessons</button><div class="spacer"></div></div>';
+      panel.innerHTML = html;
+      panel.className = 'panel fade';
+      document.getElementById('menuBtn').addEventListener('click', function() {
+        state.completedLessons[view.lessonId] = true;
+        if (scoreResult) state.testScores[view.lessonId] = { score: scoreResult.score, total: scoreResult.total, date: todayStr() };
+        bumpStreak();
+        backToMenu();
+      });
+      return;
+    }
+  }
+
+  function computeScore(lesson) {
+    var total = 0, score = 0;
+    lesson.steps.forEach(function(s, i) {
+      if (s.type === 'predict' || s.type === 'fill') {
+        total += 1;
+        if (view.firstTry[i]) score += 1;
+      }
+    });
+    var pct = total ? score / total : 0;
+    var message = pct >= 0.9 ? 'Nailed it — that stuck.'
+      : pct >= 0.7 ? 'Solid. A couple of spots to revisit.'
+      : 'Good practice — worth another pass on the lessons above.';
+    return { score: score, total: total, message: message };
+  }
+
+  function wireChoice(step) {
+    var box = document.getElementById('optionsBox');
+    var fb = document.getElementById('feedbackBox');
+    var primary = document.getElementById('primaryBtn');
+    var answered = false;
+    primary.addEventListener('click', nextStep);
+    Array.prototype.forEach.call(box.querySelectorAll('.option'), function(btn) {
+      btn.addEventListener('click', function() {
+        if (answered) return;
+        answered = true;
+        var idx = parseInt(btn.getAttribute('data-idx'), 10);
+        view.firstTry[view.stepIndex] = (idx === step.answer);
+        Array.prototype.forEach.call(box.querySelectorAll('.option'), function(b, i) {
+          if (i === step.answer) b.classList.add('correct');
+          else if (b === btn) b.classList.add('wrong');
+          else b.classList.add('dim');
+        });
+        fb.className = 'feedback show ' + (idx === step.answer ? 'ok' : 'no');
+        fb.innerHTML = (idx === step.answer ? '<b>Correct.</b> ' : '<b>Not quite.</b> ') + step.explanation;
+        primary.disabled = false;
+      });
+    });
+  }
+
+  function wireFill(step) {
+    var input = document.getElementById('fillInput');
+    var fb = document.getElementById('feedbackBox');
+    var checkBtn = document.getElementById('checkBtn');
+    var hintBtn = document.getElementById('hintBtn');
+    var solved = false;
+
+    function doCheck() {
+      if (solved) { nextStep(); return; }
+      var val = input.value.trim().toLowerCase();
+      var ok = step.answer.some(function(a){ return a.toLowerCase() === val; });
+      if (!(view.stepIndex in view.firstTry)) view.firstTry[view.stepIndex] = ok;
+      fb.className = 'feedback show ' + (ok ? 'ok' : 'no');
+      fb.innerHTML = (ok ? '<b>Correct.</b> ' : '<b>Not quite.</b> ') + step.explanation;
+      if (ok) {
+        solved = true;
+        document.getElementById('blankPreview').textContent = step.answer[0];
+        input.disabled = true;
+        checkBtn.textContent = 'continue →';
+      }
+    }
+    checkBtn.addEventListener('click', doCheck);
+    input.addEventListener('keydown', function(e){ if (e.key === 'Enter') doCheck(); });
+    hintBtn.addEventListener('click', function() {
+      fb.className = 'feedback show ok';
+      fb.innerHTML = '<b>Hint.</b> ' + step.hint;
+    });
+  }
+
+  function nextStep() {
+    var lesson = currentLesson();
+    if (view.stepIndex < lesson.steps.length - 1) {
+      view.stepIndex += 1;
+      renderAll();
+    }
+  }
+
+  function renderAll() {
+    renderChrome();
+    renderProgress();
+    if (view.screen === 'menu') renderMenu();
+    else renderStep();
+  }
+
+  renderAll();
+})();
+</script>
+</body>
+</html>
