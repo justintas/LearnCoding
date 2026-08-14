@@ -155,6 +155,8 @@
   }
   .progress-seg.done { background: var(--accent); }
   .progress-seg.current { background: var(--accent); opacity: 0.45; }
+  .progress-seg.clickable { cursor: pointer; }
+  .progress-seg.clickable:hover { opacity: 0.75; }
 
   .panel {
     padding: 32px 28px 28px;
@@ -1416,6 +1418,10 @@
     lesson.steps.forEach(function(_, i) {
       var seg = document.createElement('div');
       seg.className = 'progress-seg' + (i < view.stepIndex ? ' done' : i === view.stepIndex ? ' current' : '');
+      if (i <= view.stepIndex) {
+        seg.classList.add('clickable');
+        seg.addEventListener('click', function(){ goToStep(i); });
+      }
       track.appendChild(seg);
     });
   }
@@ -1463,6 +1469,16 @@
     renderAll();
   }
 
+  function goToStep(idx) {
+    if (idx < 0) { backToMenu(); return; }
+    if (idx > view.stepIndex) return;
+    view.stepIndex = idx;
+    renderAll();
+  }
+  function previousStep() {
+    goToStep(view.stepIndex - 1);
+  }
+
   function currentLesson() {
     return lessons.filter(function(l){ return l.id === view.lessonId; })[0];
   }
@@ -1479,38 +1495,49 @@
     if (step.type === 'info') {
       step.body.forEach(function(p){ html += '<p class="prose">' + p + '</p>'; });
       if (step.code) html += '<div class="code-block">' + esc(step.code) + '</div>';
-      html += '<div class="footer"><div class="spacer"></div><button class="btn" id="primaryBtn">continue →</button></div>';
+      html += '<div class="footer">' + (view.stepIndex > 0 ? '<button class="btn ghost" id="backBtn">‹ back</button>' : '') + '<div class="spacer"></div><button class="btn" id="primaryBtn">continue →</button></div>';
       panel.innerHTML = html;
       panel.className = 'panel fade';
+      if (view.stepIndex > 0) document.getElementById('backBtn').addEventListener('click', previousStep);
       document.getElementById('primaryBtn').addEventListener('click', nextStep);
       return;
     }
 
     if (step.type === 'predict') {
+      var reviewed = (view.stepIndex in view.firstTry);
       if (step.body) step.body.forEach(function(p){ html += '<p class="prose">' + p + '</p>'; });
       if (step.code) html += '<div class="code-block">' + esc(step.code) + '</div>';
       html += '<div class="options" id="optionsBox">';
       step.options.forEach(function(opt, i) {
-        html += '<button class="option" data-idx="' + i + '"><span class="idx">' + (i+1) + '</span>' + esc(opt) + '</button>';
+        var cls = 'option' + (reviewed ? (i === step.answer ? ' correct' : ' dim') : '');
+        html += '<button class="' + cls + '" data-idx="' + i + '"' + (reviewed ? ' disabled' : '') + '><span class="idx">' + (i+1) + '</span>' + esc(opt) + '</button>';
       });
       html += '</div>';
-      html += '<div class="feedback" id="feedbackBox"></div>';
-      html += '<div class="footer"><div class="spacer"></div><button class="btn" id="primaryBtn" disabled>continue →</button></div>';
+      html += '<div class="feedback' + (reviewed ? ' show ok' : '') + '" id="feedbackBox">' + (reviewed ? '<b>Correct.</b> ' + step.explanation : '') + '</div>';
+      html += '<div class="footer">' + (view.stepIndex > 0 ? '<button class="btn ghost" id="backBtn">‹ back</button>' : '') + '<div class="spacer"></div><button class="btn" id="primaryBtn"' + (reviewed ? '' : ' disabled') + '>continue →</button></div>';
       panel.innerHTML = html;
       panel.className = 'panel fade';
-      wireChoice(step);
+      if (view.stepIndex > 0) document.getElementById('backBtn').addEventListener('click', previousStep);
+      document.getElementById('primaryBtn').addEventListener('click', nextStep);
+      if (!reviewed) wireChoice(step);
       return;
     }
 
     if (step.type === 'fill') {
+      var reviewed = (view.stepIndex in view.firstTry);
       step.body.forEach(function(p){ html += '<p class="prose">' + p + '</p>'; });
-      html += '<div class="code-block">' + esc(step.codeBefore) + '<span class="blank" id="blankPreview">___</span>' + esc(step.codeAfter) + '</div>';
-      html += '<div class="prompt-line"><span class="chevron">&gt;&gt;&gt;</span><input id="fillInput" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="type here" /><span class="cursor"></span></div>';
-      html += '<div class="feedback" id="feedbackBox"></div>';
-      html += '<div class="footer"><button class="hint-btn" id="hintBtn">need a hint?</button><div class="spacer"></div><button class="btn" id="checkBtn">check</button></div>';
+      html += '<div class="code-block">' + esc(step.codeBefore) + '<span class="blank" id="blankPreview">' + (reviewed ? esc(step.answer[0]) : '___') + '</span>' + esc(step.codeAfter) + '</div>';
+      html += '<div class="prompt-line"><span class="chevron">&gt;&gt;&gt;</span><input id="fillInput" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="type here"' + (reviewed ? ' disabled' : '') + ' /><span class="cursor"></span></div>';
+      html += '<div class="feedback' + (reviewed ? ' show ok' : '') + '" id="feedbackBox">' + (reviewed ? '<b>Correct.</b> ' + step.explanation : '') + '</div>';
+      html += '<div class="footer">' + (view.stepIndex > 0 ? '<button class="btn ghost" id="backBtn">‹ back</button>' : '') + (reviewed ? '' : '<button class="hint-btn" id="hintBtn">need a hint?</button>') + '<div class="spacer"></div><button class="btn" id="checkBtn">' + (reviewed ? 'continue →' : 'check') + '</button></div>';
       panel.innerHTML = html;
       panel.className = 'panel fade';
-      wireFill(step);
+      if (view.stepIndex > 0) document.getElementById('backBtn').addEventListener('click', previousStep);
+      if (reviewed) {
+        document.getElementById('checkBtn').addEventListener('click', nextStep);
+      } else {
+        wireFill(step);
+      }
       return;
     }
 
@@ -1526,9 +1553,10 @@
       step.bullets.forEach(function(b){ html += '<li>' + b + '</li>'; });
       html += '</ul>';
       html += '<p class="prose" style="margin-top:16px; color:var(--ink-soft);">' + esc(step.next) + '</p>';
-      html += '<div class="footer"><button class="btn ghost" id="menuBtn">back to lessons</button><div class="spacer"></div></div>';
+      html += '<div class="footer"><button class="btn ghost" id="backBtn">‹ back</button><button class="btn ghost" id="menuBtn">back to lessons</button><div class="spacer"></div></div>';
       panel.innerHTML = html;
       panel.className = 'panel fade';
+      document.getElementById('backBtn').addEventListener('click', previousStep);
       document.getElementById('menuBtn').addEventListener('click', function() {
         state.completedLessons[view.lessonId] = true;
         if (scoreResult) state.testScores[view.lessonId] = { score: scoreResult.score, total: scoreResult.total, date: todayStr() };
@@ -1559,13 +1587,12 @@
     var fb = document.getElementById('feedbackBox');
     var primary = document.getElementById('primaryBtn');
     var answered = false;
-    primary.addEventListener('click', nextStep);
     Array.prototype.forEach.call(box.querySelectorAll('.option'), function(btn) {
       btn.addEventListener('click', function() {
         if (answered) return;
         answered = true;
         var idx = parseInt(btn.getAttribute('data-idx'), 10);
-        view.firstTry[view.stepIndex] = (idx === step.answer);
+        if (!(view.stepIndex in view.firstTry)) view.firstTry[view.stepIndex] = (idx === step.answer);
         Array.prototype.forEach.call(box.querySelectorAll('.option'), function(b, i) {
           if (i === step.answer) b.classList.add('correct');
           else if (b === btn) b.classList.add('wrong');
